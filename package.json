@@ -1,0 +1,23 @@
+{
+  "name": "nodemcu-tool",
+  "version": "1.0.0",
+  "description": "Command line tool to upload and manage files on your NodeMCU / ESP8266 Module.",
+  "keywords": ["cli", "nodemcu", "esp8266", "wifi", "serial", "upload", "embedded"],
+  "homepage": "https://github.com/AndiDittrich/NodeMCU-Tool",
+  "bugs": "https://github.com/AndiDittrich/NodeMCU-Tool/issues",
+  "repository": "AndiDittrich/NodeMCU-Tool",
+  "files": ["bin", "lib", "tools"],
+  "main": "./lib/NodeMcuConnector.js",
+  "bin": {
+    "nodemcu-tool": "bin/nodemcu-tool.js"
+  },
+  "preferGlobal": true,
+  "author": "Andi Dittrich (http://andidittrich.de)",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "progress": "^1.1.8",
+    "prompt": "^0.2.14",
+    "serialport": "^2.0.5"
+  }
+}
