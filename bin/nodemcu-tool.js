@@ -1,13 +1,22 @@
 #!/usr/bin/env node
 
 // load utils
-var _fs = require('fs');
 var _cli = require('commander');
-var _nodeMcuConnector = require('../lib/NodeMcuConnector');
-var _serialTerminal = require('../lib/SerialTerminal');
 var _progressbar = require('progress');
 var _pkg = require('../package.json')
-var _prompt = require('prompt');
+var _prompt = require('prompt')
+var _nodemcutool = require('../lib/NodeMCU-Tool');
+var _colors = require('colors');
+
+// setup CLI/TTY message handler (colorized output)
+_nodemcutool.onError(function(context, message){
+    console.error(_colors.red('[' + context + ']'), message);
+});
+
+_nodemcutool.onStatus(function(context, message){
+    console.error(_colors.green('[' + context + ']'), message);
+});
+
 
 // CLI setup
 _cli
@@ -23,55 +32,15 @@ _cli
 _cli
     .command('fsinfo')
     .description('Show file system info (current files, memory usage)')
-    .action(function() {
-        // create new connector
-        var connector = new _nodeMcuConnector(_cli.port, _cli.baud);
-
-        // handle connection errors
-        connector.onError(function(error){
-            console.error('ERROR ' + error);
-        });
-
-        connector.connect(function(){
-           connector.fsinfo(function(meta, files){
-
-               console.log('\n[NodeMCU] Free Disk Space: ' + meta.remaining + ' KB | Total: ' + meta.total + ' KB');
-               console.log('[NodeMCU] Files stored into Flash (SPIFFS)');
-
-               // print fileinfo
-               files.forEach(function(file){
-                    console.log(' |- ' + file.name + ' (' + file.size + ' Bytes)');
-               });
-               console.log('');
-
-               // finished!
-               connector.disconnect();
-           });
-        });
+    .action(function(){
+        _nodemcutool.fsinfo(_cli.port, _cli.baud);
     });
 
 _cli
     .command('run <file>')
     .description('Executes an existing .lua or .lc file on NodeMCU')
-    .action(function(filename) {
-        // create new connector
-        var connector = new _nodeMcuConnector(_cli.port, _cli.baud);
-
-        // handle connection errors
-        connector.onError(function(error){
-            console.error('ERROR ' + error);
-        });
-
-        connector.connect(function(){
-            connector.run(filename, function(output){
-                // just show complete message (no feedback from nodemcu)
-                console.log('[NodeMCU] Running "' + filename + '"');
-                console.log(output);
-
-                // finished!
-                connector.disconnect();
-            });
-        });
+    .action(function(filename){
+        _nodemcutool.run(_cli.port, _cli.baud, filename);
     });
 
 
@@ -86,77 +55,15 @@ _cli
     .option('-c, --compile', 'Compile LUA file to bytecode (.lc) and remove the original file after upload', false)
 
     .action(function(localFile, options){
-        // print empty new line
-        console.log('');
+        var p = null;
 
-        // local file available ?
-        if (!_fs.existsSync(localFile)){
-            console.error('File not found "' + localFile + '"');
-            return;
-        }
+        _nodemcutool.upload(_cli.port, _cli.baud, localFile, options, function(current, total){
 
-        // create new connector
-        var connector = new _nodeMcuConnector(_cli.port, _cli.baud);
+            if (p){
 
-        // handle connection errors
-        connector.onError(function(error){
-           console.error('ERROR ' + error);
-        });
+            }else{
 
-        connector.connect(function(){
-            // empty line
-            console.log('');
-            var bar = null;
-
-            connector.upload(localFile, options.optimize,
-                // onComplete
-                function(){
-                    console.log('\n[Data Transfer] COMPLETE');
-
-                    // compile flag set ?
-                    if (options.compile){
-                        console.log('[NodeMCU] compiling lua file..');
-
-                        connector.compile(localFile, function(error){
-                            // success ? empty line will return (null)
-                            if (error){
-                                console.log('[NodeMCU] Error: ' + error);
-                                connector.disconnect();
-                            }else{
-                                console.log('[NodeMCU] Success');
-
-                                // drop oiginal lua file
-                                connector.removeFile(localFile, function(){
-                                    console.log('[NodeMCU] Original LUA file removed');
-                                    connector.disconnect();
-                                });
-                            }
-                        });
-
-                    }else{
-                        // finished!
-                        connector.disconnect();
-                    }
-                },
-
-                // on progress
-                function(current, total){
-                    // init ?
-                    if (current == 0){
-                        bar = new _progressbar('[Data Transfer] [:bar] :percent (ETA :etas)', {
-                            total: total,
-                            width: 40,
-                            complete: '=',
-                            incomplete: ' ',
-                            stream: process.stdout
-                        });
-
-
-                    }else{
-                        bar.tick(current);
-                    }
-                }
-            );
+            }
         });
     });
 
@@ -164,23 +71,7 @@ _cli
     .command('remove <file>')
     .description('Removes a file from NodeMCU filesystem')
     .action(function(filename) {
-        // create new connector
-        var connector = new _nodeMcuConnector(_cli.port, _cli.baud);
-
-        // handle connection errors
-        connector.onError(function(error){
-            console.error('ERROR ' + error);
-        });
-
-        connector.connect(function(){
-            connector.removeFile(filename, function(){
-                // just show complete message (no feedback from nodemcu)
-                console.log('\n[NodeMCU] File "' + filename + '" removed!\n');
-
-                // finished!
-                connector.disconnect();
-            });
-        });
+        _nodemcutool.remove(_cli.port, _cli.baud, filename);
     });
 
 _cli
@@ -197,7 +88,7 @@ _cli
             properties: {
                 confirm: {
                     pattern: /^(yes|no|y|n)$/gi,
-                    description: 'Do you really want to format the filesystem and delete all file ?',
+                    description: '[NodeMCU-Tool] Do you really want to format the filesystem and delete all file ?',
                     message: 'Type yes/no',
                     required: true,
                     default: 'no'
@@ -213,25 +104,8 @@ _cli
                 return;
             }
 
-            // create new connector
-            var connector = new _nodeMcuConnector(_cli.port, _cli.baud);
-
-            // handle connection errors
-            connector.onError(function(error){
-                console.error('ERROR ' + error);
-            });
-
-            connector.connect(function(){
-                console.log('\n[NodeMCU] Formatting the file system...this will take around ~30s');
-
-                connector.format(function(response){
-                    // just show complete message
-                    console.log('\n[NodeMCU] File System created | ' + response + '\n');
-
-                    // finished!
-                    connector.disconnect();
-                });
-            });
+            // format
+            _nodemcutool.mkfs(_cli.port, _cli.baud);
         });
 
     });
@@ -241,15 +115,7 @@ _cli
     .command('terminal')
     .description('Opens a Terminal connection to NodeMCU')
     .action(function(){
-        // create new connector
-        var terminal = new _serialTerminal();
-
-        // handle connection errors
-        terminal.onError(function(error){
-            console.error('ERROR ' + error);
-        });
-
-        terminal.passthrough(_cli.port, _cli.baud);
+        _nodemcutool.terminal(_cli.port, _cli.baud);
     });
 
 // run the commander dispatcher

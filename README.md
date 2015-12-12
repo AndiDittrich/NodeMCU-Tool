@@ -17,6 +17,7 @@ NodeMCU Tool allows you to
 * Optimize LUA files before uploading by stripping comments (saves flash memory)
 * Run files on NodeMCU and display the output
 * Simple Serial Terminal to interact with NodeMCU
+* Use the **NodeMcuConnector API** in your own projects
 directly from the command line.
 
 *Successful tested on Windows10, Debian 8.2 and Ubuntu 14 LTS - works out of the box without any tweaks*
