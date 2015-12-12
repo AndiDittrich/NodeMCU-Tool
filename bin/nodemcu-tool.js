@@ -10,11 +10,18 @@ var _colors = require('colors');
 
 // setup CLI/TTY message handler (colorized output)
 _nodemcutool.onError(function(context, message){
-    console.error(_colors.red('[' + context + ']'), message);
+    if (context && context.length > 0){
+        console.error(_colors.red('[' + context + ']'), message);
+    }else{
+        console.error(message);
+    }
 });
-
 _nodemcutool.onStatus(function(context, message){
-    console.error(_colors.green('[' + context + ']'), message);
+    if (context && context.length > 0){
+        console.log(_colors.cyan('[' + context + ']'), message);
+    }else{
+        console.log(message);
+    }
 });
 
 
