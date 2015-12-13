@@ -266,6 +266,37 @@ Therefore keep attention to the following limitations:
 * You cannot upload files over the serial connection with more than **235 characters per line**
 * Your script must not use the string initialization sequence **[===[**
 
+
+Low Level API
+-------------
+It's possible to use the underlying "NodeMcuConnector" in your own projects to communicate with a NodeMCU based device.
+For more details, take a look into the sources!
+
+**Low Level Example**
+Run `node.compile()` on NodeMCU and display the output
+
+```js
+var _connector = require('nodemcu-tool').Connector;
+
+// create a new connector instance
+var con = new _connector('/dev/ttyUSB4', 9600);
+
+// open the serial connection
+con.connect(function(err, response){
+    // get version, flashid ... message
+    console.log(response);
+    
+    // run a command on the LUA command line
+    con.executeCommand('node.compile("testfile.lua");', function(err, echo, response){
+        if (err){
+            console.error('IO Error - ', err);
+        }else{
+            console.log(response);
+        }
+    });
+});
+```
+
 Any Questions ? Report a Bug ? Enhancements ?
 ---------------------------------------------
 Please open a new issue on [GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues)

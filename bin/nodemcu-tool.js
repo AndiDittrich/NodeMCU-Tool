@@ -2,7 +2,7 @@
 
 // load utils
 var _cli = require('commander');
-var _progressbar = require('progress');
+var _progressbar = require('cli-progress');
 var _pkg = require('../package.json')
 var _prompt = require('prompt')
 var _nodemcutool = require('../lib/NodeMCU-Tool');
@@ -62,14 +62,23 @@ _cli
     .option('-c, --compile', 'Compile LUA file to bytecode (.lc) and remove the original file after upload', false)
 
     .action(function(localFile, options){
-        var p = null;
+        // initialize a new progress bar
+        var bar = new _progressbar.Bar({
+            format: 'Upload Status {percentage}% [{bar}] | ETA {eta}s',
+            clearOnComplete: true
+        });
 
         _nodemcutool.upload(_cli.port, _cli.baud, localFile, options, function(current, total){
+            // bar initialized ?
+            if (current == 0) {
+                bar.start(total, 0);
+            }else {
+                bar.update(current);
 
-            if (p){
-
-            }else{
-
+                // finished ?
+                if (current >= total) {
+                    bar.stop();
+                }
             }
         });
     });

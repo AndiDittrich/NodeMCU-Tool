@@ -27,9 +27,9 @@
   "author": "Andi Dittrich (http://andidittrich.de)",
   "license": "MIT",
   "dependencies": {
+    "cli-progress": "^1.0.1",
     "colors": "^1.1.2",
     "commander": "^2.9.0",
-    "progress": "^1.1.8",
     "prompt": "^0.2.14",
     "serialport": "^2.0.5"
   }
