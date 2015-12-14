@@ -4,7 +4,9 @@ Upload LUA files to your ESP8266 module with NodeMCU firmware.
 
 **Simple. Command Line. Cross-Platform. File Management. [NodeMCU](http://nodemcu.com/index_en.html).**
 
-Summary
+![Demo](https://github.com/AndiDittrich/NodeMCU-Tool/raw/master/video.gif)
+
+Tool Summary
 -------------
 NodeMCU Tool allows you to
 
@@ -12,12 +14,13 @@ NodeMCU Tool allows you to
 * Upload any text files
 * Delete files
 * Format the file system
+* Simple Serial Terminal to interact with NodeMCU
 * Show existing files on your module
 * Precompile LUA files live on NodeMCU
 * Optimize LUA files before uploading by stripping comments (saves flash memory)
-* Run files on NodeMCU and display the output
-* Simple Serial Terminal to interact with NodeMCU
 * Use the **NodeMcuConnector API** in your own projects
+* Run files on NodeMCU and display the output
+
 directly from the command line.
 
 *Successful tested on Windows10, Debian 8.2 and Ubuntu 14 LTS - works out of the box without any tweaks*
@@ -31,6 +34,14 @@ Terminology
 Installation/Requirements
 -------------------------
 
+### For Experienced Users ###
+
+```shell
+$ npm install nodemcu-tool -g
+```
+
+### For Beginners ###
+
 In case you're not familiar with [Node.js](https://nodejs.org) and [NPM](https://www.npmjs.com) it's recommended to read some [basic introductions](https://docs.npmjs.com/getting-started/what-is-npm) first!
 
 Depending on your Module-Type you have to install the platform-specific driver for the usb-serial-interface. 
@@ -38,9 +49,9 @@ The original NodeMCU v0.9 comes with a CH341 chip with may requires manual drive
 Other ESP8266 platforms may user other interfaces - please refer to their user manuals!
 
 * Install [Node.js](https://nodejs.org/en/download/) on your system (in case it's not already there)
-* Open a Terminal window and install **NodeMCU-Tool** with NPM 
-...Global installation (root privileges): `npm install nodemcu-tool -g` (recommended)
-...Local installation (within current directory): `npm install nodemcu-tool`
+* Open a Terminal window and install **NodeMCU-Tool** with NPM
+   Global installation (root privileges): `npm install nodemcu-tool -g` (recommended)
+   Local installation (within current directory): `npm install nodemcu-tool`
 * Now you're ready to upload custom lua files
 
 First Steps
@@ -66,20 +77,35 @@ This will remove all existing files on the module but is required when running t
 
 ```shell
 $ nodemcu-tool mkfs
-Do you really want to format the filesystem and delete all file ? (no) yes
-[NodeMcuConnector] Connecting..
-[NodeMcuConnector] ONLINE. Fetching device data..
+[NodeMCU-Tool] Do you really want to format the filesystem and delete all file ? (no) yes
+[NodeMCU-Tool] Connected
 [NodeMCU] Version: 0.9.5 | ChipID: 0xd1aa | FlashID: 0x1640e0
-
 [NodeMCU] Formatting the file system...this will take around ~30s
-
 [NodeMCU] File System created | format done.
 ```
 
 ### Upload a new File ###
 
 ```shell
-$ nodemcu-tool --port=/dev/ttyUSB0 --optimize upload main.lua
+$ nodemcu-tool upload --port=/dev/ttyUSB0 --optimize helloworld.lua
+[NodeMCU-Tool] Connected
+[NodeMCU] Version: 0.9.5 | ChipID: 0xd1aa | FlashID: 0x1640e0
+[NodeMCU-Tool] Uploading "main.lua" ...
+[NodeMCU-Tool] Data Transfer complete!
+```
+
+**Run It directly and view the output**
+
+```shell
+$ nodemcu-tool run helloworld.lua
+[NodeMCU-Tool] Connected
+[NodeMCU] Version: 0.9.5 | ChipID: 0xd1aa | FlashID: 0x1640e0
+[NodeMCU] Running "helloworld.lua"
+>----------------------------->
+Hello World!
+YEAH!!! HELLO WORLD!!!
+String: Lorem ipsum dolor sit amet, consetetur sadipscing elitr
+>----------------------------->
 ```
 
 Usage
@@ -126,7 +152,6 @@ $ nodemcu-tool --help
     -V, --version          output the version number
     -p, --port <port>      Serial port device name e.g. /dev/ttyUSB0, COM1
     -b, --baud <baudrate>  Serial Port Baudrate in bps, default 9600
-
 ```
 
 ### Upload Files ###
@@ -136,7 +161,7 @@ The most important task of this tool: upload local files to the module.
 
 **Options**
 
-* `--optimize` | Remove Comments and empty lines from the file before upload
+* `--optimize` | Remove Comments, Whitespaces and empty lines from the file before upload
 * `--compile`  | Compiles the uploaded .lua file into executable bytecode and removes the source .lua file (performance) 
 
 **Example 1**
@@ -144,7 +169,14 @@ The most important task of this tool: upload local files to the module.
 Upload and optimize the file "test.lua"
 
 ```shell
-$ nodemcu-tool --port=/dev/ttyUSB1 --optimize upload test.lua
+$ nodemcu-tool --port=/dev/ttyUSB1 --optimize --compile upload test.lua
+[NodeMCU-Tool] Connected
+[NodeMCU] Version: 0.9.5 | ChipID: 0xd1aa | FlashID: 0x1640e0
+[NodeMCU-Tool] Uploading "toolkit/test.lua" ...
+[NodeMCU-Tool] Data Transfer complete!
+[NodeMCU] compiling lua file..
+[NodeMCU] Success
+[NodeMCU] Original LUA file removed
 ```
 
 **Example 2**
@@ -184,15 +216,18 @@ Maybe you want to retrieve the flash free space or get a list of all files store
 
 ```shell
 $ nodemcu-tool fsinfo
-[NodeMcuConnector] Connecting..
-[NodeMcuConnector] ONLINE. Fetching device data..
+[NodeMCU-Tool] Connected
 [NodeMCU] Version: 0.9.5 | ChipID: 0xd1aa | FlashID: 0x1640e0
-
-[NodeMCU] Free Disk Space: 3343 KB | Total: 3346 KB
+[NodeMCU] Free Disk Space: 3339 KB | Total: 3346 KB
 [NodeMCU] Files stored into Flash (SPIFFS)
- |- test.lc (264 Bytes)
- |- package.json (397 Bytes)
- |- LICENSE.md (1089 Bytes)
+          |- init.lua (871 Bytes)
+          |- telnet-server.lc (784 Bytes)
+          |- wifi.lc (988 Bytes)
+          |- main.lua (255 Bytes)
+          |- test.lc (264 Bytes)
+          |- terminal-server.lc (852 Bytes)
+          |- package.json (397 Bytes)
+          |- LICENSE.md (1089 Bytes)
 ```
 
 ### Format the File System ###
@@ -205,13 +240,10 @@ Otherwise no file will be stored. This command also allows you to delete all fil
 
 ```shell
 $ nodemcu-tool mkfs
-Do you really want to format the filesystem and delete all file ? (no) yes
-[NodeMcuConnector] Connecting..
-[NodeMcuConnector] ONLINE. Fetching device data..
+[NodeMCU-Tool] Do you really want to format the filesystem and delete all file ? (no) yes
+[NodeMCU-Tool] Connected
 [NodeMCU] Version: 0.9.5 | ChipID: 0xd1aa | FlashID: 0x1640e0
-
 [NodeMCU] Formatting the file system...this will take around ~30s
-
 [NodeMCU] File System created | format done.
 ```
 
@@ -247,19 +279,21 @@ You can quit the terminal session by pressing `ctrl+c`
 
 ```shell
 $ nodemcu-tool terminal
-Starting Terminal Mode - press ctrl+c to exit
-st = "String: Lorem ipsum dolor sit amet, consetetur sadipscing elitr"
-> st = st..[[ hello]]
-> print(st)
-String: Lorem ipsum dolor sit amet, consetetur sadipscing elitr hello
->
-Connection closed
+[SerialTerminal] Starting Terminal Mode - press ctrl+c to exit
+dofile("test.lc")
+Hello World!
+HELLO WORLD!!!
+HEllo HEllo Hello
+String: Lorem ipsum dolor sit amet, consetetur sadipscing elitr
+> [SerialTerminal] Connection closed
 ```
 
 Behind the Scene
 ----------------
 Many beginners may ask how the tool is working because there is no binary interface documented like FTP to access files.
+
 The answer is quite simple: **NodeMCU-Tool** implements a serial terminal connection to the Module and runs some command line based lua commands like file.open(), file.write() to access the filesystem. That's it!
+
 Therefore keep attention to the following limitations:
 
 ### Limitations ###
@@ -296,6 +330,14 @@ con.connect(function(err, response){
     });
 });
 ```
+
+FAQ
+---
+
+### The serial file transfer is pretty slow ###
+By default, the serial connection uses a 9600 baud with 8N1 - this means maximal 960 bytes/s raw data rate.
+Due to the limitations of a line-wise file upload, these maximal transfer rate cannot be reached, because every line has to be processed by the lua interpreter and NodeMCU-Tool is waiting for it's response.
+It's recommended to use the `--optimize` flag to strip whitespaces before uploading
 
 Any Questions ? Report a Bug ? Enhancements ?
 ---------------------------------------------

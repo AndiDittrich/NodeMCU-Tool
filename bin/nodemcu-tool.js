@@ -111,6 +111,11 @@ _cli
                 }
             }
         }, function (err, result){
+            if (err){
+                console.log('\n[NodeMCU-Tool] Formatting aborted')
+                return;
+            }
+
             // transform to lower case
             var c = result.confirm.toLowerCase();
 

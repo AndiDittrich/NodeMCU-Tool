@@ -1,9 +1,11 @@
 {
   "name": "nodemcu-tool",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Command line tool to upload and manage files on your NodeMCU / ESP8266 Module.",
   "keywords": [
     "cli",
+    "lua",
+    "terminal",
     "nodemcu",
     "esp8266",
     "wifi",
@@ -17,9 +19,9 @@
   "files": [
     "bin",
     "lib",
-    "tools"
+    "helloworld.lua"
   ],
-  "main": "./lib/Tool.js",
+  "main": "./lib/NodeMCU-Tool.js",
   "bin": {
     "nodemcu-tool": "bin/nodemcu-tool.js"
   },
