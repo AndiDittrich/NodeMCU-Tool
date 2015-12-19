@@ -53,7 +53,7 @@ _cli
 
 _cli
     .command('upload <file>')
-    .description('Upload LUA files to NodeMCU (ESP8266) target')
+    .description('Upload Files to NodeMCU (ESP8266) target')
 
     // file cleanup
     .option('-o, --optimize', 'Removes comments and empty lines from file before uploading', false)
@@ -81,6 +81,14 @@ _cli
                 }
             }
         });
+    });
+
+_cli
+    .command('download <file>')
+    .description('Download files from NodeMCU (ESP8266) target')
+
+    .action(function(remoteFilename){
+        _nodemcutool.download(_cli.port, _cli.baud, remoteFilename);
     });
 
 _cli

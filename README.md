@@ -11,7 +11,8 @@ Tool Summary
 NodeMCU Tool allows you to
 
 * Upload LUA files to your ESP8266/NodeMCU module
-* Upload any text files
+* Upload any file-types (binary save)
+* Download any file-type (binary save)
 * Delete files
 * Format the file system
 * Simple Serial Terminal to interact with NodeMCU
@@ -193,6 +194,23 @@ Upload a text file.
 
 ```shell
 $ nodemcu-tool upload HelloWorld.txt
+```
+
+### Download Files ###
+To backup files or fetch recorded data, NodeMCU-Tool allows you to download these files from NodeMCU using the `download` command.
+A file with the same name as the remote-file is created in the current working directory.
+
+**Syntax** `nodemcu-tool [options] download <remote-filename>`
+
+**Example**
+
+```shell
+$ nodemcu-tool download main.lua
+[NodeMCU-Tool] Connected
+[NodeMCU] Version: 0.9.5 | ChipID: 0xd1aa | FlashID: 0x1640e0
+[NodeMCU-Tool] Downloading "main.lua" ...
+[NodeMCU-Tool] Data Transfer complete!
+[NodeMCU-Tool] File "main.lua" created
 ```
 
 ### Delete Files ###
