@@ -1,6 +1,6 @@
 NodeMCU-Tool
 ============
-Upload LUA files to your ESP8266 module with NodeMCU firmware.
+Upload/Download LUA files to your ESP8266 module with NodeMCU firmware.
 
 **Simple. Command Line. Cross-Platform. File Management. [NodeMCU](http://nodemcu.com/index_en.html).**
 
@@ -38,7 +38,7 @@ Installation/Requirements
 ### For Experienced Users ###
 
 ```shell
-$ npm install nodemcu-tool -g
+$ npm install nodemcu-tool
 ```
 
 ### For Beginners ###
@@ -51,8 +51,7 @@ Other ESP8266 platforms may user other interfaces - please refer to their user m
 
 * Install [Node.js](https://nodejs.org/en/download/) on your system (in case it's not already there)
 * Open a Terminal window and install **NodeMCU-Tool** with NPM
-   Global installation (root privileges): `npm install nodemcu-tool -g` (recommended)
-   Local installation (within current directory): `npm install nodemcu-tool`
+  Local installation (within current directory): `npm install nodemcu-tool`
 * Now you're ready to upload custom lua files
 
 First Steps
