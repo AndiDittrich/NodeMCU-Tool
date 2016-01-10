@@ -151,7 +151,7 @@ All configuration options are **optional**
 * **optimize** (boolean) - optimize files before uploading
  
  
-### Notes ### 
+### Notes ###
   
 * NodeMCU-Tool will only search in the **current directory** for the `.nodemcutool` file!
 * All default options can be overwritten by using the command line options
