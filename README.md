@@ -311,6 +311,9 @@ Many beginners may ask how the tool is working because there is no binary interf
 
 The answer is quite simple: **NodeMCU-Tool** implements a serial terminal connection to the Module and runs some command line based lua commands like file.open(), file.write() to access the filesystem. That's it!
 
+Since Version 1.2 it's also possible to transfer **binary** files to your device. NodeMCU-Tool uses a hexadecimal encode/decoding to transfer the files binary save!
+The required encoding (file downloads) / decoding (file uploads) functions are automatically uploaded on each operation.
+
 Low Level API
 -------------
 It's possible to use the underlying "NodeMcuConnector" in your own projects to communicate with a NodeMCU based device.
