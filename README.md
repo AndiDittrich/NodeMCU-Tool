@@ -311,13 +311,6 @@ Many beginners may ask how the tool is working because there is no binary interf
 
 The answer is quite simple: **NodeMCU-Tool** implements a serial terminal connection to the Module and runs some command line based lua commands like file.open(), file.write() to access the filesystem. That's it!
 
-Therefore keep attention to the following limitations:
-
-### Limitations ###
-* You cannot upload files over the serial connection with more than **235 characters per line**
-* Your script must not use the string initialization sequence **[===[**
-
-
 Low Level API
 -------------
 It's possible to use the underlying "NodeMcuConnector" in your own projects to communicate with a NodeMCU based device.
