@@ -7,6 +7,7 @@ var _pkg = require('../package.json')
 var _prompt = require('prompt')
 var _nodemcutool = require('../lib/NodeMCU-Tool');
 var _colors = require('colors');
+var _fs = require('fs');
 
 // setup CLI/TTY message handler (colorized output)
 _nodemcutool.onError(function(context, message){
@@ -24,6 +25,36 @@ _nodemcutool.onStatus(function(context, message){
     }
 });
 
+// initialize default config
+var defaults = (function(){
+
+    // standard configuration
+    var config = {
+        baudrate: '9600',
+        port: '/dev/ttyUSB0',
+        optimize: false,
+        compile: false
+    };
+
+    // try to load project based configuration
+    var data = _fs.readFileSync('.nodemcutool', 'utf8');
+
+    if (data){
+        // decode json based data
+        var d = JSON.parse(data);
+
+        // extract values
+        config.baudrate = d.baudrate || config.baudrate;
+        config.port = d.port || config.port;
+        config.optimize = (d.optimize && d.optimize === true);
+        config.compile = (d.compile && d.compile === true);
+
+        console.log(_colors.cyan('[NodeMCU-Tool]'), 'Project based configuration loaded');
+    }
+
+    return config;
+})();
+
 
 // CLI setup
 _cli
@@ -31,10 +62,10 @@ _cli
     .version(_pkg.version)
 
     // serial port device
-    .option('-p, --port <port>', 'Serial port device name e.g. /dev/ttyUSB0, COM1', '/dev/ttyUSB0')
+    .option('-p, --port <port>', 'Serial port device name e.g. /dev/ttyUSB0, COM1', defaults.port)
 
     // serial port baudrate
-    .option('-b, --baud <baudrate>', 'Serial Port Baudrate in bps, default 9600', '9600');
+    .option('-b, --baud <baudrate>', 'Serial Port Baudrate in bps, default 9600', defaults.baudrate);
 
 _cli
     .command('fsinfo')
@@ -66,7 +97,15 @@ _cli
         var bar = new _progressbar.Bar({
             format: 'Upload Status {percentage}% [{bar}] | ETA {eta}s',
             clearOnComplete: true
-        });
+        })
+
+        // append global defaults
+        if (!options.compile){
+            options.compile = defaults.compile;
+        }
+        if (!options.optimize){
+            options.optimize = defaults.optimize;
+        }
 
         _nodemcutool.upload(_cli.port, _cli.baud, localFile, options, function(current, total){
             // bar initialized ?
@@ -145,6 +184,49 @@ _cli
     .description('Opens a Terminal connection to NodeMCU')
     .action(function(){
         _nodemcutool.terminal(_cli.port, _cli.baud);
+    });
+
+_cli
+    .command('init')
+    .description('Initialize a project-based Configuration (file) within current directory')
+    .action(function(){
+        console.log('[NodeMCU-Tool] Creating project based configuration file..');
+
+        // get user input
+        _prompt.start();
+        _prompt.message = '';
+        _prompt.delimiter = '';
+        _prompt.colors = false;
+
+        _prompt.get({
+            properties: {
+                baudrate: {
+                    pattern: /^\d+$/,
+                    description: '[NodeMCU-Tool] Baudrate in Bit per Seconds, e.g. 9600 (default)',
+                    required: false,
+                    message: 'Only Integers allowed!',
+                    default: 9600
+                },
+                port: {
+                    pattern: /^.+$/,
+                    description: '[NodeMCU-Tool] Serial connection to use, e.g. COM1 or /dev/ttyUSB2',
+                    required: false,
+                    default: '/dev/ttyUSB0'
+                }
+            }
+        }, function (err, data){
+
+            if (err){
+                console.error(err);
+            }else{
+                // set defaults
+                data.optimize = false;
+                data.compile = false;
+
+                // write config to file
+                _fs.writeFileSync('.nodemcutool', JSON.stringify(data, null, 4));
+            }
+        });
     });
 
 // run the commander dispatcher

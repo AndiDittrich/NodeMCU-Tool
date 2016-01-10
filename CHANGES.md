@@ -1,3 +1,7 @@
+### 1.3.0 ###
+* Added: Project based configurations to set default options like port, baudrate within `.nodemcutool` file
+* Bugfix: Debugging output using `--optimize` flag was displayed
+
 ### 1.2.0 ###
 * Added: Binary file transfer
 * Added: Download function to fetch file from NodeMCU (binary save)

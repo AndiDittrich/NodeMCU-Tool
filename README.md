@@ -4,6 +4,10 @@ Upload/Download LUA files to your ESP8266 module with NodeMCU firmware.
 
 **Simple. Command Line. Cross-Platform. File Management. [NodeMCU](http://nodemcu.com/index_en.html).**
 
+```shell
+$ npm install nodemcu-tool
+```
+
 ![Demo](https://github.com/AndiDittrich/NodeMCU-Tool/raw/master/video.gif)
 
 Tool Summary
@@ -20,6 +24,7 @@ NodeMCU Tool allows you to
 * Precompile LUA files live on NodeMCU
 * Optimize LUA files before uploading by stripping comments (saves flash memory)
 * Use the **NodeMcuConnector API** in your own projects
+* Project based configurations
 * Run files on NodeMCU and display the output
 
 directly from the command line.
@@ -107,6 +112,50 @@ YEAH!!! HELLO WORLD!!!
 String: Lorem ipsum dolor sit amet, consetetur sadipscing elitr
 >----------------------------->
 ```
+
+Project based configuration
+---------------------------
+
+In case you're using different serial port or the baudrate-settings, it's possible to create a configuration file with specific settings for your project.
+To initially create the configuration file, use the `init` command:
+
+```shell
+$ nodemcu-tool init
+[NodeMCU-Tool] Creating project based configuration file..
+[NodeMCU-Tool] Baudrate in Bit per Seconds, e.g. 9600 (default) (9600) 9600
+[NodeMCU-Tool] Serial connection to use, e.g. COM1 or /dev/ttyUSB2 (/dev/ttyUSB0) COM3
+```
+
+This will create a JSON based configuration file named `.nodemcutool` in your **current ddirectory** - you can edit this file manually
+
+### Example Configuration ###
+
+In this Example, the baudrate is changed to 19.2k and COM3 is selected as default port. Additionally the `--optimize` and `--compile` flags are set permanently.
+
+```json
+{
+    "baudrate": "19200",
+    "port": "COM3",
+    "compile": true,
+    "optimize": true
+}
+```
+ 
+### Configuration Keys ###
+
+All configuration options are **optional**
+
+* **baudrate** (int) - the default baudrate in bits per second
+* **port** (string) - the comport to use
+* **compile** (boolean) - compile lua files after upload
+* **optimize** (boolean) - optimize files before uploading
+ 
+ 
+### Notes ### 
+  
+* NodeMCU-Tool will only search in the **current directory** for the `.nodemcutool` file!
+* All default options can be overwritten by using the command line options
+* The `.nodemcutool` file is only recognized in `CLI Mode` **NOT** in `API Mode`
 
 Usage
 -----
