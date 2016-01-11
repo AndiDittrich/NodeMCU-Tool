@@ -36,20 +36,23 @@ var defaults = (function(){
         compile: false
     };
 
-    // try to load project based configuration
-    var data = _fs.readFileSync('.nodemcutool', 'utf8');
+    try{
+        // try to load project based configuration
+        var data = _fs.readFileSync('.nodemcutool', 'utf8');
 
-    if (data){
-        // decode json based data
-        var d = JSON.parse(data);
+        if (data){
+            // decode json based data
+            var d = JSON.parse(data);
 
-        // extract values
-        config.baudrate = d.baudrate || config.baudrate;
-        config.port = d.port || config.port;
-        config.optimize = (d.optimize && d.optimize === true);
-        config.compile = (d.compile && d.compile === true);
+            // extract values
+            config.baudrate = d.baudrate || config.baudrate;
+            config.port = d.port || config.port;
+            config.optimize = (d.optimize && d.optimize === true);
+            config.compile = (d.compile && d.compile === true);
 
-        console.log(_colors.cyan('[NodeMCU-Tool]'), 'Project based configuration loaded');
+            console.log(_colors.cyan('[NodeMCU-Tool]'), 'Project based configuration loaded');
+        }
+    }catch (err){
     }
 
     return config;

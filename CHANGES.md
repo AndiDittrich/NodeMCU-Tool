@@ -1,3 +1,6 @@
+### 1.3.1 ###
+* Bugfix: Tool throws a fatal error in case `.nodemcutool` file is not available
+
 ### 1.3.0 ###
 * Added: Project based configurations to set default options like port, baudrate within `.nodemcutool` file
 * Bugfix: Debugging output using `--optimize` flag was displayed
