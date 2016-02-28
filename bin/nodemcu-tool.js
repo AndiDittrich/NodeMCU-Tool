@@ -34,7 +34,7 @@ var defaults = (function(){
         port: '/dev/ttyUSB0',
         optimize: false,
         compile: false,
-        keepPath: false
+        keeppath: false
     };
 
     try{
@@ -50,7 +50,7 @@ var defaults = (function(){
             config.port = d.port || config.port;
             config.optimize = (d.optimize && d.optimize === true);
             config.compile = (d.compile && d.compile === true);
-            config.keepPath = (d.keepPath && d.keepPath === true);
+            config.keeppath = (d.keeppath && d.keeppath === true);
             console.log(_colors.cyan('[NodeMCU-Tool]'), 'Project based configuration loaded');
         }
     }catch (err){
@@ -96,7 +96,7 @@ _cli
     // compile files after upload
     .option('-c, --compile', 'Compile LUA file to bytecode (.lc) and remove the original file after upload', false)
     // keep-path
-    .option('-k, --keeppath', 'Keep the original file path in the destination filename (i.e: static/test.html will be named static/test.html', false)
+    .option('-k, --keeppath', 'Keep a relative file path in the destination filename (i.e: static/test.html will be named static/test.html)', false)
     .option('-n, --remotename <remotename>', 'Set destination file name. Default is same as original', false)
 
     .action(function(localFile, options){
@@ -114,7 +114,7 @@ _cli
             options.optimize = defaults.optimize;
         }
         if (!options.keeppath){
-          options.keeppath = defaults.keepPath;
+          options.keeppath = defaults.keeppath;
         }
 
         _nodemcutool.upload(_cli.port, _cli.baud, localFile, options, function(current, total){
