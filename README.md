@@ -137,7 +137,8 @@ In this Example, the baudrate is changed to 19.2k and COM3 is selected as defaul
     "baudrate": "19200",
     "port": "COM3",
     "compile": true,
-    "optimize": true
+    "optimize": true,
+    "keeppath": true
 }
 ```
  
@@ -149,6 +150,7 @@ All configuration options are **optional**
 * **port** (string) - the comport to use
 * **compile** (boolean) - compile lua files after upload
 * **optimize** (boolean) - optimize files before uploading
+* **keeppath** (boolean) - keep the relative file path in the destination filename (i.e: static/test.html will be named static/test.html)
  
  
 ### Notes ###
@@ -211,7 +213,9 @@ The most important task of this tool: upload local files to the module.
 **Options**
 
 * `--optimize` | Remove Comments, Whitespaces and empty lines from the file before upload
-* `--compile`  | Compiles the uploaded .lua file into executable bytecode and removes the source .lua file (performance) 
+* `--compile`  | Compiles the uploaded .lua file into executable bytecode and removes the source .lua file (performance)
+* `--keeppath` | Keeps the relative file path in the destination filename (i.e: static/test.html will be named static/test.html)
+* `--remotename` | Set the destination file name
 
 **Example 1**
 
@@ -243,6 +247,27 @@ Upload a text file.
 ```shell
 $ nodemcu-tool upload HelloWorld.txt
 ```
+
+**Example 4**
+
+Upload a static file and keep its relative path as remote name.
+
+```shell
+$ nodemcu-tool upload static/hello.html --keeppath
+```
+
+The remote file name will be "static/hello.html"
+
+**Example 5**
+
+Upload a text file and change its remote name.
+
+```shell
+$ nodemcu-tool upload HelloWorld.txt --remotename MyFile.txt
+```
+
+The remote file name will be "MyFile.txt"
+
 
 ### Download Files ###
 To backup files or fetch recorded data, NodeMCU-Tool allows you to download these files from NodeMCU using the `download` command.
