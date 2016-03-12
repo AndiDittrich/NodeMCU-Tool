@@ -281,7 +281,7 @@ The remote file name will be "MyFile.txt"
 
 ### Download Files ###
 To backup files or fetch recorded data, NodeMCU-Tool allows you to download these files from NodeMCU using the `download` command.
-A file with the same name as the remote-file is created in the current working directory.
+A file with the same name as the remote-file is created in the current working directory - the path is dropped!
 
 **Syntax** `nodemcu-tool [options] download <remote-filename>`
 
