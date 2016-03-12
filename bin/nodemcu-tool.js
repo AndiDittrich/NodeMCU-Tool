@@ -104,7 +104,7 @@ _cli
         var bar = new _progressbar.Bar({
             format: 'Upload Status {percentage}% [{bar}] | ETA {eta}s',
             clearOnComplete: true
-        })
+        });
 
         // append global defaults
         if (!options.compile){
