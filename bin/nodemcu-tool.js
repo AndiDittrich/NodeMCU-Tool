@@ -241,6 +241,13 @@ _cli
         });
     });
 
+_cli
+    .command('*')
+    .action(function(c){
+        console.log(_colors.cyan('[NodeMCU-Tool]'), 'Unknown command "' + c + '"');
+        _cli.outputHelp();
+    });
+
 // run the commander dispatcher
 _cli.parse(process.argv);
 
