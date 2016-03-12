@@ -260,6 +260,16 @@ The remote file name will be "static/hello.html"
 
 **Example 5**
 
+Relative parts of the local filename got removed - useful when having split your project into different party
+
+```shell
+$ nodemcu-tool upload ../../projectX/static/hello.html --keeppath
+```
+
+The remote file name will be "projectX/static/hello.html"
+
+**Example 6**
+
 Upload a text file and change its remote name.
 
 ```shell

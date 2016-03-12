@@ -1,5 +1,8 @@
 ### 1.4.0-BETA ###
+* Added: Ability to provide remote destination filename or keep relative path in destination filename - thanks to [loicortola on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/5)
+* Added: Shortcut to the executable file to the root dir 
 * Changed: `fsinfo` will return the total number of files as well as a `No Files found` message - feature requested [on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/3)
+* Changed: related to the destination filename option, the arguments of the `upload` function has changed - third party applications require an update!
 
 ### 1.3.2 ###
 * Bugfix: `fsinfo` operation will fail in case there are no files on the esp module - thanks to [soldair on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/1)
