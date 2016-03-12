@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+// Manages User CLI interactions
+
 // load utils
 var _cli = require('commander');
 var _progressbar = require('cli-progress');
