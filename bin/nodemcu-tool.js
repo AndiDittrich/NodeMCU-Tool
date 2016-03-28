@@ -99,7 +99,7 @@ _cli
 
     .action(function(options){
         // force silent mode!
-        SilentMode(options.json===true);
+        SilentMode(options.json===true || _cli.silent===true);
 
         _nodemcutool.fsinfo(_cli.port, _cli.baud, options.json);
     });
