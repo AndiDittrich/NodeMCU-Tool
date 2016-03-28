@@ -7,8 +7,6 @@ $args = array(
     // the application file
     'bin/nodemcu-tool.js',
 
-    '--port=/dev/ttyS1111',
-
     // the command
     'fsinfo',
 
@@ -33,4 +31,10 @@ if ($return_var !== 0){
     die('Program Error '. $return_var);
 }
 
-echo implode("\n", $output);
+// decode json data - keep in mind that $output is an array (line-wise)
+$data = json_decode(implode("\n", $output), true);
+
+// process the output
+foreach ($data['files'] as $file){
+    echo '>> ', $file['name'], ' - ', $file['size'], "\n";
+}

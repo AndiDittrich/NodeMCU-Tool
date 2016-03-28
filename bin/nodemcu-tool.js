@@ -26,6 +26,16 @@ _nodemcutool.onStatus(function(context, message){
         console.log(message);
     }
 });
+_nodemcutool.onOutput(function(message){
+    console.log(message);
+});
+
+// helper to enable silent mode
+var enableSilentMode = function(){
+    // ignore status messages
+    _nodemcutool.onStatus(function(context, message){
+    });
+};
 
 // initialize default config
 var defaults = (function(){
@@ -84,6 +94,9 @@ _cli
     .option('--json', 'Display output JSON encoded', false)
 
     .action(function(options){
+        // silent mode!
+        enableSilentMode();
+
         _nodemcutool.fsinfo(_cli.port, _cli.baud, options.json);
     });
 
@@ -93,7 +106,6 @@ _cli
     .action(function(filename){
         _nodemcutool.run(_cli.port, _cli.baud, filename);
     });
-
 
 _cli
     .command('upload <file>')

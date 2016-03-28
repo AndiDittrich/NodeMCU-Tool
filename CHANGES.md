@@ -1,6 +1,7 @@
 ### 1.5.0 ###
 * Added: `devices` command to display a list of all connected NodeMCU Devices
 * Added: `noninteractive` options to the `mkfs` command to disable user interaction (confirm dialog)
+* Added: `--silent` mode to disable log/status messages - only errors and direct outputs are displayed
 * Added: Apache [ANT](http://ant.apache.org/) build script example (programmatic usage)
 * Added: Programmatic Usage [Guide](docs/ProgrammaticUsage.md)
 * Added: Output handler to the middleware (separate log, error, output handler are available)
