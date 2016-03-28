@@ -19,22 +19,26 @@ _nodemcutool.onError(function(context, message){
         console.error(message);
     }
 });
-_nodemcutool.onStatus(function(context, message){
-    if (context && context.length > 0){
-        console.log(_colors.cyan('[' + context + ']'), message);
-    }else{
-        console.log(message);
-    }
-});
+
 _nodemcutool.onOutput(function(message){
     console.log(message);
 });
 
 // helper to enable silent mode
-var enableSilentMode = function(){
-    // ignore status messages
-    _nodemcutool.onStatus(function(context, message){
-    });
+var SilentMode = function(enable){
+    if (enable){
+        // ignore status messages
+        _nodemcutool.onStatus(function(context, message){
+        });
+    }else{
+        _nodemcutool.onStatus(function(context, message){
+            if (context && context.length > 0){
+                console.log(_colors.cyan('[' + context + ']'), message);
+            }else{
+                console.log(message);
+            }
+        });
+    }
 };
 
 // initialize default config
@@ -94,8 +98,8 @@ _cli
     .option('--json', 'Display output JSON encoded', false)
 
     .action(function(options){
-        // silent mode!
-        enableSilentMode();
+        // force silent mode!
+        SilentMode(options.json===true);
 
         _nodemcutool.fsinfo(_cli.port, _cli.baud, options.json);
     });
@@ -104,6 +108,9 @@ _cli
     .command('run <file>')
     .description('Executes an existing .lua or .lc file on NodeMCU')
     .action(function(filename){
+        // silent mode ?
+        SilentMode(_cli.silent===true);
+
         _nodemcutool.run(_cli.port, _cli.baud, filename);
     });
 
@@ -124,6 +131,9 @@ _cli
     .option('-n, --remotename <remotename>', 'Set destination file name. Default is same as original', false)
 
     .action(function(localFile, options){
+        // silent mode ?
+        SilentMode(_cli.silent===true);
+
         // initialize a new progress bar
         var bar = new _progressbar.Bar({
             format: 'Upload Status {percentage}% [{bar}] | ETA {eta}s',
@@ -161,13 +171,19 @@ _cli
     .description('Download files from NodeMCU (ESP8266) target')
 
     .action(function(remoteFilename){
+        // silent mode ?
+        SilentMode(_cli.silent===true);
+
         _nodemcutool.download(_cli.port, _cli.baud, remoteFilename);
     });
 
 _cli
     .command('remove <file>')
     .description('Removes a file from NodeMCU filesystem')
-    .action(function(filename) {
+    .action(function(filename){
+        // silent mode ?
+        SilentMode(_cli.silent===true);
+
         _nodemcutool.remove(_cli.port, _cli.baud, filename);
     });
 
@@ -179,6 +195,8 @@ _cli
     .option('--noninteractive', 'Execute command without user interaction', false)
 
     .action(function(options){
+        // silent mode ?
+        SilentMode(_cli.silent===true);
 
         // no prompt!
         if (options.noninteractive){
@@ -230,6 +248,9 @@ _cli
     .command('terminal')
     .description('Opens a Terminal connection to NodeMCU')
     .action(function(){
+        // silent mode ?
+        SilentMode(_cli.silent===true);
+
         _nodemcutool.terminal(_cli.port, _cli.baud);
     });
 
@@ -284,6 +305,9 @@ _cli
     .option('--all', 'Show all Serial Devices, not only NodeMCU Modules', false)
 
     .action(function(options){
+        // silent mode ?
+        SilentMode(_cli.silent===true);
+
         // show all devices ?
         var showAll = options.all || false;
 
