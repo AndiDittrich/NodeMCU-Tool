@@ -1,4 +1,13 @@
-### 1.4.0-BETA ###
+### 1.5.0 ###
+* Added: `devices` command to display a list of all connected NodeMCU Devices
+* Added: `noninteractive` options to the `mkfs` command to disable user interaction (confirm dialog)
+* Added: Apache [ANT](http://ant.apache.org/) build script example (programmatic usage)
+* Added: Programmatic Usage [Guide](docs/ProgrammaticUsage.md)
+* Added: Output handler to the middleware (separate log, error, output handler are available)
+* Changed: Cleaned up `NodeMCU-Tool.js` - a connection is now established within a helper function
+* Improved Documentation
+
+### 1.4.0 ###
 * Added: Ability to provide remote destination filename or keep relative path in destination filename - thanks to [loicortola on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/5)
 * Added: Shortcut to the executable file to the root dir 
 * Changed: `fsinfo` will return the total number of files as well as a `No Files found` message - feature requested [on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/3)

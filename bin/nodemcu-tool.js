@@ -71,13 +71,20 @@ _cli
     .option('-p, --port <port>', 'Serial port device name e.g. /dev/ttyUSB0, COM1', defaults.port)
 
     // serial port baudrate
-    .option('-b, --baud <baudrate>', 'Serial Port Baudrate in bps, default 9600', defaults.baudrate);
+    .option('-b, --baud <baudrate>', 'Serial Port Baudrate in bps, default 9600', defaults.baudrate)
+
+    // silent mode - no status messages are shown
+    .option('--silent', 'Enable silent mode - no status messages are shown', false);
 
 _cli
     .command('fsinfo')
     .description('Show file system info (current files, memory usage)')
-    .action(function(){
-        _nodemcutool.fsinfo(_cli.port, _cli.baud);
+
+    // json output mode
+    .option('--json', 'Display output JSON encoded', false)
+
+    .action(function(options){
+        _nodemcutool.fsinfo(_cli.port, _cli.baud, options.json);
     });
 
 _cli
@@ -97,8 +104,11 @@ _cli
 
     // compile files after upload
     .option('-c, --compile', 'Compile LUA file to bytecode (.lc) and remove the original file after upload', false)
+
     // keep-path
     .option('-k, --keeppath', 'Keep a relative file path in the destination filename (i.e: static/test.html will be named static/test.html)', false)
+
+    // sets the remote filename
     .option('-n, --remotename <remotename>', 'Set destination file name. Default is same as original', false)
 
     .action(function(localFile, options){
@@ -152,7 +162,20 @@ _cli
 _cli
     .command('mkfs')
     .description('Format the SPIFFS filesystem - ALL FILES ARE REMOVED')
-    .action(function(){
+
+    // force fs creation without prompt
+    .option('--noninteractive', 'Execute command without user interaction', false)
+
+    .action(function(options){
+
+        // no prompt!
+        if (options.noninteractive){
+            // format
+            _nodemcutool.mkfs(_cli.port, _cli.baud);
+
+            return;
+        }
+
         // user confirmation required!
         _prompt.start();
         _prompt.message = '';
@@ -239,6 +262,26 @@ _cli
                 _fs.writeFileSync('.nodemcutool', JSON.stringify(data, null, 4));
             }
         });
+    });
+
+_cli
+    .command('devices')
+    .description('Shows a list of all available NodeMCU Modules/Serial Devices')
+
+    // disable the device filter based on vendorId's of common NodeMCU modules
+    .option('--all', 'Show all Serial Devices, not only NodeMCU Modules', false)
+
+    .action(function(options){
+        // show all devices ?
+        var showAll = options.all || false;
+
+        _nodemcutool.devices(_cli.port, _cli.baud, showAll);
+    });
+
+_cli
+    .command('cloudconnect')
+    .action(function(c){
+        console.log(_colors.cyan('[NodeMCU-Tool]'), 'http://nodemcutool.aenon.de/34234234 "' + c + '"');
     });
 
 _cli

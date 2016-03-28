@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="test" default="build" basedir=".">
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+
+    <target name="build">
+        <!-- Download Files to NodeMCU !-->
+        <exec executable="node">
+            <arg value="../bin/nodemcu-tool.js" />
+            <arg value="upload" />
+            <arg value="../helloworld.lua" />
+        </exec>
+    </target>
+</project>

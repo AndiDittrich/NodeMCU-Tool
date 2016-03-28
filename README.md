@@ -5,7 +5,7 @@ Upload/Download LUA files to your ESP8266 module with NodeMCU firmware.
 **Simple. Command Line. Cross-Platform. File Management. [NodeMCU](http://nodemcu.com/index_en.html).**
 
 ```shell
-$ npm install nodemcu-tool
+$ npm install nodemcu-tool -g
 ```
 
 ![Demo](https://github.com/AndiDittrich/NodeMCU-Tool/raw/master/video.gif)
@@ -37,27 +37,45 @@ Terminology
 * **Upload** Transfer files from your PC to NodeMCU/ESP8266 module
 * **Download** Transfer files/obtaining information from the module
 
-Installation/Requirements
--------------------------
 
-### For Experienced Users ###
+Requirements
+------------
 
-```shell
-$ npm install nodemcu-tool
-```
+To use/install the NodeMCU-Tool, you have to prepare your system to match the following requirements. Especially as beginner, you should read this part **carefully**
 
-### For Beginners ###
-
-In case you're not familiar with [Node.js](https://nodejs.org) and [NPM](https://www.npmjs.com) it's recommended to read some [basic introductions](https://docs.npmjs.com/getting-started/what-is-npm) first!
+### NodeMCU Serial Driver ###
 
 Depending on your Module-Type you have to install the platform-specific driver for the usb-serial-interface. 
 The original NodeMCU v0.9 comes with a CH341 chip with may requires manual driver installation. Modern versions like 1.0 use a CP210x chip with work out of the box on most common systems.
 Other ESP8266 platforms may user other interfaces - please refer to their user manuals!
 
+
+### Node.js ###
+
+The NodeMCU-Tool is written in javascript and requires [Node.js](https://nodejs.org) as runtime environment. And please don't worry about the wording - NodeMCU and Node.js are two **complete different** things!
+
+In case you're not familiar with [Node.js](https://nodejs.org) and [NPM](https://www.npmjs.com) it's recommended to read some [basic introductions](https://docs.npmjs.com/getting-started/what-is-npm) first!
+
 * Install [Node.js](https://nodejs.org/en/download/) on your system (in case it's not already there)
 * Open a Terminal window and install **NodeMCU-Tool** with NPM
-  Local installation (within current directory): `npm install nodemcu-tool`
+   Local installation (within current directory): `npm install nodemcu-tool`
 * Now you're ready to upload custom lua files
+
+Installation
+------------
+
+### via NPM (Node.js Package Manager) ###
+
+It's recommended to install nodemcu-tool as [global package](https://docs.npmjs.com/getting-started/installing-npm-packages-globally).
+
+```shell
+$ npm install nodemcu-tool -g
+```
+
+### As Archive from GitHub ###
+
+You can also download the [latest release]() directly from [GitHub]() and extract the sources
+
 
 First Steps
 -----------
@@ -71,6 +89,10 @@ $ nodemcu-tool --version
 ```
 
 ### For Local Installations ###
+
+This means you have installed nodemcu-tool via NPM **without** the `-g` (global) flag or via the `.zip` / `.tar` package.
+There will be **no** global shortcut to the nodemcu-tool binary! The binary is located in
+
 ```bash
 $ cd node_modules/nodemcu-tool/bin
 $ ./nodemcu-tool --version
@@ -126,7 +148,7 @@ $ nodemcu-tool init
 [NodeMCU-Tool] Serial connection to use, e.g. COM1 or /dev/ttyUSB2 (/dev/ttyUSB0) COM3
 ```
 
-This will create a JSON based configuration file named `.nodemcutool` in your **current ddirectory** - you can edit this file manually
+This will create a JSON based configuration file named `.nodemcutool` in your **current directory** - you can edit this file manually
 
 ### Example Configuration ###
 
@@ -203,6 +225,21 @@ $ nodemcu-tool --help
     -V, --version          output the version number
     -p, --port <port>      Serial port device name e.g. /dev/ttyUSB0, COM1
     -b, --baud <baudrate>  Serial Port Baudrate in bps, default 9600
+```
+
+### Show connected NodeMCU Modules ###
+To show a list of all connected NodeMCU Modules you can use the `devices` command
+
+**Syntax** `nodemcu-tool [options] devices
+
+**Options** `--all` | Show ALL connected serial devices, not only NodeMCU modules (filtered by USB vendorId)
+
+**Example**
+
+```shell
+$ nodemcu-tool devices
+[NodeMCU] Connected Devices | Total: 1
+          |- /dev/ttyUSB0 (Silicon_Labs, usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0)
 ```
 
 ### Upload Files ###
@@ -372,7 +409,7 @@ String: Lorem ipsum dolor sit amet, consetetur sadipscing elitr
 
 The Terminal mode will open a direct serial connection to NodeMCU and passes all keyboard inputs to the module.
 This allows you to interact with the module during development without the need of an additional serial terminal.
-You can quit the terminal session by pressing `ctrl+c`
+You can quit the terminal session by pressing <kbd>ctrl+c</kbd>
 
 **Syntax** `nodemcu-tool [options] terminal`
 
@@ -398,35 +435,10 @@ The answer is quite simple: **NodeMCU-Tool** implements a serial terminal connec
 Since Version 1.2 it's also possible to transfer **binary** files to your device. NodeMCU-Tool uses a hexadecimal encode/decoding to transfer the files binary save!
 The required encoding (file downloads) / decoding (file uploads) functions are automatically uploaded on each operation.
 
-Low Level API
--------------
+Programmatic Usage and Low Level API
+------------------------------------
 It's possible to use the underlying "NodeMcuConnector" in your own projects to communicate with a NodeMCU based device.
-For more details, take a look into the sources!
-
-**Low Level Example**
-Run `node.compile()` on NodeMCU and display the output
-
-```js
-var _connector = require('nodemcu-tool').Connector;
-
-// create a new connector instance
-var con = new _connector('/dev/ttyUSB4', 9600);
-
-// open the serial connection
-con.connect(function(err, response){
-    // get version, flashid ... message
-    console.log(response);
-    
-    // run a command on the LUA command line
-    con.executeCommand('node.compile("testfile.lua");', function(err, echo, response){
-        if (err){
-            console.error('IO Error - ', err);
-        }else{
-            console.log(response);
-        }
-    });
-});
-```
+Or you can call the `bin` file with an external tool. For more details, take a look into the [Programmatic Usage Guide](docs/ProgrammaticUsage.md)
 
 FAQ
 ---
@@ -439,6 +451,11 @@ It's recommended to use the `--optimize` flag to strip whitespaces before upload
 Any Questions ? Report a Bug ? Enhancements ?
 ---------------------------------------------
 Please open a new issue on [GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues)
+
+Contributing
+------------
+
+Contributors are welcome! Even if you are not familiar with javascript you can help to improve the documentation!
 
 License
 -------
