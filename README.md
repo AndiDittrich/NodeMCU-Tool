@@ -67,6 +67,7 @@ Installation
 ### via NPM (Node.js Package Manager) ###
 
 It's recommended to install nodemcu-tool as [global package](https://docs.npmjs.com/getting-started/installing-npm-packages-globally).
+NPM will register the binary automatically in your path - it will be directly available on the command line.
 
 ```shell
 $ npm install nodemcu-tool -g
@@ -74,8 +75,8 @@ $ npm install nodemcu-tool -g
 
 ### As Archive from GitHub ###
 
-You can also download the [latest release]() directly from [GitHub]() and extract the sources
-
+You can also download the [latest release](https://github.com/AndiDittrich/NodeMCU-Tool/releases/latest) directly from [GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/releases) and extract the sources to your project directory.
+When using this method, the `nodemcu-tool` command is **not registered** within your path. You have to register it manually using a symlink - or the recommended way: call the binary file `./bin/nodemcu-tool.js` directly.
 
 First Steps
 -----------
@@ -449,6 +450,15 @@ The answer is quite simple: **NodeMCU-Tool** implements a serial terminal connec
 
 Since Version 1.2 it's also possible to transfer **binary** files to your device. NodeMCU-Tool uses a hexadecimal encode/decoding to transfer the files binary save!
 The required encoding (file downloads) / decoding (file uploads) functions are automatically uploaded on each operation.
+
+### Systems Architecture ###
+
+The Tool is separated into the following components (ordered by its invocation)
+
+  1. `bin/nodemcu-tool.js` - the command line user interface handler based on [commander](https://www.npmjs.com/package/commander)
+  2. `lib/NodeMCU-Tool.js` - Highlevel Access to the main functions. Error and Status messages are handled there
+  3. `lib/NodeMcuConnector.js` - the Core which handles the LUA command based communication to the NodeMCU Module
+  4. `lib/ScriptableSerialTerminal.js` - the lowlevel part - a terminal session to the NodeMCU Module to run the LUA commands
 
 Programmatic Usage and Low Level API
 ------------------------------------

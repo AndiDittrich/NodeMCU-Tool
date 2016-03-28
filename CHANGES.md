@@ -1,8 +1,9 @@
-### 1.5.0 ###
+### 1.5.0-BETA1 ###
 * Added: `devices` command to display a list of all connected NodeMCU Devices
 * Added: `noninteractive` options to the `mkfs` command to disable user interaction (confirm dialog)
-* Added: `--silent` mode to disable log/status messages - only errors and direct outputs are displayed
+* Added: Global `--silent` mode to disable log/status messages - only errors and direct outputs are displayed
 * Added: Apache [ANT](http://ant.apache.org/) build script example (programmatic usage)
+* Added: PHP Usage example (programmatic usage of fsinfo command)
 * Added: Programmatic Usage [Guide](docs/ProgrammaticUsage.md)
 * Added: Output handler to the middleware (separate log, error, output handler are available)
 * Changed: Cleaned up `NodeMCU-Tool.js` - a connection is now established within a helper function
