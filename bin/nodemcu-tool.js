@@ -304,14 +304,17 @@ _cli
     // disable the device filter based on vendorId's of common NodeMCU modules
     .option('--all', 'Show all Serial Devices, not only NodeMCU Modules', false)
 
+    // json output mode
+    .option('--json', 'Display output JSON encoded', false)
+
     .action(function(options){
-        // silent mode ?
-        SilentMode(_cli.silent===true);
+        // force silent mode!
+        SilentMode(options.json===true || _cli.silent===true);
 
         // show all devices ?
         var showAll = options.all || false;
 
-        _nodemcutool.devices(_cli.port, _cli.baud, showAll);
+        _nodemcutool.devices(_cli.port, _cli.baud, showAll, options.json);
     });
 
 _cli

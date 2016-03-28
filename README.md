@@ -24,7 +24,7 @@ NodeMCU Tool allows you to
 * Precompile LUA files live on NodeMCU
 * Optimize LUA files before uploading by stripping comments (saves flash memory)
 * Use the **NodeMcuConnector API** in your own projects
-* Project based configurations
+* Apply Project based configurations
 * Run files on NodeMCU and display the output
 
 directly from the command line.
@@ -212,12 +212,15 @@ $ nodemcu-tool --help
 
   Commands:
 
-    fsinfo                   Show file system info (current files, memory usage)
+    fsinfo [options]         Show file system info (current files, memory usage)
     run <file>               Executes an existing .lua or .lc file on NodeMCU
-    upload [options] <file>  Upload LUA files to NodeMCU (ESP8266) target
+    upload [options] <file>  Upload Files to NodeMCU (ESP8266) target
+    download <file>          Download files from NodeMCU (ESP8266) target
     remove <file>            Removes a file from NodeMCU filesystem
-    mkfs                     Format the SPIFFS filesystem - ALL FILES ARE REMOVED
+    mkfs [options]           Format the SPIFFS filesystem - ALL FILES ARE REMOVED
     terminal                 Opens a Terminal connection to NodeMCU
+    init                     Initialize a project-based Configuration (file) within current directory
+    devices [options]        Shows a list of all available NodeMCU Modules/Serial Devices
 
   Options:
 
@@ -225,14 +228,18 @@ $ nodemcu-tool --help
     -V, --version          output the version number
     -p, --port <port>      Serial port device name e.g. /dev/ttyUSB0, COM1
     -b, --baud <baudrate>  Serial Port Baudrate in bps, default 9600
+    --silent               Enable silent mode - no status messages are shown
 ```
 
 ### Show connected NodeMCU Modules ###
-To show a list of all connected NodeMCU Modules you can use the `devices` command
+To show a list of all connected NodeMCU Modules you can use the `devices` command. It will filter NodeMCU Modules by its USB VendorID
 
 **Syntax** `nodemcu-tool [options] devices
 
-**Options** `--all` | Show ALL connected serial devices, not only NodeMCU modules (filtered by USB vendorId)
+**Options** 
+  
+  * `--all` | Show ALL connected serial devices, not only NodeMCU modules (filtered by USB vendorId)
+  * `--json` | Outputs the device list as JSON Array, Status messages are rejected
 
 **Example**
 
@@ -350,6 +357,10 @@ Maybe you want to retrieve the flash free space or get a list of all files store
 
 **Syntax** `nodemcu-tool [options] fsinfo`
 
+**Options** 
+
+  * `--json` | Outputs the file list as JSON Array, Status messages are rejected
+
 **Example**
 
 ```shell
@@ -373,6 +384,10 @@ To store file in the SPI Flash, the file system needs to be initialized. This ha
 Otherwise no file will be stored. This command also allows you to delete all files on the module.
 
 **Syntax** `nodemcu-tool [options] mkfs`
+
+**Options**
+ 
+  * `--noninteractive` | Execute command without user interaction (dialog to confirm the formatting is disabled)
 
 **Example**
 
