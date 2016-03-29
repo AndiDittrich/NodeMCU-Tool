@@ -232,13 +232,13 @@ All configuration options are **optional**
 Usage
 -----
 
-#### General Syntax ####
+### General Syntax ###
 
 ```shell
 $ nodemcu-tool [options] command [args..]
 ```
 
-### Connection ###
+## Connection ##
 To configure the connection settings you can use the global options `--port <port>` and `--baud <baudrate>` to select the serial port and baudrate.
 The default values are **9600bps** as baudrate and **/dev/ttyUSB0** as serial device
 
@@ -248,7 +248,7 @@ The default values are **9600bps** as baudrate and **/dev/ttyUSB0** as serial de
 $ nodemcu-tool --port=/dev/ttyUSB1 --baudrate=115200 run test.lua
 ```
 
-### Show Help ###
+## Show Help ##
 To get an overview of all available commands, just call the tool with the `--help` option.
 
 **Example**
@@ -279,7 +279,7 @@ $ nodemcu-tool --help
     --silent               Enable silent mode - no status messages are shown
 ```
 
-### Show connected NodeMCU Modules ###
+## Show connected NodeMCU Modules ##
 To show a list of all connected NodeMCU Modules you can use the `devices` command. It will filter NodeMCU Modules by its USB VendorID
 
 **Syntax** `nodemcu-tool [options] devices
@@ -297,7 +297,7 @@ $ nodemcu-tool devices
           |- /dev/ttyUSB0 (Silicon_Labs, usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0)
 ```
 
-### Upload Files ###
+## Upload Files ##
 The most important task of this tool: upload local files to the module. 
 
 **Syntax** `nodemcu-tool [options] upload <local-filename>`
@@ -371,7 +371,7 @@ $ nodemcu-tool upload HelloWorld.txt --remotename MyFile.txt
 The remote file name will be "MyFile.txt"
 
 
-### Download Files ###
+## Download Files ##
 To backup files or fetch recorded data, NodeMCU-Tool allows you to download these files from NodeMCU using the `download` command.
 A file with the same name as the remote-file is created in the current working directory - the path is dropped!
 
@@ -388,7 +388,7 @@ $ nodemcu-tool download main.lua
 [NodeMCU-Tool] File "main.lua" created
 ```
 
-### Delete Files ###
+## Delete Files ##
 To delete files on your Module use the `remove` command
 
 **Syntax** `nodemcu-tool [options] remove <remote-filename>`
@@ -400,7 +400,7 @@ $ nodemcu-tool remove test.lua
 $ nodemcu-tool remove test.lc
 ```
 
-### File System Info ###
+## File System Info ##
 Maybe you want to retrieve the flash free space or get a list of all files stored in the SPIFFS
 
 **Syntax** `nodemcu-tool [options] fsinfo`
@@ -427,7 +427,7 @@ $ nodemcu-tool fsinfo
           |- LICENSE.md (1089 Bytes)
 ```
 
-### Format the File System ###
+## Format the File System ##
 To store file in the SPI Flash, the file system needs to be initialized. This have to be done **before uploading** any files to the modules.
 Otherwise no file will be stored. This command also allows you to delete all files on the module.
 
@@ -448,7 +448,7 @@ $ nodemcu-tool mkfs
 [NodeMCU] File System created | format done.
 ```
 
-### Run/Execute Files ###
+## Run/Execute Files ##
 For testing purpose, you can execute uploaded scripts (lua, lc) with the tool and capture the output (the `dofile()` function is invoked).
 
 **Syntax** `nodemcu-tool [options] run <remote-filename>`
@@ -467,7 +467,7 @@ HEllo HEllo Hello
 String: Lorem ipsum dolor sit amet, consetetur sadipscing elitr
 ```
 
-### Terminal Mode ###
+## Terminal Mode ##
 **Notice - This Mode is currently experimental and may not work with all versions of node.js (tested with v4.2.3)**
 
 The Terminal mode will open a direct serial connection to NodeMCU and passes all keyboard inputs to the module.
@@ -506,6 +506,40 @@ The Tool is separated into the following components (ordered by its invocation)
   2. `lib/NodeMCU-Tool.js` - Highlevel Access to the main functions. Error and Status messages are handled there
   3. `lib/NodeMcuConnector.js` - the Core which handles the LUA command based communication to the NodeMCU Module
   4. `lib/ScriptableSerialTerminal.js` - the lowlevel part - a terminal session to the NodeMCU Module to run the LUA commands
+  
+  
+### Application Stack ###
+
+```
+CLI User Frontend
++----------------------+
+|                      |
+|    nodemcu-tool      |
+|                      |
+++---------------------+
+|| Message and Error Handling
+++---------------------+
+|                      |
+|  lib/NodeMCU-Tool.js |
+|                      |
+++---------------------+
+|| Core Functions
+++---------------------+
+|                      |
+| lib/NodeMcuConnector |
+|                      |
+++---------------------+
+|| Low|Level Command Transport
+++---------------------+
+|                      |
+|lib/ScriptableSerial- |
+|Terminal              |
+++---------------------+
+|| Serial Communication
+++---------------------+
+|  node|serialport     |
++----------------------+
+```
 
 Programmatic Usage and Low Level API
 ------------------------------------
@@ -515,7 +549,7 @@ Or you can call the `bin` file with an external tool. For more details, take a l
 FAQ
 ---
 
-### The serial file transfer is pretty slow ###
+#### The serial file transfer is pretty slow ####
 By default, the serial connection uses a 9600 baud with 8N1 - this means maximal 960 bytes/s raw data rate.
 Due to the limitations of a line-wise file upload, these maximal transfer rate cannot be reached, because every line has to be processed by the lua interpreter and NodeMCU-Tool is waiting for it's response.
 It's recommended to use the `--optimize` flag to strip whitespaces before uploading
