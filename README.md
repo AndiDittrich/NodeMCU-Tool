@@ -55,16 +55,16 @@ Other ESP8266 platforms may user other interfaces - please refer to their user m
 The NodeMCU-Tool is written in javascript and requires [Node.js](https://nodejs.org) as runtime environment. And please don't worry about the wording - NodeMCU and Node.js are two **complete different** things!
 
 In case you're not familiar with [Node.js](https://nodejs.org) and [NPM](https://www.npmjs.com) it's recommended to read some [basic introductions](https://docs.npmjs.com/getting-started/what-is-npm) first!
-
-* Install [Node.js](https://nodejs.org/en/download/) on your system (in case it's not already there)
-* Open a Terminal window and install **NodeMCU-Tool** with NPM
-   Local installation (within current directory): `npm install nodemcu-tool`
-* Now you're ready to upload custom lua files
+Please [download the Node.js installer](https://nodejs.org/en/download/) and install on your system in case it's not already there.
 
 Installation
 ------------
 
+Thanks to Node.js, the NodeMCU-Tool is platform independent and will run on Windows, Linux und OSX. There are different installation variants available (system wide or project based). 
+
 ### via NPM (Node.js Package Manager) ###
+
+#### Global Installation ####
 
 It's recommended to install nodemcu-tool as [global package](https://docs.npmjs.com/getting-started/installing-npm-packages-globally).
 NPM will register the binary automatically in your path - it will be directly available on the command line.
@@ -73,6 +73,24 @@ NPM will register the binary automatically in your path - it will be directly av
 $ npm install nodemcu-tool -g
 ```
 
+#### Global Installation as root ####
+
+The global installation may require administrator(root) privileges because the package is added to the systems library path. If you get any permission errors on Linux/Mac OS run the command as root or via `sudo`
+
+```shell
+$ sudo npm install nodemcu-tool -g
+```
+
+#### Local/Project related Installation ####
+
+You can also install it in your local project directory. When using this method, the `nodemcu-tool` command is **not registered** within your path!
+
+```shell
+$ npm install nodemcu-tool
+```
+
+In this case, the binary file is located in `node_modules/nodemcu-tool/bin/nodemcu-tool.js`
+
 ### As Archive from GitHub ###
 
 You can also download the [latest release](https://github.com/AndiDittrich/NodeMCU-Tool/releases/latest) directly from [GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/releases) and extract the sources to your project directory.
@@ -80,31 +98,60 @@ When using this method, the `nodemcu-tool` command is **not registered** within 
 
 First Steps
 -----------
+
+### 1. The Location of the binary file ###
+
 After installing **NodeMCU-Tool** you should open a **new** terminal window and check if the tool is working by obtaining the current version. It should output the current semantic-version tag.
 Depending on your installation type (global ==> file is registered into your path) you can use the tool directly or you have to go into the module directory:
 
-### For Global Installations ###
+#### For Global Installations (Win/Linux/OSX) ####
+
+The binary file is registered within your path. This tutorial assumes that you have installed the tool globally. Otherwise you have to modify the program-call as described below.
+
 ```bash
 $ nodemcu-tool --version
-1.0.0
+1.5.0
 ```
 
-### For Local Installations ###
+#### For Local Installations ####
 
 This means you have installed nodemcu-tool via NPM **without** the `-g` (global) flag or via the `.zip` / `.tar` package.
-There will be **no** global shortcut to the nodemcu-tool binary! The binary is located in
+There will be **no** global shortcut to the nodemcu-tool binary! The binary is located in `node_modules/nodemcu-tool/bin/nodemcu-tool.js`
+
+##### Linux, OSX #####
 
 ```bash
 $ cd node_modules/nodemcu-tool/bin
-$ ./nodemcu-tool --version
-1.0.0
+$ ./nodemcu-tool.js --version
+1.5.0
 ```
 
-### Create the initial File System ###
-This will remove all existing files on the module but is required when running the module **for the first time**
+###### Windows #####
+
+You have to call the node.exe runtime in your command!
+
+```bash
+$ cd node_modules/nodemcu-tool/bin
+$ node nodemcu-tool.js --version
+1.5.0
+```
+
+### 2. Identify Your NodeMCU Device ###
+
+Now you can connect the NodeMCU Module to your computer. The module will be accessible via a virtual serial port. You can identify the port by using the `devices` command.
+In this example, it is connected via `/dev/ttyUSB0`. Keep in mind that you have to provide the device-name to NodeMCU-Tool on each command!
 
 ```shell
-$ nodemcu-tool mkfs
+./nodemcu-tool devices
+[NodeMCU] Connected Devices | Total: 1
+          |- /dev/ttyUSB0 (Silicon_Labs, usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0)
+```
+
+### 3. Create the initial File System ###
+This will remove all existing files on the module but is required when running the module **for the first time**. You can skip this step in case you've already done that manually!
+
+```shell
+$ nodemcu-tool mkfs --port=/dev/ttyUSB0
 [NodeMCU-Tool] Do you really want to format the filesystem and delete all file ? (no) yes
 [NodeMCU-Tool] Connected
 [NodeMCU] Version: 0.9.5 | ChipID: 0xd1aa | FlashID: 0x1640e0
@@ -112,7 +159,7 @@ $ nodemcu-tool mkfs
 [NodeMCU] File System created | format done.
 ```
 
-### Upload a new File ###
+### 4. Upload a new File ###
 
 ```shell
 $ nodemcu-tool upload --port=/dev/ttyUSB0 --optimize helloworld.lua
@@ -122,7 +169,7 @@ $ nodemcu-tool upload --port=/dev/ttyUSB0 --optimize helloworld.lua
 [NodeMCU-Tool] Data Transfer complete!
 ```
 
-**Run It directly and view the output**
+### 5. Run It directly and view the output ###
 
 ```shell
 $ nodemcu-tool run helloworld.lua
