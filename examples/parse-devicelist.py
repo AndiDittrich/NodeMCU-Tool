@@ -1,3 +1,6 @@
+##  python example howto fetch the device-list programmatically using the JSON output option of NodeMCU-Tool
+##
+
 import subprocess
 import json
 

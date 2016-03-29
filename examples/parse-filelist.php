@@ -16,7 +16,7 @@ $args = array(
 
 // For Security - escape the shell args (not necessary in this example, but required for dynamic input)
 $args = array_map(function($param){
-    return escapeshellcmd($param);
+    return escapeshellarg($param);
 }, $args);
 
 // build the command string - don't forget to add the node.js binary!
