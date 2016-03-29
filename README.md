@@ -126,7 +126,7 @@ $ ./nodemcu-tool.js --version
 1.5.0
 ```
 
-###### Windows #####
+##### Windows #####
 
 You have to call the node.exe runtime in your command!
 

@@ -12,7 +12,7 @@ This means build systems like [ANT](http://ant.apache.org/) or python, php scrip
 
 **Description** Download files to NodeMCU using ANT [exec task](https://ant.apache.org/manual/Tasks/exec.html)
 
-**Example File** [apache-ant-build.xml](examples/apache-ant-build.xml)
+**Example File** [apache-ant-build.xml](../examples/apache-ant-build.xml)
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -29,6 +29,87 @@ This means build systems like [ANT](http://ant.apache.org/) or python, php scrip
         </exec>
     </target>
 </project>
+```
+
+### Python Device-List Example ###
+
+**Description** Process connected NodeMCU Devices
+
+**Example File** [parse-devicelist.py](../examples/parse-devicelist.py)
+
+```python
+import subprocess
+import json
+
+# Capture Exception to handle the return_code
+try:
+    # Run NodeMCU-Tool to fetch a list of available devices
+    output = subprocess.check_output(['node', '../bin/nodemcu-tool.js', 'devices', '--json'])
+
+except subprocess.CalledProcessError as exc:
+    print "NodeMCU-Tool Error: Code: ", exc.returncode, " - ", exc.output
+    quit()
+
+# Decode the json output
+devices = json.loads(output)
+
+# Check result
+if len(devices) == 0:
+    # Error, no devices
+    print "No Devices found!"
+    quit();
+
+else:
+    print "Possible NodeMCU Devices found:"
+
+    # Output Device List
+    for device in devices:
+        print ">>", device["vendorId"], "(", device["pnpId"], ") on",  device["comName"]
+```
+
+### PHP File-List Example ###
+
+**Description** Fetch file-list from NodeMCU Module
+
+**Example File** [parse-filelist.php](../examples/parse-filellist.php)
+
+```php
+// List of arguments
+$args = array(
+    // the application file
+    'bin/nodemcu-tool.js',
+
+    // the command
+    'fsinfo',
+
+    // json output mode
+    '--json'
+);
+
+// For Security - escape the shell args (not necessary in this example, but required for dynamic input)
+$args = array_map(function($param){
+    return escapeshellarg($param);
+}, $args);
+
+// build the command string - don't forget to add the node.js binary!
+$command = 'node ' . implode(' ', $args);
+
+// run the command
+exec($command, $output, $return_var);
+
+// command failed ?
+if ($return_var !== 0){
+    // show status code
+    die('Program Error '. $return_var);
+}
+
+// decode json data - keep in mind that $output is an array (line-wise)
+$data = json_decode(implode("\n", $output), true);
+
+// process the output
+foreach ($data['files'] as $file){
+    echo '>> ', $file['name'], ' - ', $file['size'], "\n";
+}
 ```
 
 
