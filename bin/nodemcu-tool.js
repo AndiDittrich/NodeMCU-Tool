@@ -334,12 +334,6 @@ _cli
     });
 
 _cli
-    .command('cloudconnect')
-    .action(function(c){
-        console.log(_colors.cyan('[NodeMCU-Tool]'), 'http://nodemcutool.aenon.de/34234234 "' + c + '"');
-    });
-
-_cli
     .command('*')
     .action(function(c){
         console.log(_colors.cyan('[NodeMCU-Tool]'), 'Unknown command "' + c + '"');
