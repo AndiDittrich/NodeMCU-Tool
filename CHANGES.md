@@ -1,4 +1,5 @@
 ### 1.5.0-BETA1 ###
+* Added: Bulk/Multi File upload
 * Added: `devices` command to display a list of all connected NodeMCU Devices
 * Added: `noninteractive` options to the `mkfs` command to disable user interaction (confirm dialog)
 * Added: Global `--silent` mode to disable log/status messages - only errors and direct outputs are displayed
@@ -14,6 +15,7 @@
 * Changed: On error, the process will now exit with return-code **1**
 * Improved: Hex-Upload-Helper is only uploaded one-times during a connector session (speedup when uploading multiple files)
 * Bugfix: Upload Errors were not forwarded to the frontend 
+* Bugfix: The `--compile` options doesn't check the file-type
 
 ### 1.4.0 ###
 * Added: Ability to provide remote destination filename or keep relative path in destination filename - thanks to [loicortola on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/5)

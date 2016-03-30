@@ -16,6 +16,7 @@ NodeMCU Tool allows you to
 
 * Upload LUA files to your ESP8266/NodeMCU module
 * Upload any file-types (binary save)
+* Bulk/Multi file uploads
 * Download any file-type (binary save)
 * Delete files
 * Format the file system
@@ -309,7 +310,7 @@ $ nodemcu-tool devices
 ## Upload Files ##
 The most important task of this tool: upload local files to the module. 
 
-**Syntax** `nodemcu-tool [options] upload <local-filename>`
+**Syntax** `nodemcu-tool [options] upload <local-filenames...>`
 
 **Options**
 
@@ -378,6 +379,39 @@ $ nodemcu-tool upload HelloWorld.txt --remotename MyFile.txt
 ```
 
 The remote file name will be "MyFile.txt"
+
+**Example 7**
+
+Upload multiple files to the module at once and compile LUA files. Non-existing files will be ignored!
+
+```shell
+$ nodemcu-tool upload helloworld.lua dev/f1.lua dev/f2.lua xxx.txt dev/f3.lua helloworld.lua test.lua --keeppath --compile
+[NodeMCU-Tool] Connected
+[NodeMCU] Version: 0.9.5 | ChipID: 0xd1aa | FlashID: 0x1640e0
+[NodeMCU-Tool] Uploading "helloworld.lua" >> "helloworld.lua"...
+[NodeMCU]  |- compiling lua file..
+[NodeMCU]  |- success
+[NodeMCU]  |- original LUA file removed
+[NodeMCU-Tool] Uploading "dev/f1.lua" >> "dev/f1.lua"...
+[NodeMCU]  |- compiling lua file..
+[NodeMCU]  |- Success
+[NodeMCU]  |- Original LUA file removed
+[NodeMCU-Tool] Uploading "dev/f2.lua" >> "dev/f2.lua"...
+[NodeMCU]  |- compiling lua file..
+[NodeMCU]  |- Success
+[NodeMCU]  |- Original LUA file removed
+[NodeMCU-Tool] Local file not found "xxx.txt" skipping...
+[NodeMCU-Tool] Uploading "dev/f3.lua" >> "dev/f3.lua"...
+[NodeMCU]  |- compiling lua file..
+[NodeMCU]  |- Success
+[NodeMCU]  |- Original LUA file removed
+[NodeMCU-Tool] Uploading "helloworld.lua" >> "helloworld.lua"...
+[NodeMCU]  |- compiling lua file..
+[NodeMCU]  |- Success
+[NodeMCU]  |- Original LUA file removed
+[NodeMCU-Tool] Local file not found "test.lua" skipping...
+[NodeMCU-Tool] Bulk File Transfer complete!
+```
 
 
 ## Download Files ##

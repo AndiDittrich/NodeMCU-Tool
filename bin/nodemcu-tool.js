@@ -118,7 +118,7 @@ _cli
     });
 
 _cli
-    .command('upload <file>')
+    .command('upload [files...]')
     .description('Upload Files to NodeMCU (ESP8266) target')
 
     // file cleanup
@@ -131,9 +131,9 @@ _cli
     .option('-k, --keeppath', 'Keep a relative file path in the destination filename (i.e: static/test.html will be named static/test.html)', false)
 
     // sets the remote filename
-    .option('-n, --remotename <remotename>', 'Set destination file name. Default is same as original', false)
+    .option('-n, --remotename <remotename>', 'Set destination file name. Default is same as original. Only available when uploading a single file!', false)
 
-    .action(function(localFile, options){
+    .action(function(localFiles, options){
         // silent mode ?
         SilentMode(_cli.silent===true);
 
@@ -154,11 +154,24 @@ _cli
           options.keeppath = defaults.keeppath;
         }
 
-        _nodemcutool.upload(_cli.port, _cli.baud, localFile, options, function(current, total){
-            // bar initialized ?
-            if (current == 0) {
-                bar.start(total, 0);
-            }else {
+        // files provided ?
+        if (localFiles.length == 0){
+            console.error(_colors.red('[NodeMCU-Tool]'), 'No files provided for upload (empty file-list)');
+            return;
+        }
+
+        // handle multiple uploads
+        var currentFileNumber = 0;
+
+        _nodemcutool.upload(_cli.port, _cli.baud, localFiles, options, function(current, total, fileNumber){
+
+            // new file ?
+            if (currentFileNumber != fileNumber){
+                bar.stop();
+                currentFileNumber = fileNumber;
+                bar.start(total, 1);
+            }else{
+
                 bar.update(current);
 
                 // finished ?
