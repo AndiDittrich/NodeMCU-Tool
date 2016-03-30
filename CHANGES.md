@@ -1,9 +1,9 @@
-### 1.5.0-BETA1 ###
+### 1.5.0 ###
 * Added: Bulk/Multi File upload
 * Added: `devices` command to display a list of all connected NodeMCU Devices
 * Added: `noninteractive` options to the `mkfs` command to disable user interaction (confirm dialog)
 * Added: Global `--silent` mode to disable log/status messages - only errors and direct outputs are displayed
-* Added: Apache [ANT](http://ant.apache.org/) build script example (programmatic fiel upload)
+* Added: Apache [ANT](http://ant.apache.org/) build script example (programmatic file upload)
 * Added: PHP Usage example (programmatic usage of fsinfo command)
 * Added: Python Usage example (programmatic usage of devices command)
 * Added: Programmatic Usage [Guide](docs/ProgrammaticUsage.md)

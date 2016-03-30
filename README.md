@@ -35,8 +35,8 @@ directly from the command line.
 Related Documents
 -----------------
 
-* [Common Use-Cases and Examples](doc/Examples.md)
-* [Programmatic Usage](doc/ProgrammaticUsage.md)
+* [Common Use-Cases and Examples](docs/Examples.md)
+* [Programmatic Usage](docs/ProgrammaticUsage.md)
 * [Contribution Guidelines](CONTRIBUTE.md)
 * [Changelog](CHANGES.md)
 * [License](LICENSE.md)
@@ -593,7 +593,7 @@ FAQ
 ---
 
 #### Do you provide more Examples/Use Cases ? ####
-Of course, check the [Examples](doc/Examples.md) file (tool usage) as well as the `examples/` directory for third party examples
+Of course, check the [Examples](docs/Examples.md) file (tool usage) as well as the `examples/` directory for third party examples
 
 #### The serial file transfer is pretty slow ####
 By default, the serial connection uses a 9600 baud with 8N1 - this means maximal 960 bytes/s raw data rate.
