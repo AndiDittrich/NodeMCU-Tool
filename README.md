@@ -31,6 +31,15 @@ directly from the command line.
 
 *Successful tested on Windows10, Debian 8.2 and Ubuntu 14 LTS - works out of the box without any tweaks*
 
+Related Documents
+-----------------
+
+* [Common Use-Cases and Examples](doc/Examples.md)
+* [Programmatic Usage](doc/ProgrammaticUsage.md)
+* [Contribution Guidelines](CONTRIBUTE.md)
+* [Changelog](CHANGES.md)
+* [License](LICENSE.md)
+
 Terminology
 -----------
 * **NodeMCU** Original [NodeMCU](http://nodemcu.com/index_en.html) Module **OR** any [ESP8266](http://espressif.com/en/products/esp8266/) platform with [NodeMCU Firmware](https://github.com/nodemcu/nodemcu-firmware)
@@ -548,6 +557,9 @@ Or you can call the `bin` file with an external tool. For more details, take a l
 
 FAQ
 ---
+
+#### Do you provide more Examples/Use Cases ? ####
+Of course, check the [Examples](doc/Examples.md) file (tool usage) as well as the `examples/` directory for third party examples
 
 #### The serial file transfer is pretty slow ####
 By default, the serial connection uses a 9600 baud with 8N1 - this means maximal 960 bytes/s raw data rate.

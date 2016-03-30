@@ -18,6 +18,9 @@ _nodemcutool.onError(function(context, message){
     }else{
         console.error(message);
     }
+
+    // die with exit code 1
+    process.exit(1);
 });
 
 _nodemcutool.onOutput(function(message){

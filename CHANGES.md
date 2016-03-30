@@ -2,12 +2,18 @@
 * Added: `devices` command to display a list of all connected NodeMCU Devices
 * Added: `noninteractive` options to the `mkfs` command to disable user interaction (confirm dialog)
 * Added: Global `--silent` mode to disable log/status messages - only errors and direct outputs are displayed
-* Added: Apache [ANT](http://ant.apache.org/) build script example (programmatic usage)
+* Added: Apache [ANT](http://ant.apache.org/) build script example (programmatic fiel upload)
 * Added: PHP Usage example (programmatic usage of fsinfo command)
+* Added: Python Usage example (programmatic usage of devices command)
 * Added: Programmatic Usage [Guide](docs/ProgrammaticUsage.md)
+* Added: Step-by-Step Getting-Start Guide to the Documentation
 * Added: Output handler to the middleware (separate log, error, output handler are available)
 * Changed: Cleaned up `NodeMCU-Tool.js` - a connection is now established within a helper function
-* Improved Documentation
+* Changed: The `Connector.upload` function will not remove a existing file anymore - it's now handled by the middleware (eliminates code redundancy)
+* Changed: The device-list is not shown anymore in case there is an error during the connection establishment - please use the `devices` command
+* Changed: On error, the process will now exit with return-code **1**
+* Improved: Hex-Upload-Helper is only uploaded one-times during a connector session (speedup when uploading multiple files)
+* Bugfix: Upload Errors were not forwarded to the frontend 
 
 ### 1.4.0 ###
 * Added: Ability to provide remote destination filename or keep relative path in destination filename - thanks to [loicortola on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/5)
@@ -32,7 +38,6 @@
 * Changed: File-Content is hex-encoded before upload - this allows binary file uploads and "unlimited" line size (not longer limited to 235chars per line!)
 * Changed: All used LUA commands/functions are centralized in NodeMcuConnector
 * Changed: the `--optimize` flag only works for LUA files with file-type `.lua`
-
 
 ### 1.1.0 ###
 * Added: NodeMCU-Tool.js to use the connector as well as all CLI functions programmatically
