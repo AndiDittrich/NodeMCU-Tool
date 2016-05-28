@@ -1,3 +1,7 @@
+### 1.6.0-BETA1 ###
+* Added: `--run` option to the terminal command to execute a file on the nodemcu when opening a new terminal session - feature requested by [blezek on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/11)
+* Added: [gulp](http://gulpjs.com/) based build example - thanks to [remcoder](https://github.com/AndiDittrich/NodeMCU-Tool/commits/master?author=remcoder)
+
 ### 1.5.0 ###
 * Added: Bulk/Multi File upload
 * Added: `devices` command to display a list of all connected NodeMCU Devices

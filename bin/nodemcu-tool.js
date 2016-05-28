@@ -8,6 +8,7 @@ var _progressbar = require('cli-progress');
 var _pkg = require('../package.json')
 var _prompt = require('prompt')
 var _nodemcutool = require('../lib/NodeMCU-Tool');
+var _luaCommandBuilder = require('../lib/LuaCommandBuilder');
 var _colors = require('colors');
 var _fs = require('fs');
 
@@ -263,11 +264,19 @@ _cli
 _cli
     .command('terminal')
     .description('Opens a Terminal connection to NodeMCU')
-    .action(function(){
+    .option('--run <filename>', 'Running a file on NodeMCU before starting the terminal session', false)
+    .action(function(options){
         // silent mode ?
         SilentMode(_cli.silent===true);
 
-        _nodemcutool.terminal(_cli.port, _cli.baud);
+        // run a initial command on startup ?
+        var initialCommand = null;
+        if (options.run){
+            initialCommand = _luaCommandBuilder.prepare('run', [options.run]);
+        }
+
+        // start terminal session
+        _nodemcutool.terminal(_cli.port, _cli.baud, initialCommand);
     });
 
 _cli

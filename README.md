@@ -519,7 +519,11 @@ You can quit the terminal session by pressing <kbd>ctrl+c</kbd>
 
 **Syntax** `nodemcu-tool [options] terminal`
 
-**Example**
+**Options**
+ 
+  * `--run <filename>` | Executes a command on start of the terminal session - useful for testing/debugging
+
+**Example 1**
 
 ```shell
 $ nodemcu-tool terminal
@@ -530,6 +534,29 @@ HELLO WORLD!!!
 HEllo HEllo Hello
 String: Lorem ipsum dolor sit amet, consetetur sadipscing elitr
 > [SerialTerminal] Connection closed
+```
+
+**Example 2**
+```shell
+$ nodemcu-tool terminal --run helloworld.lua
+[SerialTerminal] Starting Terminal Mode - press ctrl+c to exit
+dofile("helloworld.lua")
+Hello World!
+|---|
+| H |
+| E |
+| L |
+| L |
+| O |
+| | |
+| W |
+| O |
+| R |
+| L |
+| D |
+|---|
+YEAH!!! HELLO WORLD!!!
+String: Lorem ipsum dolor sit amet, consetetur sadipscing elitr
 ```
 
 Behind the Scene
