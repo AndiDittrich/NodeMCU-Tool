@@ -5,58 +5,73 @@
 // load utils
 var _cli = require('commander');
 var _progressbar = require('cli-progress');
-var _pkg = require('../package.json')
-var _prompt = require('prompt')
+var _pkg = require('../package.json');
+var _prompt = require('prompt');
 var _nodemcutool = require('../lib/NodeMCU-Tool');
 var _luaCommandBuilder = require('../lib/LuaCommandBuilder');
 var _colors = require('colors');
 var _fs = require('fs');
+var _loggingFacility = require('logging-facility');
+var _logger = _loggingFacility.getLogger('NodeMCU-Tool');
 
-// setup CLI/TTY message handler (colorized output)
-_nodemcutool.onError(function(context, message){
-    if (context && context.length > 0){
-        console.error(_colors.red('[' + context + ']'), message);
+// silent mode flag
+var silentModeEnabled = false;
+
+// set the logging backend/upstream
+// every log message is passed to this function
+_loggingFacility.setBackend(function(facility, level, args){
+    // args to string
+    args = args.map(function(s){
+        return s.toString();
+    });
+
+    // log, info, debug
+    if (level > 5){
+        // only display messages in normal operation mode
+        if (silentModeEnabled !== true){
+            console.log(_colors.cyan('[' + facility.trim() + ']'), args.join(' '));
+        }
+
+        // errors
     }else{
-        console.error(message);
+        console.log(_colors.red('[' + facility.trim() + ']'), args.join(' '));
     }
-
-    // die with exit code 1
-    process.exit(1);
 });
 
+// general content
 _nodemcutool.onOutput(function(message){
     console.log(message);
 });
 
-// helper to enable silent mode
-var SilentMode = function(enable){
-    if (enable){
-        // ignore status messages
-        _nodemcutool.onStatus(function(context, message){
-        });
-    }else{
-        _nodemcutool.onStatus(function(context, message){
-            if (context && context.length > 0){
-                console.log(_colors.cyan('[' + context + ']'), message);
-            }else{
-                console.log(message);
-            }
-        });
+function cliPrepare(options){
+    // default
+    options = options || {};
+
+    // silent mode enabled by flag ?
+    silentModeEnabled = (_cli.silent===true);
+
+    // silent mode enabled by json output format ?
+    if (options.json && options.json === true){
+        silentModeEnabled = true;
     }
-};
 
-// initialize default config
-var defaults = (function(){
+    // merge global flags, command flags and global defaults
+    var defaultConfig = {
+        // global flags
+        baudrate:   _cli.baud           || '9600',
+        port:       _cli.port           || '/dev/ttyUSB0',
 
-    // standard configuration
-    var config = {
-        baudrate: '9600',
-        port: '/dev/ttyUSB0',
-        optimize: false,
-        compile: false,
-        keeppath: false
+        // command specific flags
+        optimize:   options.optimize    || false,
+        compile:    options.compile     || false,
+        keeppath:   options.keeppath    || false,
+        remotename: options.remotename  || null,
+        run:        options.run         || false,
+        all:        options.all         || false,
+        json:       options.json        || false
     };
 
+    // project based configuration
     try{
         // try to load project based configuration
         var data = _fs.readFileSync('.nodemcutool', 'utf8');
@@ -66,18 +81,18 @@ var defaults = (function(){
             var d = JSON.parse(data);
 
             // extract values
-            config.baudrate = d.baudrate || config.baudrate;
-            config.port = d.port || config.port;
-            config.optimize = (d.optimize && d.optimize === true);
-            config.compile = (d.compile && d.compile === true);
-            config.keeppath = (d.keeppath && d.keeppath === true);
-            console.log(_colors.cyan('[NodeMCU-Tool]'), 'Project based configuration loaded');
+            defaultConfig.baudrate = d.baudrate || defaultConfig.baudrate;
+            defaultConfig.port = d.port || defaultConfig.port;
+            defaultConfig.optimize = (d.optimize && d.optimize === true);
+            defaultConfig.compile = (d.compile && d.compile === true);
+            defaultConfig.keeppath = (d.keeppath && d.keeppath === true);
+            _logger.log('Project based configuration loaded');
         }
     }catch (err){
     }
 
-    return config;
-})();
+    return defaultConfig;
+}
 
 
 // CLI setup
@@ -86,10 +101,10 @@ _cli
     .version(_pkg.version)
 
     // serial port device
-    .option('-p, --port <port>', 'Serial port device name e.g. /dev/ttyUSB0, COM1', defaults.port)
+    .option('-p, --port <port>', 'Serial port device name e.g. /dev/ttyUSB0, COM1', null)
 
     // serial port baudrate
-    .option('-b, --baud <baudrate>', 'Serial Port Baudrate in bps, default 9600', defaults.baudrate)
+    .option('-b, --baud <baudrate>', 'Serial Port Baudrate in bps, default 9600', null)
 
     // silent mode - no status messages are shown
     .option('--silent', 'Enable silent mode - no status messages are shown', false);
@@ -101,21 +116,19 @@ _cli
     // json output mode
     .option('--json', 'Display output JSON encoded', false)
 
-    .action(function(options){
-        // force silent mode!
-        SilentMode(options.json===true || _cli.silent===true);
+    .action(function(opt){
+        var options = cliPrepare(opt);
 
-        _nodemcutool.fsinfo(_cli.port, _cli.baud, options.json);
+        _nodemcutool.fsinfo(options.port, options.baud, options.json);
     });
 
 _cli
     .command('run <file>')
     .description('Executes an existing .lua or .lc file on NodeMCU')
-    .action(function(filename){
-        // silent mode ?
-        SilentMode(_cli.silent===true);
+    .action(function(filename, opt){
+        var options = cliPrepare(opt);
 
-        _nodemcutool.run(_cli.port, _cli.baud, filename);
+        _nodemcutool.run(options.port, options.baud, filename);
     });
 
 _cli
@@ -134,9 +147,8 @@ _cli
     // sets the remote filename
     .option('-n, --remotename <remotename>', 'Set destination file name. Default is same as original. Only available when uploading a single file!', false)
 
-    .action(function(localFiles, options){
-        // silent mode ?
-        SilentMode(_cli.silent===true);
+    .action(function(localFiles, opt){
+        var options = cliPrepare(opt);
 
         // initialize a new progress bar
         var bar = new _progressbar.Bar({
@@ -144,27 +156,16 @@ _cli
             clearOnComplete: true
         });
 
-        // append global defaults
-        if (!options.compile){
-            options.compile = defaults.compile;
-        }
-        if (!options.optimize){
-            options.optimize = defaults.optimize;
-        }
-        if (!options.keeppath){
-          options.keeppath = defaults.keeppath;
-        }
-
         // files provided ?
         if (localFiles.length == 0){
-            console.error(_colors.red('[NodeMCU-Tool]'), 'No files provided for upload (empty file-list)');
+            _logger.error('No files provided for upload (empty file-list)');
             return;
         }
 
         // handle multiple uploads
         var currentFileNumber = 0;
 
-        _nodemcutool.upload(_cli.port, _cli.baud, localFiles, options, function(current, total, fileNumber){
+        _nodemcutool.upload(options.port, options.baud, localFiles, options, function(current, total, fileNumber){
 
             // new file ?
             if (currentFileNumber != fileNumber){
@@ -187,21 +188,19 @@ _cli
     .command('download <file>')
     .description('Download files from NodeMCU (ESP8266) target')
 
-    .action(function(remoteFilename){
-        // silent mode ?
-        SilentMode(_cli.silent===true);
+    .action(function(remoteFilename, opt){
+        var options = cliPrepare(opt);
 
-        _nodemcutool.download(_cli.port, _cli.baud, remoteFilename);
+        _nodemcutool.download(options.port, options.baud, remoteFilename);
     });
 
 _cli
     .command('remove <file>')
     .description('Removes a file from NodeMCU filesystem')
-    .action(function(filename){
-        // silent mode ?
-        SilentMode(_cli.silent===true);
+    .action(function(filename, opt){
+        var options = cliPrepare(opt);
 
-        _nodemcutool.remove(_cli.port, _cli.baud, filename);
+        _nodemcutool.remove(options.port, options.baud, filename);
     });
 
 _cli
@@ -211,14 +210,13 @@ _cli
     // force fs creation without prompt
     .option('--noninteractive', 'Execute command without user interaction', false)
 
-    .action(function(options){
-        // silent mode ?
-        SilentMode(_cli.silent===true);
+    .action(function(opt){
+        var options = cliPrepare(opt);
 
         // no prompt!
-        if (options.noninteractive){
+        if (opt.noninteractive){
             // format
-            _nodemcutool.mkfs(_cli.port, _cli.baud);
+            _nodemcutool.mkfs(options.port, options.baud);
 
             return;
         }
@@ -233,7 +231,7 @@ _cli
             properties: {
                 confirm: {
                     pattern: /^(yes|no|y|n)$/gi,
-                    description: '[NodeMCU-Tool] Do you really want to format the filesystem and delete all file ?',
+                    description: _colors.cyan('[NodeMCU-Tool]') + ' Do you really want to format the filesystem and delete all file ?',
                     message: 'Type yes/no',
                     required: true,
                     default: 'no'
@@ -241,7 +239,7 @@ _cli
             }
         }, function (err, result){
             if (err){
-                console.log('\n[NodeMCU-Tool] Formatting aborted')
+                _logger.error('Formatting aborted');
                 return;
             }
 
@@ -250,12 +248,12 @@ _cli
 
             // check
             if (c!='y' && c!='yes'){
-                console.log('[NodeMCU-Tool] Formatting aborted');
+                _logger.error('Formatting aborted');
                 return;
             }
 
             // format
-            _nodemcutool.mkfs(_cli.port, _cli.baud);
+            _nodemcutool.mkfs(options.port, options.baud);
         });
 
     });
@@ -265,9 +263,8 @@ _cli
     .command('terminal')
     .description('Opens a Terminal connection to NodeMCU')
     .option('--run <filename>', 'Running a file on NodeMCU before starting the terminal session', false)
-    .action(function(options){
-        // silent mode ?
-        SilentMode(_cli.silent===true);
+    .action(function(opt){
+        var options = cliPrepare(opt);
 
         // run a initial command on startup ?
         var initialCommand = null;
@@ -276,14 +273,16 @@ _cli
         }
 
         // start terminal session
-        _nodemcutool.terminal(_cli.port, _cli.baud, initialCommand);
+        _nodemcutool.terminal(options.port, options.baud, initialCommand);
     });
 
 _cli
     .command('init')
     .description('Initialize a project-based Configuration (file) within current directory')
-    .action(function(){
-        console.log('[NodeMCU-Tool] Creating project based configuration file..');
+    .action(function(opt){
+        var options = cliPrepare(opt);
+
+        _logger.log('Creating project based configuration file..');
 
         // get user input
         _prompt.start();
@@ -295,14 +294,14 @@ _cli
             properties: {
                 baudrate: {
                     pattern: /^\d+$/,
-                    description: '[NodeMCU-Tool] Baudrate in Bit per Seconds, e.g. 9600 (default)',
+                    description: _colors.cyan('[NodeMCU-Tool]') + ' Baudrate in Bit per Seconds, e.g. 9600 (default)',
                     required: false,
                     message: 'Only Integers allowed!',
                     default: 9600
                 },
                 port: {
                     pattern: /^.+$/,
-                    description: '[NodeMCU-Tool] Serial connection to use, e.g. COM1 or /dev/ttyUSB2',
+                    description: _colors.cyan('[NodeMCU-Tool]') + ' Serial connection to use, e.g. COM1 or /dev/ttyUSB2',
                     required: false,
                     default: '/dev/ttyUSB0'
                 }
@@ -310,11 +309,12 @@ _cli
         }, function (err, data){
 
             if (err){
-                console.error(err);
+                _logger.error(err);
             }else{
                 // set defaults
                 data.optimize = false;
                 data.compile = false;
+                data.keeppath = false;
 
                 // write config to file
                 _fs.writeFileSync('.nodemcutool', JSON.stringify(data, null, 4));
@@ -332,20 +332,18 @@ _cli
     // json output mode
     .option('--json', 'Display output JSON encoded', false)
 
-    .action(function(options){
-        // force silent mode!
-        SilentMode(options.json===true || _cli.silent===true);
+    .action(function(opt){
+        var options = cliPrepare(opt);
 
-        // show all devices ?
-        var showAll = options.all || false;
+        console.log(options);
 
-        _nodemcutool.devices(_cli.port, _cli.baud, showAll, options.json);
+        _nodemcutool.devices(options.port, options.baud, options.all, options.json);
     });
 
 _cli
     .command('*')
     .action(function(c){
-        console.log(_colors.cyan('[NodeMCU-Tool]'), 'Unknown command "' + c + '"');
+        _logger.error('Unknown command "' + c + '"');
         _cli.outputHelp();
     });
 

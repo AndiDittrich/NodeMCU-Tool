@@ -1,4 +1,9 @@
-### 1.6.0-BETA1 ###
+### 1.7.0-BETA1 ###
+* Changed: [logging-facility](https://github.com/AndiDittrich/Node.Logging-Facility) is used for global log output management
+* Bugfix: Silent mode was not completely silent - thanks to [remcoder on GitHub](https://github.com/remcoder) #12
+* Deprecated: `NodeMcuConnector.onError` callback will be removed in the future (replaced by logging-facility)
+
+### 1.6.0 ###
 * Added: `--run` option to the terminal command to execute a file on the nodemcu when opening a new terminal session - feature requested by [blezek on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/11)
 * Added: [gulp](http://gulpjs.com/) based build example - thanks to [remcoder](https://github.com/AndiDittrich/NodeMCU-Tool/commits/master?author=remcoder)
 

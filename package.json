@@ -1,6 +1,6 @@
 {
   "name": "nodemcu-tool",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Command line tool to upload and manage files on your NodeMCU / ESP8266 Module.",
   "keywords": [
     "cli",
@@ -35,6 +35,7 @@
     "cli-progress": "^1.1.1",
     "colors": "^1.1.2",
     "commander": "^2.9.0",
+    "logging-facility": "^1.1.0",
     "prompt": "^0.2.14",
     "serialport": "^2.0.5"
   }
