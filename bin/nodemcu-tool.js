@@ -119,7 +119,7 @@ _cli
     .action(function(opt){
         var options = cliPrepare(opt);
 
-        _nodemcutool.fsinfo(options.port, options.baud, options.json);
+        _nodemcutool.fsinfo(options.port, options.baudrate, options.json);
     });
 
 _cli
@@ -128,7 +128,7 @@ _cli
     .action(function(filename, opt){
         var options = cliPrepare(opt);
 
-        _nodemcutool.run(options.port, options.baud, filename);
+        _nodemcutool.run(options.port, options.baudrate, filename);
     });
 
 _cli
@@ -165,7 +165,7 @@ _cli
         // handle multiple uploads
         var currentFileNumber = 0;
 
-        _nodemcutool.upload(options.port, options.baud, localFiles, options, function(current, total, fileNumber){
+        _nodemcutool.upload(options.port, options.baudrate, localFiles, options, function(current, total, fileNumber){
 
             // new file ?
             if (currentFileNumber != fileNumber){
@@ -191,7 +191,7 @@ _cli
     .action(function(remoteFilename, opt){
         var options = cliPrepare(opt);
 
-        _nodemcutool.download(options.port, options.baud, remoteFilename);
+        _nodemcutool.download(options.port, options.baudrate, remoteFilename);
     });
 
 _cli
@@ -200,7 +200,7 @@ _cli
     .action(function(filename, opt){
         var options = cliPrepare(opt);
 
-        _nodemcutool.remove(options.port, options.baud, filename);
+        _nodemcutool.remove(options.port, options.baudrate, filename);
     });
 
 _cli
@@ -216,7 +216,7 @@ _cli
         // no prompt!
         if (opt.noninteractive){
             // format
-            _nodemcutool.mkfs(options.port, options.baud);
+            _nodemcutool.mkfs(options.port, options.baudrate);
 
             return;
         }
@@ -253,7 +253,7 @@ _cli
             }
 
             // format
-            _nodemcutool.mkfs(options.port, options.baud);
+            _nodemcutool.mkfs(options.port, options.baudrate);
         });
 
     });
@@ -273,7 +273,7 @@ _cli
         }
 
         // start terminal session
-        _nodemcutool.terminal(options.port, options.baud, initialCommand);
+        _nodemcutool.terminal(options.port, options.baudrate, initialCommand);
     });
 
 _cli
@@ -337,7 +337,7 @@ _cli
 
         console.log(options);
 
-        _nodemcutool.devices(options.port, options.baud, options.all, options.json);
+        _nodemcutool.devices(options.port, options.baudrate, options.all, options.json);
     });
 
 _cli
