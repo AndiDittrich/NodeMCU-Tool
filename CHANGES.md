@@ -1,6 +1,8 @@
 ### 1.7.0-BETA1 ###
+* Added: RAW output format to `fsinfo` command - feature requested [on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/13) #13
 * Changed: [logging-facility](https://github.com/AndiDittrich/Node.Logging-Facility) is used for global log output management
 * Changed: Updated the [serialport package](https://github.com/EmergingTechnologyAdvisors/node-serialport) to v4.0.0
+* Changed: Function footprint of `NodeMCU-Tool.fsinfo` changed to `function(port, baud, format)` - format can be json, raw or null
 * Bugfix: Silent mode was not completely silent - thanks to [remcoder on GitHub](https://github.com/remcoder) #12
 * Deprecated: `NodeMcuConnector.onError` callback will be removed in the future (replaced by logging-facility)
 * Deprecated: `ScriptableSerialTerminal.onError` callback will be removed in the future (replaced by logging-facility)

@@ -55,6 +55,11 @@ function cliPrepare(options){
         silentModeEnabled = true;
     }
 
+    // silent mode enabled by json raw format ?
+    if (options.raw && options.raw === true){
+        silentModeEnabled = true;
+    }
+
     // merge global flags, command flags and global defaults
     var defaultConfig = {
         // global flags
@@ -68,7 +73,8 @@ function cliPrepare(options){
         remotename: options.remotename  || null,
         run:        options.run         || false,
         all:        options.all         || false,
-        json:       options.json        || false
+        json:       options.json        || false,
+        raw:        options.raw         || false
     };
 
     // project based configuration
@@ -116,10 +122,26 @@ _cli
     // json output mode
     .option('--json', 'Display output JSON encoded', false)
 
+    // raw output mode
+    .option('--raw', 'Display output as simple text with tab delimiter', false)
+
     .action(function(opt){
         var options = cliPrepare(opt);
 
-        _nodemcutool.fsinfo(options.port, options.baudrate, options.json);
+        // output format
+        var format = 'human';
+
+        // json format ?
+        if (options.json){
+            format = 'json';
+        }
+
+        // raw format (text)
+        if (options.raw){
+            format = 'raw';
+        }
+
+        _nodemcutool.fsinfo(options.port, options.baudrate, format);
     });
 
 _cli
@@ -332,10 +354,9 @@ _cli
     // json output mode
     .option('--json', 'Display output JSON encoded', false)
 
+
     .action(function(opt){
         var options = cliPrepare(opt);
-
-        console.log(options);
 
         _nodemcutool.devices(options.port, options.baudrate, options.all, options.json);
     });
