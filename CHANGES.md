@@ -1,5 +1,6 @@
 ### 1.7.0-BETA1 ###
 * Changed: [logging-facility](https://github.com/AndiDittrich/Node.Logging-Facility) is used for global log output management
+* Changed: Updated the [serialport package](https://github.com/EmergingTechnologyAdvisors/node-serialport) to v4.0.0
 * Bugfix: Silent mode was not completely silent - thanks to [remcoder on GitHub](https://github.com/remcoder) #12
 * Deprecated: `NodeMcuConnector.onError` callback will be removed in the future (replaced by logging-facility)
 * Deprecated: `ScriptableSerialTerminal.onError` callback will be removed in the future (replaced by logging-facility)
