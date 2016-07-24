@@ -37,6 +37,6 @@
     "commander": "^2.9.0",
     "logging-facility": "^1.1.0",
     "prompt": "^0.2.14",
-    "serialport": "^2.0.5"
+    "serialport": "^4.0.0"
   }
 }
