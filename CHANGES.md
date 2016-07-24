@@ -2,6 +2,7 @@
 * Changed: [logging-facility](https://github.com/AndiDittrich/Node.Logging-Facility) is used for global log output management
 * Bugfix: Silent mode was not completely silent - thanks to [remcoder on GitHub](https://github.com/remcoder) #12
 * Deprecated: `NodeMcuConnector.onError` callback will be removed in the future (replaced by logging-facility)
+* Deprecated: `ScriptableSerialTerminal.onError` callback will be removed in the future (replaced by logging-facility)
 
 ### 1.6.0 ###
 * Added: `--run` option to the terminal command to execute a file on the nodemcu when opening a new terminal session - feature requested by [blezek on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/11)
