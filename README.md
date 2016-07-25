@@ -26,6 +26,7 @@ NodeMCU Tool allows you to
 * Optimize LUA files before uploading by stripping comments (saves flash memory)
 * Use the **NodeMcuConnector API** in your own projects
 * Apply Project based configurations
+* Hard-Reset the module using DTR/RTS reset circuit (like NodeMCU DEV Kit)
 * Run files on NodeMCU and display the output
 
 directly from the command line.
@@ -508,6 +509,21 @@ Hello World!
 HELLO WORLD!!!
 HEllo HEllo Hello
 String: Lorem ipsum dolor sit amet, consetetur sadipscing elitr
+```
+
+## Reset the Module ##
+Doing a hard-reset on modules which have an integrated reset circuit based on RTS/DST flowcontrol pins.
+
+**Syntax** `nodemcu-tool [options] reset`
+
+**Example**
+
+```shell
+$ nodemcu-tool reset
+[NodeMCU-Tool] Project based configuration loaded
+[NodeMCU-Tool] Connected
+[NodeMCU] Version: 1.5.1 | ChipID: 0xd1aa | FlashID: 0x1640e0
+[NodeMCU] Hard-Reset executed (100ms)
 ```
 
 ## Terminal Mode ##

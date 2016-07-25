@@ -362,6 +362,16 @@ _cli
     });
 
 _cli
+    .command('reset')
+    .description('Execute a Hard-Reset of the Module using DTR/RTS reset circuit')
+
+    .action(function(opt){
+        var options = cliPrepare(opt);
+
+        _nodemcutool.reset(options.port, options.baudrate);
+    });
+
+_cli
     .command('*')
     .action(function(c){
         _logger.error('Unknown command "' + c + '"');
