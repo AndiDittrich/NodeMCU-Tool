@@ -533,7 +533,6 @@ $ nodemcu-tool reset
 ```
 
 ## Terminal Mode ##
-**Notice - This Mode is currently experimental and may not work with all versions of node.js (tested with v4.2.3)**
 
 The Terminal mode will open a direct serial connection to NodeMCU and passes all keyboard inputs to the module.
 This allows you to interact with the module during development without the need of an additional serial terminal.

@@ -373,7 +373,15 @@ _cli
     .action(function(opt){
         var options = cliPrepare(opt);
 
-        _nodemcutool.reset(options.port, options.baudrate, options.softreset);
+        // software reset
+        if (options.softreset){
+            _nodemcutool.softreset(options.port, options.baudrate);
+
+        // hard-reset nRST
+        }else{
+            _nodemcutool.reset(options.port, options.baudrate);
+        }
+
     });
 
 _cli
