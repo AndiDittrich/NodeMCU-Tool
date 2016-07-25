@@ -74,7 +74,8 @@ function cliPrepare(options){
         run:        options.run         || false,
         all:        options.all         || false,
         json:       options.json        || false,
-        raw:        options.raw         || false
+        raw:        options.raw         || false,
+        softreset:  options.softreset   || false
     };
 
     // project based configuration
@@ -365,10 +366,14 @@ _cli
     .command('reset')
     .description('Execute a Hard-Reset of the Module using DTR/RTS reset circuit')
 
+    // softreset mode
+    .option('--softreset', 'Resets the module using node.restart() command', false)
+
+
     .action(function(opt){
         var options = cliPrepare(opt);
 
-        _nodemcutool.reset(options.port, options.baudrate);
+        _nodemcutool.reset(options.port, options.baudrate, options.softreset);
     });
 
 _cli

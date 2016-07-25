@@ -513,8 +513,14 @@ String: Lorem ipsum dolor sit amet, consetetur sadipscing elitr
 
 ## Reset the Module ##
 Doing a hard-reset on modules which have an integrated reset circuit based on RTS/DST flowcontrol pins.
+A soft-reset is also possible.  
 
 **Syntax** `nodemcu-tool [options] reset`
+
+**Options**
+ 
+  * `--softreset` | Soft-Resets the module using the internal `node.restart()` command
+
 
 **Example**
 
