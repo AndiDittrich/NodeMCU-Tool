@@ -98,6 +98,12 @@ function cliPrepare(options){
     }catch (err){
     }
 
+    // set port/baud options
+    _nodemcutool.setOptions({
+        port: defaultConfig.port,
+        baud: defaultConfig.baudrate
+    });
+
     return defaultConfig;
 }
 
@@ -142,7 +148,7 @@ _cli
             format = 'raw';
         }
 
-        _nodemcutool.fsinfo(options.port, options.baudrate, format);
+        _nodemcutool.fsinfo(format);
     });
 
 _cli
@@ -151,7 +157,7 @@ _cli
     .action(function(filename, opt){
         var options = cliPrepare(opt);
 
-        _nodemcutool.run(options.port, options.baudrate, filename);
+        _nodemcutool.run(filename);
     });
 
 _cli
@@ -188,7 +194,7 @@ _cli
         // handle multiple uploads
         var currentFileNumber = 0;
 
-        _nodemcutool.upload(options.port, options.baudrate, localFiles, options, function(current, total, fileNumber){
+        _nodemcutool.upload(localFiles, options, function(current, total, fileNumber){
 
             // new file ?
             if (currentFileNumber != fileNumber){
@@ -214,7 +220,7 @@ _cli
     .action(function(remoteFilename, opt){
         var options = cliPrepare(opt);
 
-        _nodemcutool.download(options.port, options.baudrate, remoteFilename);
+        _nodemcutool.download(remoteFilename);
     });
 
 _cli
@@ -223,7 +229,7 @@ _cli
     .action(function(filename, opt){
         var options = cliPrepare(opt);
 
-        _nodemcutool.remove(options.port, options.baudrate, filename);
+        _nodemcutool.remove(filename);
     });
 
 _cli
@@ -239,7 +245,7 @@ _cli
         // no prompt!
         if (opt.noninteractive){
             // format
-            _nodemcutool.mkfs(options.port, options.baudrate);
+            _nodemcutool.mkfs();
 
             return;
         }
@@ -276,7 +282,7 @@ _cli
             }
 
             // format
-            _nodemcutool.mkfs(options.port, options.baudrate);
+            _nodemcutool.mkfs();
         });
 
     });
@@ -296,7 +302,7 @@ _cli
         }
 
         // start terminal session
-        _nodemcutool.terminal(options.port, options.baudrate, initialCommand);
+        _nodemcutool.terminal(initialCommand);
     });
 
 _cli
@@ -359,7 +365,7 @@ _cli
     .action(function(opt){
         var options = cliPrepare(opt);
 
-        _nodemcutool.devices(options.port, options.baudrate, options.all, options.json);
+        _nodemcutool.devices(options.all, options.json);
     });
 
 _cli
@@ -375,11 +381,11 @@ _cli
 
         // software reset
         if (options.softreset){
-            _nodemcutool.softreset(options.port, options.baudrate);
+            _nodemcutool.softreset();
 
         // hard-reset nRST
         }else{
-            _nodemcutool.reset(options.port, options.baudrate);
+            _nodemcutool.reset();
         }
 
     });
