@@ -646,7 +646,7 @@ Of course, check the [Examples](docs/Examples.md) file (tool usage) as well as t
 #### The serial file transfer is pretty slow ####
 By default, the serial connection uses a 9600 baud with 8N1 - this means maximal 960 bytes/s raw data rate.
 Due to the limitations of a line-wise file upload, these maximal transfer rate cannot be reached, because every line has to be processed by the lua interpreter and NodeMCU-Tool is waiting for it's response.
-It's recommended to use the `--optimize` flag to strip whitespaces before uploading
+It's recommended to use the `--optimize` flag to strip whitespaces before uploading. Additionally, newer firmware versions `1.x.x` using an auto-baudrate detection algorithm - this means you can increase the baudrate to e.g. 115200 `--baud 115200` to speed up the transfer 
 
 Any Questions ? Report a Bug ? Enhancements ?
 ---------------------------------------------
