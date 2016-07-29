@@ -63,7 +63,7 @@ function cliPrepare(options){
     // merge global flags, command flags and global defaults
     var defaultConfig = {
         // global flags
-        baudrate:           _cli.baud           || '9600',
+        baudrate:           _cli.baud           || '115200',
         port:               _cli.port           || '/dev/ttyUSB0',
         connectionDelay:    _cli.connectionDelay || 0,
 
