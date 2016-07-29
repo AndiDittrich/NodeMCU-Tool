@@ -1,6 +1,7 @@
 ### 2.0.0-BETA1 ###
 * Added: `reset` command to Hard-Reset the NodeMCU module using DTR/RTS reset circuit (like NodeMCU DEV Kit)
 * Added: RAW output format to `fsinfo` command - feature requested [on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/13) #13
+* Added: `--connection-delay` option to fix broken reset circuits which cause a immediate hard-reset on opening the serial connection (dts/rts lines) #14 
 * Changed: footprints of NodeMCU-Tool.js functions - port/baudrate are set globally by setOptions instead by each function
 * Changed: [logging-facility](https://github.com/AndiDittrich/Node.Logging-Facility) is used for global log output management
 * Changed: Updated the [serialport package](https://github.com/EmergingTechnologyAdvisors/node-serialport) to v4.0.0

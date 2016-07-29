@@ -63,8 +63,9 @@ function cliPrepare(options){
     // merge global flags, command flags and global defaults
     var defaultConfig = {
         // global flags
-        baudrate:   _cli.baud           || '9600',
-        port:       _cli.port           || '/dev/ttyUSB0',
+        baudrate:           _cli.baud           || '9600',
+        port:               _cli.port           || '/dev/ttyUSB0',
+        connectionDelay:    _cli.connectionDelay || 0,
 
         // command specific flags
         optimize:   options.optimize    || false,
@@ -101,7 +102,8 @@ function cliPrepare(options){
     // set port/baud options
     _nodemcutool.setOptions({
         port: defaultConfig.port,
-        baud: defaultConfig.baudrate
+        baudrate: defaultConfig.baudrate,
+        connectionDelay: defaultConfig.connectionDelay
     });
 
     return defaultConfig;
@@ -120,7 +122,10 @@ _cli
     .option('-b, --baud <baudrate>', 'Serial Port Baudrate in bps, default 9600', null)
 
     // silent mode - no status messages are shown
-    .option('--silent', 'Enable silent mode - no status messages are shown', false);
+    .option('--silent', 'Enable silent mode - no status messages are shown', false)
+
+    // connection delay between opening the serial device and starting the communication
+    .option('--connection-delay <delay>', 'Connection delay between opening the serial device and starting the communication', 0);
 
 _cli
     .command('fsinfo')
