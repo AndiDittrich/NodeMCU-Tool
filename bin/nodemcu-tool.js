@@ -64,7 +64,7 @@ function cliPrepare(options){
     var defaultConfig = {
         // global flags
         baudrate:           _cli.baud           || '115200',
-        port:               _cli.port           || '/dev/ttyUSB0',
+        port:               _cli.port           || '/dev/ttyUSB',
         connectionDelay:    _cli.connectionDelay || 0,
 
         // command specific flags
@@ -101,7 +101,7 @@ function cliPrepare(options){
 
     // set port/baud options
     _nodemcutool.setOptions({
-        port: defaultConfig.port,
+        device: defaultConfig.port,
         baudrate: defaultConfig.baudrate,
         connectionDelay: defaultConfig.connectionDelay
     });
@@ -119,7 +119,7 @@ _cli
     .option('-p, --port <port>', 'Serial port device name e.g. /dev/ttyUSB0, COM1', null)
 
     // serial port baudrate
-    .option('-b, --baud <baudrate>', 'Serial Port Baudrate in bps, default 9600', null)
+    .option('-b, --baud <baudrate>', 'Serial Port Baudrate in bps, default 115200', null)
 
     // silent mode - no status messages are shown
     .option('--silent', 'Enable silent mode - no status messages are shown', false)

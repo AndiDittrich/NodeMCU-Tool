@@ -251,12 +251,12 @@ $ nodemcu-tool [options] command [args..]
 
 ## Connection ##
 To configure the connection settings you can use the global options `--port <port>` and `--baud <baudrate>` to select the serial port and baudrate.
-The default values are **9600bps** as baudrate and **/dev/ttyUSB0** as serial device
+The default values are **115200bps** as baudrate and **/dev/ttyUSB0** as serial device
 
 **Example**
 
 ```shell
-$ nodemcu-tool --port=/dev/ttyUSB1 --baudrate=115200 run test.lua
+$ nodemcu-tool --port=/dev/ttyUSB1 --baudrate=9600 run test.lua
 ```
 
 ## Show Help ##
@@ -269,25 +269,30 @@ $ nodemcu-tool --help
 
   Usage: nodemcu-tool [options] [command]
 
+
   Commands:
 
-    fsinfo [options]         Show file system info (current files, memory usage)
-    run <file>               Executes an existing .lua or .lc file on NodeMCU
-    upload [options] <file>  Upload Files to NodeMCU (ESP8266) target
-    download <file>          Download files from NodeMCU (ESP8266) target
-    remove <file>            Removes a file from NodeMCU filesystem
-    mkfs [options]           Format the SPIFFS filesystem - ALL FILES ARE REMOVED
-    terminal                 Opens a Terminal connection to NodeMCU
-    init                     Initialize a project-based Configuration (file) within current directory
-    devices [options]        Shows a list of all available NodeMCU Modules/Serial Devices
+    fsinfo [options]             Show file system info (current files, memory usage)
+    run <file>                   Executes an existing .lua or .lc file on NodeMCU
+    upload [options] [files...]  Upload Files to NodeMCU (ESP8266) target
+    download <file>              Download files from NodeMCU (ESP8266) target
+    remove <file>                Removes a file from NodeMCU filesystem
+    mkfs [options]               Format the SPIFFS filesystem - ALL FILES ARE REMOVED
+    terminal [options]           Opens a Terminal connection to NodeMCU
+    init                         Initialize a project-based Configuration (file) within current directory
+    devices [options]            Shows a list of all available NodeMCU Modules/Serial Devices
+    reset [options]              Execute a Hard-Reset of the Module using DTR/RTS reset circuit
+    *
 
   Options:
 
-    -h, --help             output usage information
-    -V, --version          output the version number
-    -p, --port <port>      Serial port device name e.g. /dev/ttyUSB0, COM1
-    -b, --baud <baudrate>  Serial Port Baudrate in bps, default 9600
-    --silent               Enable silent mode - no status messages are shown
+    -h, --help                  output usage information
+    -V, --version               output the version number
+    -p, --port <port>           Serial port device name e.g. /dev/ttyUSB0, COM1
+    -b, --baud <baudrate>       Serial Port Baudrate in bps, default 115200
+    --silent                    Enable silent mode - no status messages are shown
+    --connection-delay <delay>  Connection delay between opening the serial device and starting the communication
+
 ```
 
 ## Show connected NodeMCU Modules ##
