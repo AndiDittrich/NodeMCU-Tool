@@ -64,7 +64,7 @@ function cliPrepare(options){
     var defaultConfig = {
         // global flags
         baudrate:           _cli.baud           || '115200',
-        port:               _cli.port           || '/dev/ttyUSB',
+        port:               _cli.port           || '/dev/ttyUSB0',
         connectionDelay:    _cli.connectionDelay || 0,
 
         // command specific flags
