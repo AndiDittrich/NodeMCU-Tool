@@ -10,6 +10,7 @@ The original [NodeMCU DEVKIT](https://github.com/nodemcu/nodemcu-devkit-v1.0) in
 This allows the user to execute a hard-reset or flash command via software.
 
 **Reset Circuit** (from [NodeMCU DEVKIT Schematics](https://github.com/nodemcu/nodemcu-devkit-v1.0/blob/master/NODEMCU_DEVKIT_V1.0.PDF))
+
 ![Reset Circuit of NodeMCU DEVKIT](nodemcu-reset-circuit.jpg)
 
 
