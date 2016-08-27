@@ -38,6 +38,7 @@ How to fix it
 NodeMCU-Tool v2.0.0 includes a special delay flag `--connection-delay N` which waits **N** milliseconds after establishing the connection and sends additional dummy sequences to trigger the auto-baudrate detection.
 
 **Timeline**
+
 1. **NodeMCU-Tool** establishes the serial connection
 2. **NodeMCU-Tool** is waiting **N** milliseconds until the hard-reset/reboot is done
 3. **NodeMCU** becomes ready and starts the auto-baudrate detection
