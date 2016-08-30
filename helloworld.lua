@@ -1,4 +1,4 @@
--- A simple Hello World LUA Script
+-- A simple Hello World Lua Script
 print('Hello World!')
 
 print('|---|')

@@ -173,7 +173,7 @@ _cli
     .option('-o, --optimize', 'Removes comments and empty lines from file before uploading', false)
 
     // compile files after upload
-    .option('-c, --compile', 'Compile LUA file to bytecode (.lc) and remove the original file after upload', false)
+    .option('-c, --compile', 'Compile Lua file to bytecode (.lc) and remove the original file after upload', false)
 
     // keep-path
     .option('-k, --keeppath', 'Keep a relative file path in the destination filename (i.e: static/test.html will be named static/test.html)', false)
