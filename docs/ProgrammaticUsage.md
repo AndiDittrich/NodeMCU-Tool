@@ -134,7 +134,7 @@ con.connect(function(err, response){
     // get version, flashid ... message
     console.log(response);
     
-    // run a command on the LUA command line
+    // run a command on the Lua command line
     con.executeCommand('node.compile("testfile.lua");', function(err, echo, response){
         if (err){
             console.error('IO Error - ', err);

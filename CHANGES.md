@@ -59,13 +59,13 @@
 * Added: Download function to fetch file from NodeMCU (binary save)
 * Added: Additional check to verify the existence of a remote file for read/write operations 
 * Changed: File-Content is hex-encoded before upload - this allows binary file uploads and "unlimited" line size (not longer limited to 235chars per line!)
-* Changed: All used LUA commands/functions are centralized in NodeMcuConnector
-* Changed: the `--optimize` flag only works for LUA files with file-type `.lua`
+* Changed: All used Lua commands/functions are centralized in NodeMcuConnector
+* Changed: the `--optimize` flag only works for Lua files with file-type `.lua`
 
 ### 1.1.0 ###
 * Added: NodeMCU-Tool.js to use the connector as well as all CLI functions programmatically
 * Added: Colorized terminal messages
-* Added: Low Level API for direct interactions with the LUA interpreter
+* Added: Low Level API for direct interactions with the Lua interpreter
 * Changed: The bin tool has been separated in two files (CLI and API layer)
 * Changed: all errors are handled as callbacks (Node.js standard)
 * Changed: moved the `test.lua` file to top-level and renamed it to `helloworld.lua`

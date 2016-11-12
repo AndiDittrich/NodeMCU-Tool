@@ -1,6 +1,6 @@
 NodeMCU-Tool
 ============
-Upload/Download LUA files to your ESP8266 module with NodeMCU firmware.
+Upload/Download Lua files to your ESP8266 module with NodeMCU firmware.
 
 **Simple. Command Line. Cross-Platform. File Management. [NodeMCU](http://nodemcu.com/index_en.html).**
 
@@ -14,7 +14,7 @@ Tool Summary
 -------------
 NodeMCU Tool allows you to
 
-* Upload LUA files to your ESP8266/NodeMCU module
+* Upload Lua files to your ESP8266/NodeMCU module
 * Upload any file-types (binary save)
 * Bulk/Multi file uploads
 * Download any file-type (binary save)
@@ -22,8 +22,8 @@ NodeMCU Tool allows you to
 * Format the file system
 * Simple Serial Terminal to interact with NodeMCU
 * Show existing files on your module
-* Precompile LUA files live on NodeMCU
-* Optimize LUA files before uploading by stripping comments (saves flash memory)
+* Precompile Lua files live on NodeMCU
+* Optimize Lua files before uploading by stripping comments (saves flash memory)
 * Use the **NodeMcuConnector API** in your own projects
 * Apply Project based configurations
 * Hard-Reset the module using DTR/RTS reset circuit (like NodeMCU DEV Kit)
@@ -339,7 +339,7 @@ $ nodemcu-tool --port=/dev/ttyUSB1 --optimize --compile upload test.lua
 [NodeMCU-Tool] Data Transfer complete!
 [NodeMCU] compiling lua file..
 [NodeMCU] Success
-[NodeMCU] Original LUA file removed
+[NodeMCU] Original Lua file removed
 ```
 
 **Example 2**
@@ -390,7 +390,7 @@ The remote file name will be "MyFile.txt"
 
 **Example 7**
 
-Upload multiple files to the module at once and compile LUA files. Non-existing files will be ignored!
+Upload multiple files to the module at once and compile Lua files. Non-existing files will be ignored!
 
 ```shell
 $ nodemcu-tool upload helloworld.lua dev/f1.lua dev/f2.lua xxx.txt dev/f3.lua helloworld.lua test.lua --keeppath --compile
@@ -399,24 +399,24 @@ $ nodemcu-tool upload helloworld.lua dev/f1.lua dev/f2.lua xxx.txt dev/f3.lua he
 [NodeMCU-Tool] Uploading "helloworld.lua" >> "helloworld.lua"...
 [NodeMCU]  |- compiling lua file..
 [NodeMCU]  |- success
-[NodeMCU]  |- original LUA file removed
+[NodeMCU]  |- original Lua file removed
 [NodeMCU-Tool] Uploading "dev/f1.lua" >> "dev/f1.lua"...
 [NodeMCU]  |- compiling lua file..
 [NodeMCU]  |- Success
-[NodeMCU]  |- Original LUA file removed
+[NodeMCU]  |- Original Lua file removed
 [NodeMCU-Tool] Uploading "dev/f2.lua" >> "dev/f2.lua"...
 [NodeMCU]  |- compiling lua file..
 [NodeMCU]  |- Success
-[NodeMCU]  |- Original LUA file removed
+[NodeMCU]  |- Original Lua file removed
 [NodeMCU-Tool] Local file not found "xxx.txt" skipping...
 [NodeMCU-Tool] Uploading "dev/f3.lua" >> "dev/f3.lua"...
 [NodeMCU]  |- compiling lua file..
 [NodeMCU]  |- Success
-[NodeMCU]  |- Original LUA file removed
+[NodeMCU]  |- Original Lua file removed
 [NodeMCU-Tool] Uploading "helloworld.lua" >> "helloworld.lua"...
 [NodeMCU]  |- compiling lua file..
 [NodeMCU]  |- Success
-[NodeMCU]  |- Original LUA file removed
+[NodeMCU]  |- Original Lua file removed
 [NodeMCU-Tool] Local file not found "test.lua" skipping...
 [NodeMCU-Tool] Bulk File Transfer complete!
 ```
@@ -602,8 +602,8 @@ The Tool is separated into the following components (ordered by its invocation)
 
   1. `bin/nodemcu-tool.js` - the command line user interface handler based on [commander](https://www.npmjs.com/package/commander)
   2. `lib/NodeMCU-Tool.js` - Highlevel Access to the main functions. Error and Status messages are handled there
-  3. `lib/NodeMcuConnector.js` - the Core which handles the LUA command based communication to the NodeMCU Module
-  4. `lib/ScriptableSerialTerminal.js` - the lowlevel part - a terminal session to the NodeMCU Module to run the LUA commands
+  3. `lib/NodeMcuConnector.js` - the Core which handles the Lua command based communication to the NodeMCU Module
+  4. `lib/ScriptableSerialTerminal.js` - the lowlevel part - a terminal session to the NodeMCU Module to run the Lua commands
   
   
 ### Application Stack ###
