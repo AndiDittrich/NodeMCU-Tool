@@ -1,5 +1,6 @@
 ### 2.0.1 ###
 * Bugfix: `devices` command was broken since the last release (refactoring issue) - thanks to [otbe on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/18) #18
+* Improved: Lua is not an acronym #17
 
 ### 2.0.0 ###
 * Added: `reset` command to Hard-Reset the NodeMCU module using DTR/RTS reset circuit (like NodeMCU DEV Kit)
