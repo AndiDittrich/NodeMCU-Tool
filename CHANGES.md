@@ -1,3 +1,6 @@
+### 2.0.2 ###
+Bugfix: Upload command failed because of API changes in NodeMCU Firmware **v1.5.4**
+
 ### 2.0.1 ###
 * Bugfix: `devices` command was broken since the last release (refactoring issue) - thanks to [otbe on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/18) #18
 * Improved: Lua is not an acronym #17
