@@ -33,6 +33,14 @@ directly from the command line.
 
 *Successful tested on Windows10, Debian 8.2 and Ubuntu 14 LTS - works out of the box without any tweaks*
 
+Compatibility
+-------------
+The following NodeMCU firmware versions are verified
+
+* NodeMCU LUA 1.4
+* NodeMCU LUA 1.5.1
+* NodeMCU LUA 1.5.4
+
 Related Documents
 -----------------
 
