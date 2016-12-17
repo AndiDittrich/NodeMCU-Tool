@@ -1,3 +1,6 @@
+### 2.0.3 ###
+Bugfix: Terminal in **non-TTY** mode caused fatal error on connect - thanks to [stephanMettler on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/23) #23
+
 ### 2.0.2 ###
 Bugfix: Upload command failed because of API changes in NodeMCU Firmware **v1.5.4** - thanks to [curioussavage on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/22) ##2
 Bugfix: Fix crash when trying to upload a folder - thanks to [sakisds on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/20) #20 
