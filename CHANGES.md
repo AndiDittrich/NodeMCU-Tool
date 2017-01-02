@@ -1,9 +1,12 @@
+### 2.0.4 ###
+* Bugfix: Download command failed because of API changes in NodeMCU Firmware **v1.5.4** - thanks to [verneroberts on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/24) #42
+
 ### 2.0.3 ###
-Bugfix: Terminal in **non-TTY** mode caused fatal error on connect - thanks to [stephanMettler on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/23) #23
+* Bugfix: Terminal in **non-TTY** mode caused fatal error on connect - thanks to [stephanMettler on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/23) #23
 
 ### 2.0.2 ###
-Bugfix: Upload command failed because of API changes in NodeMCU Firmware **v1.5.4** - thanks to [curioussavage on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/22) ##2
-Bugfix: Fix crash when trying to upload a folder - thanks to [sakisds on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/20) #20 
+* Bugfix: Upload command failed because of API changes in NodeMCU Firmware **v1.5.4** - thanks to [curioussavage on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/22) #22
+* Bugfix: Fix crash when trying to upload a folder - thanks to [sakisds on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/20) #20 
 
 ### 2.0.1 ###
 * Bugfix: `devices` command was broken since the last release (refactoring issue) - thanks to [otbe on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/18) #18
