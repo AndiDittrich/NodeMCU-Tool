@@ -334,6 +334,7 @@ The most important task of this tool: upload local files to the module.
 * `--compile`  | Compiles the uploaded .lua file into executable bytecode and removes the source .lua file (performance)
 * `--keeppath` | Keeps the relative file path in the destination filename (i.e: static/test.html will be named static/test.html)
 * `--remotename` | Set the destination file name
+* `--fastupload` | Use base64 encoding for file upload. **IMPORTANT** : The _NodeMCU_ module "**encode**" must be present on the firmeware (which is not the case by default).
 
 **Example 1**
 
