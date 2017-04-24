@@ -77,7 +77,7 @@ function cliPrepare(options){
         json:       options.json        || false,
         raw:        options.raw         || false,
         softreset:  options.softreset   || false,
-        fastupload: options.fastupload    || false
+        fastupload: options.fastupload  || false
     };
 
     // project based configuration
@@ -95,6 +95,7 @@ function cliPrepare(options){
             defaultConfig.optimize = (d.optimize && d.optimize === true);
             defaultConfig.compile = (d.compile && d.compile === true);
             defaultConfig.keeppath = (d.keeppath && d.keeppath === true);
+            defaultConfig.fastupload = (d.fastupload && d.fastupload === true);
             _logger.log('Project based configuration loaded');
         }
     }catch (err){
@@ -181,6 +182,9 @@ _cli
 
     // sets the remote filename
     .option('-n, --remotename <remotename>', 'Set destination file name. Default is same as original. Only available when uploading a single file!', false)
+
+    // use fast upload
+    .option('-f, --fastupload', 'Boost the upload speed by using base64 encoding. IMPORTANT: The NodeMCU module "encode" must be present on the firmeware (which is not the case by default)!', false)
 
     .action(function(localFiles, opt){
         var options = cliPrepare(opt);
