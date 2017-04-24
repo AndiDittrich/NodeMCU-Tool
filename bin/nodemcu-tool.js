@@ -76,7 +76,8 @@ function cliPrepare(options){
         all:        options.all         || false,
         json:       options.json        || false,
         raw:        options.raw         || false,
-        softreset:  options.softreset   || false
+        softreset:  options.softreset   || false,
+        fastupload: options.fastupload    || false
     };
 
     // project based configuration
