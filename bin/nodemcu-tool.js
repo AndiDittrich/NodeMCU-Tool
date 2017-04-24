@@ -184,7 +184,7 @@ _cli
     .option('-n, --remotename <remotename>', 'Set destination file name. Default is same as original. Only available when uploading a single file!', false)
 
     // use fast upload
-    .option('-f, --fastupload', 'Boost the upload speed by using base64 encoding. IMPORTANT: The NodeMCU module "encode" must be present on the firmeware (which is not the case by default)!', false)
+    .option('-f, --fastupload', 'Boost the upload speed by using base64 encoding. IMPORTANT: The NodeMCU module "encode" must be present on the firmware (which is not the case by default)!', false)
 
     .action(function(localFiles, opt){
         var options = cliPrepare(opt);
