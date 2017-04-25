@@ -48,6 +48,7 @@ Related Documents
 * [Common Use-Cases and Examples](docs/Examples.md)
 * [Programmatic Usage](docs/ProgrammaticUsage.md)
 * [Fixing Reset-on-Connect Issue](docs/Reset_on_Connect.md)
+* [File Transfer Encoding](docs/TransferEncoding.md)
 * [Webstorm Integration](docs/WebstormIntegration.md)
 * [Contribution Guidelines](CONTRIBUTE.md)
 * [NodeMCU DEVKIT Schematics](https://github.com/nodemcu/nodemcu-devkit-v1.0/blob/master/NODEMCU_DEVKIT_V1.0.PDF)
@@ -183,6 +184,8 @@ $ nodemcu-tool mkfs --port=/dev/ttyUSB0
 ```
 
 ### 4. Upload a new File ###
+
+**Hint** include the native [encoder Module](http://nodemcu.readthedocs.io/en/master/en/modules/encoder/) into your firmware to speed-up the uploading by factor 4..10!
 
 ```shell
 $ nodemcu-tool upload --port=/dev/ttyUSB0 --optimize helloworld.lua
@@ -323,6 +326,8 @@ Of course, check the [Examples](docs/Examples.md) file (tool usage) as well as t
 By default, the serial connection uses a 9600 baud with 8N1 - this means maximal 960 bytes/s raw data rate.
 Due to the limitations of a line-wise file upload, these maximal transfer rate cannot be reached, because every line has to be processed by the lua interpreter and NodeMCU-Tool is waiting for it's response.
 It's recommended to use the `--optimize` flag to strip whitespaces before uploading. Additionally, newer firmware versions `1.x.x` using an auto-baudrate detection algorithm - this means you can increase the baudrate to e.g. 115200 `--baud 115200` to speed up the transfer 
+
+Additionally include the native [encoder Module](http://nodemcu.readthedocs.io/en/master/en/modules/encoder/) into your firmware to speed-up the uploading by factor 4..10!
 
 Any Questions ? Report a Bug ? Enhancements ?
 ---------------------------------------------

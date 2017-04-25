@@ -1,5 +1,9 @@
+### 2.1.0 ###
+* Added: Support for native [encode](http://nodemcu.readthedocs.io/en/master/en/modules/encoder/) module to use **base64** as transfer encoding (speed up the transfer by factor 4) - suggested by [MickaelGuilloux on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/34) #32 
+* Bugfix: By uploading multiple files the transfer-encoder functions where uploaded each time
+
 ### 2.0.4 ###
-* Bugfix: Download command failed because of API changes in NodeMCU Firmware **v1.5.4** - thanks to [verneroberts on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/24) #42
+* Bugfix: Download command failed because of API changes in NodeMCU Firmware **v1.5.4** - thanks to [verneroberts on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/24) #24
 
 ### 2.0.3 ###
 * Bugfix: Terminal in **non-TTY** mode caused fatal error on connect - thanks to [stephanMettler on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/23) #23
