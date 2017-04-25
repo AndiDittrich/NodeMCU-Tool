@@ -1,11 +1,17 @@
-# How to use with Webstorm IDE
+How to use with Webstorm IDE
+=====================================
 
-1. Add nodemcu-tool as a local dependency
-```
+Step 1 - Add nodemcu-tool as a local dependency
+-------------------------------------------
+
+```terminal
 npm install -s nodemcu-tool
 ```
-1. Add scripts like these into your package.json
-```
+
+Step 2 -  Add scripts like these into your package.json
+-------------------------------------------
+
+```json
 "scripts": {
         "ls":"node_modules/.bin/nodemcu-tool fsinfo",
         "upload-app":"node_modules/.bin/nodemcu-tool upload app/*",
@@ -21,10 +27,13 @@ npm install -s nodemcu-tool
     },
     
  ```
- 
+
+Suggested Workflow
+-------------------------------------------
+
 The actual workflow is something like this:
 
 1. ensure no (nodemcu) terminal is running; start upload-app via double click in npm window; look for errors
-1. in (webstorm) terminal window enter npm run terminal-py
-1. enter there node.restart()
-1. ctrl+ü ends (nodemcu) terminal; repeat from 1
+2. in (webstorm) terminal window enter npm run terminal-py
+3. enter there node.restart()
+4. ctrl+ü ends (nodemcu) terminal; repeat from 1

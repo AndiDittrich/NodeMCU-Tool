@@ -47,6 +47,7 @@ Related Documents
 * [Common Use-Cases and Examples](docs/Examples.md)
 * [Programmatic Usage](docs/ProgrammaticUsage.md)
 * [Fixing Reset-on-Connect Issue](docs/Reset_on_Connect.md)
+* [Webstorm Integration](docs/WebstormIntegration.md)
 * [Contribution Guidelines](CONTRIBUTE.md)
 * [NodeMCU DEVKIT Schematics](https://github.com/nodemcu/nodemcu-devkit-v1.0/blob/master/NODEMCU_DEVKIT_V1.0.PDF)
 * [Changelog](CHANGES.md)
