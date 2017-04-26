@@ -186,7 +186,8 @@ _cli
 
         // initialize a new progress bar
         var bar = new _progressbar.Bar({
-            clearOnComplete: true
+            clearOnComplete: true,
+            hideCursor: true
         }, _progressbar.Presets.shades_classic);
 
         // files provided ?
