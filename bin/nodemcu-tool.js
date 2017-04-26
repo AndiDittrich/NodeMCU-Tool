@@ -186,9 +186,8 @@ _cli
 
         // initialize a new progress bar
         var bar = new _progressbar.Bar({
-            format: 'Upload Status {percentage}% [{bar}] | ETA {eta}s',
             clearOnComplete: true
-        });
+        }, _progressbar.Presets.shades_classic);
 
         // files provided ?
         if (localFiles.length == 0){

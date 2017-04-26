@@ -32,7 +32,7 @@
   "author": "Andi Dittrich (http://andidittrich.de)",
   "license": "MIT",
   "dependencies": {
-    "cli-progress": "^1.2.0",
+    "cli-progress": "^1.4.0",
     "colors": "^1.1.2",
     "commander": "^2.9.0",
     "logging-facility": "^1.1.0",
