@@ -1,5 +1,6 @@
 ### 2.1.0 ###
-* Added: Support for native [encode](http://nodemcu.readthedocs.io/en/master/en/modules/encoder/) module to use **base64** as transfer encoding (speed up the transfer by factor 4) - suggested by [MickaelGuilloux on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/34) #32 
+* Added: Support for native [encode](http://nodemcu.readthedocs.io/en/master/en/modules/encoder/) module to use **base64** as transfer encoding (speed up the transfer by factor 4..10) - suggested by [MickaelGuilloux on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/34) #32 
+* Changed: Progress bar appearance (shades_classic theme of **cli-progress v1.4** is used)
 * Bugfix: By uploading multiple files the transfer-encoder functions where uploaded each time
 
 ### 2.0.4 ###
