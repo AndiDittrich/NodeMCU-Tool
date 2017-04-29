@@ -1,3 +1,6 @@
+### 2.1.1 ###
+* Bugfix: Uploading of empty files failed - thanks to [T-vK on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/37) #37
+
 ### 2.1.0 ###
 * Added: Support for native [encode](http://nodemcu.readthedocs.io/en/master/en/modules/encoder/) module to use **base64** as transfer encoding (speed up the transfer by factor 4..10) - suggested by [MickaelGuilloux on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/34) #32 
 * Changed: Progress bar appearance (shades_classic theme of **cli-progress v1.4** is used)
