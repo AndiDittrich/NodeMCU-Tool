@@ -188,7 +188,7 @@ $ nodemcu-tool mkfs --port=/dev/ttyUSB0
 **Hint** include the native [encoder Module](http://nodemcu.readthedocs.io/en/master/en/modules/encoder/) into your firmware to speed-up the uploading by factor 4..10!
 
 ```shell
-$ nodemcu-tool upload --port=/dev/ttyUSB0 --optimize helloworld.lua
+$ nodemcu-tool upload --port=/dev/ttyUSB0 --minify helloworld.lua
 [NodeMCU-Tool] Connected
 [NodeMCU] Version: 0.9.5 | ChipID: 0xd1aa | FlashID: 0x1640e0
 [NodeMCU-Tool] Uploading "main.lua" ...
@@ -230,14 +230,14 @@ This will create a JSON based configuration file named `.nodemcutool` in your **
 
 ### Example Configuration ###
 
-In this Example, the baudrate is changed to 19.2k and COM3 is selected as default port. Additionally the `--optimize` and `--compile` flags are set permanently.
+In this Example, the baudrate is changed to 19.2k and COM3 is selected as default port. Additionally the `--minify` and `--compile` flags are set permanently.
 
 ```json
 {
     "baudrate": "19200",
     "port": "COM3",
     "compile": true,
-    "optimize": true,
+    "minify": true,
     "keeppath": true
 }
 ```
@@ -249,7 +249,8 @@ All configuration options are **optional**
 * **baudrate** (int) - the default baudrate in bits per second
 * **port** (string) - the comport to use
 * **compile** (boolean) - compile lua files after upload
-* **optimize** (boolean) - optimize files before uploading
+* **minify** (boolean) - minifies files before uploading
+* **optimize** (boolean) - optimize files before uploading (Deprecated! Use minify instead.)
 * **keeppath** (boolean) - keep the relative file path in the destination filename (i.e: static/test.html will be named static/test.html)
  
  
@@ -325,7 +326,7 @@ Of course, check the [Examples](docs/Examples.md) file (tool usage) as well as t
 #### The serial file transfer is pretty slow ####
 By default, the serial connection uses a 9600 baud with 8N1 - this means maximal 960 bytes/s raw data rate.
 Due to the limitations of a line-wise file upload, these maximal transfer rate cannot be reached, because every line has to be processed by the lua interpreter and NodeMCU-Tool is waiting for it's response.
-It's recommended to use the `--optimize` flag to strip whitespaces before uploading. Additionally, newer firmware versions `1.x.x` using an auto-baudrate detection algorithm - this means you can increase the baudrate to e.g. 115200 `--baud 115200` to speed up the transfer 
+It's recommended to use the `--minify` flag to minify the code before uploading. Additionally, newer firmware versions `1.x.x` using an auto-baudrate detection algorithm - this means you can increase the baudrate to e.g. 115200 `--baud 115200` to speed up the transfer 
 
 Additionally include the native [encoder Module](http://nodemcu.readthedocs.io/en/master/en/modules/encoder/) into your firmware to speed-up the uploading by factor 4..10!
 

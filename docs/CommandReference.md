@@ -78,17 +78,18 @@ The most important task of this tool: upload local files to the module.
 
 **Options**
 
-* `--optimize` | Remove Comments, Whitespaces and empty lines from the file before upload
+* `--optimize` | Deprecated! - Remove Comments, Whitespaces and empty lines from the file before upload
+* `--minify`   | Minifies the code before upload
 * `--compile`  | Compiles the uploaded .lua file into executable bytecode and removes the source .lua file (performance)
 * `--keeppath` | Keeps the relative file path in the destination filename (i.e: static/test.html will be named static/test.html)
 * `--remotename` | Set the destination file name
 
 **Example 1**
 
-Upload and optimize the file "test.lua"
+Upload and minify the file "test.lua"
 
 ```shell
-$ nodemcu-tool --port=/dev/ttyUSB1 --optimize --compile upload test.lua
+$ nodemcu-tool --port=/dev/ttyUSB1 --minify --compile upload test.lua
 [NodeMCU-Tool] Connected
 [NodeMCU] Version: 0.9.5 | ChipID: 0xd1aa | FlashID: 0x1640e0
 [NodeMCU-Tool] Uploading "toolkit/test.lua" ...
