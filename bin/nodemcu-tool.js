@@ -69,6 +69,7 @@ function cliPrepare(options){
 
         // command specific flags
         optimize:   options.optimize    || false,
+        minify:     options.minify      || false,
         compile:    options.compile     || false,
         keeppath:   options.keeppath    || false,
         remotename: options.remotename  || null,
@@ -91,6 +92,7 @@ function cliPrepare(options){
             // extract values
             defaultConfig.baudrate = d.baudrate || defaultConfig.baudrate;
             defaultConfig.port = d.port || defaultConfig.port;
+            defaultConfig.minify = (d.minify && d.minify === true);
             defaultConfig.optimize = (d.optimize && d.optimize === true);
             defaultConfig.compile = (d.compile && d.compile === true);
             defaultConfig.keeppath = (d.keeppath && d.keeppath === true);
@@ -168,6 +170,9 @@ _cli
 _cli
     .command('upload [files...]')
     .description('Upload Files to NodeMCU (ESP8266) target')
+
+    // file minification
+    .option('-m, --minify', 'Minifies the file before uploading', false)
 
     // file cleanup
     .option('-o, --optimize', 'Removes comments and empty lines from file before uploading', false)
@@ -346,6 +351,7 @@ _cli
                 _logger.error(err);
             }else{
                 // set defaults
+                data.minify = false;
                 data.optimize = false;
                 data.compile = false;
                 data.keeppath = false;
