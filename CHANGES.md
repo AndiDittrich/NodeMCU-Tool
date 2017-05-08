@@ -1,3 +1,6 @@
+### 2.2.0 ###
+* Added: LUA minification based on [luamin](https://www.npmjs.com/package/luamin) - thanks to [T-vK on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/39) #39
+
 ### 2.1.1 ###
 * Bugfix: Uploading of empty files failed - thanks to [T-vK on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/37) #37
 

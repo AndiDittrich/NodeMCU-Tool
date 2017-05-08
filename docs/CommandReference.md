@@ -4,7 +4,7 @@ Command Reference
 ### General Syntax ###
 
 ```shell
-$ nodemcu-tool [options] command [args..]
+$ nodemcu-tool <command> [options] [args..]
 ```
 
 ## Connection ##
@@ -89,7 +89,7 @@ The most important task of this tool: upload local files to the module.
 Upload and minify the file "test.lua"
 
 ```shell
-$ nodemcu-tool --port=/dev/ttyUSB1 --minify --compile upload test.lua
+$ nodemcu-tool --port=/dev/ttyUSB1 upload --minify --compile test.lua
 [NodeMCU-Tool] Connected
 [NodeMCU] Version: 0.9.5 | ChipID: 0xd1aa | FlashID: 0x1640e0
 [NodeMCU-Tool] Uploading "toolkit/test.lua" ...
@@ -104,7 +104,7 @@ $ nodemcu-tool --port=/dev/ttyUSB1 --minify --compile upload test.lua
 Upload and precompile a new main file
 
 ```shell
-$ nodemcu-tool --compile upload main.lua
+$ nodemcu-tool upload --compile main.lua
 ```
 
 **Example 3**

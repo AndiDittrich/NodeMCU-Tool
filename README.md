@@ -23,7 +23,7 @@ NodeMCU Tool allows you to
 * Simple Serial Terminal to interact with NodeMCU
 * Show existing files on your module
 * Precompile Lua files live on NodeMCU
-* Optimize Lua files before uploading by stripping comments (saves flash memory)
+* Minimize Lua files before uploading (provided by [luamin](https://www.npmjs.com/package/luamin))
 * Use the **NodeMcuConnector API** in your own projects
 * Apply Project based configurations
 * Hard-Reset the module using DTR/RTS reset circuit (like NodeMCU DEV Kit)
@@ -188,7 +188,7 @@ $ nodemcu-tool mkfs --port=/dev/ttyUSB0
 **Hint** include the native [encoder Module](http://nodemcu.readthedocs.io/en/master/en/modules/encoder/) into your firmware to speed-up the uploading by factor 4..10!
 
 ```shell
-$ nodemcu-tool upload --port=/dev/ttyUSB0 --minify helloworld.lua
+$ nodemcu-tool upload --port=/dev/ttyUSB0 helloworld.lua
 [NodeMCU-Tool] Connected
 [NodeMCU] Version: 0.9.5 | ChipID: 0xd1aa | FlashID: 0x1640e0
 [NodeMCU-Tool] Uploading "main.lua" ...
