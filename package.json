@@ -36,7 +36,6 @@
     "colors": "^1.1.2",
     "commander": "^2.9.0",
     "logging-facility": "^1.1.0",
-    "luamin": "^1.0.4",
     "prompt": "^0.2.14",
     "serialport": "^4.0.0"
   }
