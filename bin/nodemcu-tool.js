@@ -187,7 +187,6 @@ _cli
     .option('-n, --remotename <remotename>', 'Set destination file name. Default is same as original. Only available when uploading a single file!', false)
 
     .action(function(localFiles, opt){
-console.log(opt)
         var options = cliPrepare(opt);
 
         // initialize a new progress bar
