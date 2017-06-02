@@ -14,7 +14,7 @@ The default values are **115200bps** as baudrate and **/dev/ttyUSB0** as serial 
 **Example**
 
 ```shell
-$ nodemcu-tool --port=/dev/ttyUSB1 --baudrate=9600 run test.lua
+$ nodemcu-tool --port=/dev/ttyUSB1 --baud=9600 run test.lua
 ```
 
 ## Show Help ##
