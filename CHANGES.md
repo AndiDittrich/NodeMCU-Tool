@@ -1,3 +1,6 @@
+### 2.2.1 ###
+* Bugfix: File transfer chunk splitting used a weak regex which does not match linebreaks (slow transfer speed because of short chunks) - thanks to [T-vK on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/42) #42
+
 ### 2.2.0 ###
 * Added: LUA minification based on [luamin](https://www.npmjs.com/package/luamin) - thanks to [T-vK on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/39) #39
 
