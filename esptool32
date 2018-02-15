@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# the tool location
+esptool=~/.local/lib/python2.7/site-packages/esptool.py
+
+# run the tool with options matching NodeMCU Dev Kit 1.0
+# all script arguments are passed to the tool
+python $esptool --chip esp32 --port /dev/ttyUSB0 --baud 115200 \
+    --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size detect \
+    0x1000 .firmware/esp32/bootloader.bin \
+    0x10000 .firmware/esp32/NodeMCU.bin \
+    0x8000 .firmware/esp32/partitions_singleapp.bin

@@ -3,114 +3,47 @@
 // Manages User CLI interactions
 
 // load utils
-var _cli = require('commander');
-var _progressbar = require('cli-progress');
-var _pkg = require('../package.json');
-var _prompt = require('prompt');
-var _nodemcutool = require('../lib/NodeMCU-Tool');
-var _luaCommandBuilder = require('../lib/LuaCommandBuilder');
-var _colors = require('colors');
-var _fs = require('fs');
-var _loggingFacility = require('logging-facility');
-var _logger = _loggingFacility.getLogger('NodeMCU-Tool');
-
-// silent mode flag
-var silentModeEnabled = false;
-
-// set the logging backend/upstream
-// every log message is passed to this function
-_loggingFacility.setBackend(function(facility, level, args){
-    // args to string
-    args = args.map(function(s){
-        return s.toString();
-    });
-
-    // log, info, debug
-    if (level > 5){
-        // only display messages in normal operation mode
-        if (silentModeEnabled !== true){
-            console.log(_colors.cyan('[' + facility.trim() + ']'), args.join(' '));
-        }
-
-        // errors
-    }else{
-        console.log(_colors.red('[' + facility.trim() + ']'), args.join(' '));
-    }
-});
+const _pkg = require('../package.json');
+const _cli = require('commander');
+const _progressbar = require('cli-progress');
+const _colors = require('colors');
+const _prompt = require('../lib/cli/prompt');
+const _nodemcutool = require('../lib/nodemcu-tool');
+const _luaCommandBuilder = require('../lib/lua/command-builder');
+const _optionsManager = require('../lib/cli/options-manager');
+const _loggingFacility = require('logging-facility');
+const _logger = _loggingFacility.getLogger('NodeMCU-Tool');
+_loggingFacility.addBackend('fancy-cli');
 
 // general content
 _nodemcutool.onOutput(function(message){
     console.log(message);
 });
 
-function cliPrepare(options){
-    // default
-    options = options || {};
+// wrap async tasks
+function asyncWrapper(promise){
+    return function(...args){
+        // extract options (last argument)
+        _optionsManager.parse(args.pop())
 
-    // silent mode enabled by flag ?
-    silentModeEnabled = (_cli.silent===true);
+            // trigger command
+            .then(options => {
+                // re-merge
+                return promise(...args, options)
+            })
 
-    // silent mode enabled by json output format ?
-    if (options.json && options.json === true){
-        silentModeEnabled = true;
+            // gracefull exit
+            .then(() => {
+                process.exit(0)
+            })
+
+            // handle low-level errors
+            .catch(err => {
+                _logger.error(err.message, err.stack);
+                process.exit(1);
+            });
     }
-
-    // silent mode enabled by json raw format ?
-    if (options.raw && options.raw === true){
-        silentModeEnabled = true;
-    }
-
-    // merge global flags, command flags and global defaults
-    var defaultConfig = {
-        // global flags
-        baudrate:           _cli.baud           || '115200',
-        port:               _cli.port           || '/dev/ttyUSB0',
-        connectionDelay:    _cli.connectionDelay || 0,
-
-        // command specific flags
-        optimize:   options.optimize    || false,
-        minify:     options.minify      || false,
-        compile:    options.compile     || false,
-        keeppath:   options.keeppath    || false,
-        remotename: options.remotename  || null,
-        run:        options.run         || false,
-        all:        options.all         || false,
-        json:       options.json        || false,
-        raw:        options.raw         || false,
-        softreset:  options.softreset   || false
-    };
-
-    // project based configuration
-    try{
-        // try to load project based configuration
-        var data = _fs.readFileSync('.nodemcutool', 'utf8');
-
-        if (data){
-            // decode json based data
-            var d = JSON.parse(data);
-
-            // extract values
-            defaultConfig.baudrate = d.baudrate || defaultConfig.baudrate;
-            defaultConfig.port = d.port || defaultConfig.port;
-            defaultConfig.minify = (d.minify && d.minify === true);
-            defaultConfig.optimize = (d.optimize && d.optimize === true);
-            defaultConfig.compile = (d.compile && d.compile === true);
-            defaultConfig.keeppath = (d.keeppath && d.keeppath === true);
-            _logger.log('Project based configuration loaded');
-        }
-    }catch (err){
-    }
-
-    // set port/baud options
-    _nodemcutool.setOptions({
-        device: defaultConfig.port,
-        baudrate: defaultConfig.baudrate,
-        connectionDelay: defaultConfig.connectionDelay
-    });
-
-    return defaultConfig;
 }
-
 
 // CLI setup
 _cli
@@ -124,26 +57,24 @@ _cli
     .option('-b, --baud <baudrate>', 'Serial Port Baudrate in bps, default 115200', null)
 
     // silent mode - no status messages are shown
-    .option('--silent', 'Enable silent mode - no status messages are shown', false)
+    .option('--silent', 'Enable silent mode - no status messages are shown', null)
 
     // connection delay between opening the serial device and starting the communication
-    .option('--connection-delay <delay>', 'Connection delay between opening the serial device and starting the communication', 0);
+    .option('--connection-delay <delay>', 'Connection delay between opening the serial device and starting the communication', null);
 
 _cli
     .command('fsinfo')
     .description('Show file system info (current files, memory usage)')
 
     // json output mode
-    .option('--json', 'Display output JSON encoded', false)
+    .option('--json', 'Display output JSON encoded', null)
 
     // raw output mode
-    .option('--raw', 'Display output as simple text with tab delimiter', false)
+    .option('--raw', 'Display output as simple text with tab delimiter', null)
 
-    .action(function(opt){
-        var options = cliPrepare(opt);
-
+    .action(asyncWrapper(async (options) => {
         // output format
-        var format = 'human';
+        let format = 'human';
 
         // json format ?
         if (options.json){
@@ -155,42 +86,35 @@ _cli
             format = 'raw';
         }
 
-        _nodemcutool.fsinfo(format);
-    });
+        await _nodemcutool.fsinfo(format);
+    }));
 
 _cli
     .command('run <file>')
     .description('Executes an existing .lua or .lc file on NodeMCU')
-    .action(function(filename, opt){
-        var options = cliPrepare(opt);
-
-        _nodemcutool.run(filename);
-    });
+    .action(asyncWrapper(async (filename, opt) => {
+        await _nodemcutool.run(filename);
+    }));
 
 _cli
     .command('upload [files...]')
     .description('Upload Files to NodeMCU (ESP8266) target')
 
     // file minification
-    .option('-m, --minify', 'Minifies the file before uploading', false)
-
-    // file cleanup
-    .option('-o, --optimize', 'Removes comments and empty lines from file before uploading', false)
+    .option('-m, --minify', 'Minifies the file before uploading', null)
 
     // compile files after upload
-    .option('-c, --compile', 'Compile Lua file to bytecode (.lc) and remove the original file after upload', false)
+    .option('-c, --compile', 'Compile Lua file to bytecode (.lc) and remove the original file after upload', null)
 
     // keep-path
-    .option('-k, --keeppath', 'Keep a relative file path in the destination filename (i.e: static/test.html will be named static/test.html)', false)
+    .option('-k, --keeppath', 'Keep a relative file path in the destination filename (i.e: static/test.html will be named static/test.html)', null)
 
     // sets the remote filename
-    .option('-n, --remotename <remotename>', 'Set destination file name. Default is same as original. Only available when uploading a single file!', false)
+    .option('-n, --remotename <remotename>', 'Set destination file name. Default is same as original. Only available when uploading a single file!', null)
 
-    .action(function(localFiles, opt){
-        var options = cliPrepare(opt);
-
+    .action(asyncWrapper(async (localFiles, options) => {
         // initialize a new progress bar
-        var bar = new _progressbar.Bar({
+        const bar = new _progressbar.Bar({
             clearOnComplete: true,
             hideCursor: true
         }, _progressbar.Presets.shades_classic);
@@ -202,9 +126,9 @@ _cli
         }
 
         // handle multiple uploads
-        var currentFileNumber = 0;
+        let currentFileNumber = 0;
 
-        _nodemcutool.upload(localFiles, options, function(current, total, fileNumber){
+        await _nodemcutool.upload(localFiles, options, function(current, total, fileNumber){
 
             // new file ?
             if (currentFileNumber != fileNumber){
@@ -221,52 +145,40 @@ _cli
                 }
             }
         });
-    });
+    }));
 
 _cli
     .command('download <file>')
     .description('Download files from NodeMCU (ESP8266) target')
 
-    .action(function(remoteFilename, opt){
-        var options = cliPrepare(opt);
-
-        _nodemcutool.download(remoteFilename);
-    });
+    .action(asyncWrapper(async (remoteFilename, opt) => {
+        await _nodemcutool.download(remoteFilename);
+    }));
 
 _cli
     .command('remove <file>')
     .description('Removes a file from NodeMCU filesystem')
-    .action(function(filename, opt){
-        var options = cliPrepare(opt);
-
-        _nodemcutool.remove(filename);
-    });
+    .action(asyncWrapper(async (filename, opt) => {
+        await _nodemcutool.remove(filename);
+    }));
 
 _cli
     .command('mkfs')
     .description('Format the SPIFFS filesystem - ALL FILES ARE REMOVED')
 
     // force fs creation without prompt
-    .option('--noninteractive', 'Execute command without user interaction', false)
+    .option('--noninteractive', 'Execute command without user interaction', null)
 
-    .action(function(opt){
-        var options = cliPrepare(opt);
-
+    .action(asyncWrapper(async (options) => {
         // no prompt!
-        if (opt.noninteractive){
+        if (options.noninteractive){
             // format
-            _nodemcutool.mkfs();
-
+            await _nodemcutool.mkfs();
             return;
         }
 
-        // user confirmation required!
-        _prompt.start();
-        _prompt.message = '';
-        _prompt.delimiter = '';
-        _prompt.colors = false;
-
-        _prompt.get({
+        // open user prompt
+        const result = await _prompt({
             properties: {
                 confirm: {
                     pattern: /^(yes|no|y|n)$/gi,
@@ -276,60 +188,46 @@ _cli
                     default: 'no'
                 }
             }
-        }, function (err, result){
-            if (err){
-                _logger.error('Formatting aborted');
-                return;
-            }
-
-            // transform to lower case
-            var c = result.confirm.toLowerCase();
-
-            // check
-            if (c!='y' && c!='yes'){
-                _logger.error('Formatting aborted');
-                return;
-            }
-
-            // format
-            _nodemcutool.mkfs();
         });
+        
+        // transform to lower case
+        const c = result.confirm.toLowerCase();
 
-    });
+        // check
+        if (c!='y' && c!='yes'){
+            _logger.error('Formatting aborted');
+            return;
+        }
+
+        // format
+        await _nodemcutool.mkfs();
+    }));
 
 
 _cli
     .command('terminal')
     .description('Opens a Terminal connection to NodeMCU')
-    .option('--run <filename>', 'Running a file on NodeMCU before starting the terminal session', false)
-    .action(function(opt){
-        var options = cliPrepare(opt);
+    .option('--run <filename>', 'Running a file on NodeMCU before starting the terminal session', null)
+    .action(asyncWrapper(async (options) => {
 
         // run a initial command on startup ?
-        var initialCommand = null;
+        let initialCommand = null;
         if (options.run){
             initialCommand = _luaCommandBuilder.prepare('run', [options.run]);
         }
 
         // start terminal session
-        _nodemcutool.terminal(initialCommand);
-    });
+        await _nodemcutool.terminal(initialCommand);
+    }));
 
 _cli
     .command('init')
     .description('Initialize a project-based Configuration (file) within current directory')
-    .action(function(opt){
-        var options = cliPrepare(opt);
-
+    .action(asyncWrapper(async (options) => {
         _logger.log('Creating project based configuration file..');
 
         // get user input
-        _prompt.start();
-        _prompt.message = '';
-        _prompt.delimiter = '';
-        _prompt.colors = false;
-
-        _prompt.get({
+        const data = await _prompt({
             properties: {
                 baudrate: {
                     pattern: /^\d+$/,
@@ -345,66 +243,55 @@ _cli
                     default: '/dev/ttyUSB0'
                 }
             }
-        }, function (err, data){
-
-            if (err){
-                _logger.error(err);
-            }else{
-                // set defaults
-                data.minify = false;
-                data.optimize = false;
-                data.compile = false;
-                data.keeppath = false;
-
-                // write config to file
-                _fs.writeFileSync('.nodemcutool', JSON.stringify(data, null, 4));
-            }
         });
-    });
+
+        // set defaults
+        data.minify = false;
+        data.optimize = false;
+        data.compile = false;
+        data.keeppath = false;
+
+        // write config to file
+        await _optionsManager.store(data);
+    }));
 
 _cli
     .command('devices')
     .description('Shows a list of all available NodeMCU Modules/Serial Devices')
 
     // disable the device filter based on vendorId's of common NodeMCU modules
-    .option('--all', 'Show all Serial Devices, not only NodeMCU Modules', false)
+    .option('--all', 'Show all Serial Devices, not only NodeMCU Modules', null)
 
     // json output mode
-    .option('--json', 'Display output JSON encoded', false)
+    .option('--json', 'Display output JSON encoded', null)
 
-
-    .action(function(opt){
-        var options = cliPrepare(opt);
-
-        _nodemcutool.devices(options.all, options.json);
-    });
+    .action(asyncWrapper(async (options) => {
+        await _nodemcutool.devices(options.all, options.json);
+    }));
 
 _cli
     .command('reset')
     .description('Execute a Hard-Reset of the Module using DTR/RTS reset circuit')
 
     // softreset mode
-    .option('--softreset', 'Resets the module using node.restart() command', false)
+    .option('--softreset', 'Resets the module using node.restart() command', null)
 
-
-    .action(function(opt){
-        var options = cliPrepare(opt);
-
+    .action(asyncWrapper(async (options) => {
         // software reset
         if (options.softreset){
-            _nodemcutool.softreset();
+            await _nodemcutool.softreset();
 
         // hard-reset nRST
         }else{
-            _nodemcutool.reset();
+            await _nodemcutool.hardreset();
         }
 
-    });
+    }));
 
 _cli
     .command('*')
-    .action(function(c){
-        _logger.error('Unknown command "' + c + '"');
+    .action((cmd) => {
+        _logger.error('Unknown command "' + cmd + '"');
         _cli.outputHelp();
     });
 

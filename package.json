@@ -1,43 +1,49 @@
 {
-  "name": "nodemcu-tool",
-  "version": "2.2.0",
-  "description": "Command line tool to upload and manage files on your NodeMCU / ESP8266 Module.",
-  "keywords": [
-    "cli",
-    "lua",
-    "terminal",
-    "nodemcu",
-    "esp8266",
-    "wifi",
-    "serial",
-    "upload",
-    "embedded"
-  ],
-  "homepage": "https://github.com/AndiDittrich/NodeMCU-Tool",
-  "bugs": "https://github.com/AndiDittrich/NodeMCU-Tool/issues",
-  "repository": "AndiDittrich/NodeMCU-Tool",
-  "files": [
-    "bin",
-    "lib",
-    "helloworld.lua",
-    "CHANGED.md",
-    "LICENSE.md",
-    "README.md"
-  ],
-  "main": "./lib/NodeMCU-Tool.js",
-  "bin": {
-    "nodemcu-tool": "bin/nodemcu-tool.js"
-  },
-  "preferGlobal": true,
-  "author": "Andi Dittrich (http://andidittrich.de)",
-  "license": "MIT",
-  "dependencies": {
-    "cli-progress": "^1.4.0",
-    "colors": "^1.1.2",
-    "commander": "^2.9.0",
-    "logging-facility": "^1.1.0",
-    "luamin": "^1.0.4",
-    "prompt": "^0.2.14",
-    "serialport": "^4.0.0"
-  }
+    "name": "nodemcu-tool",
+    "version": "3.0.0",
+    "description": "Command line tool to upload and manage files on your NodeMCU / ESP8266 Module / ESP32 Module.",
+    "keywords": [
+        "cli",
+        "lua",
+        "terminal",
+        "nodemcu",
+        "esp8266",
+        "esp32",
+        "wifi",
+        "serial",
+        "upload",
+        "embedded"
+    ],
+    "homepage": "https://github.com/AndiDittrich/NodeMCU-Tool",
+    "bugs": "https://github.com/AndiDittrich/NodeMCU-Tool/issues",
+    "repository": "AndiDittrich/NodeMCU-Tool",
+    "files": [
+        "bin",
+        "lib",
+        "helloworld.lua",
+        "CHANGED.md",
+        "LICENSE.md",
+        "README.md"
+    ],
+    "main": "./lib/nodemcu-tool.js",
+    "bin": {
+        "nodemcu-tool": "bin/nodemcu-tool.js"
+    },
+    "engines": {
+        "node": ">=7.6"
+    },
+    "preferGlobal": true,
+    "author": "Andi Dittrich (http://andidittrich.de)",
+    "license": "MIT",
+    "dependencies": {
+        "async-magic": "^1.3.0",
+        "cli-progress": "^1.7.0",
+        "colors": "^1.1.2",
+        "commander": "^2.14.0",
+        "fs-magic": "^2.1.1",
+        "logging-facility": "^2.0.1",
+        "luamin": "^1.0.4",
+        "prompt": "^0.2.14",
+        "serialport": "^6.0.0"
+    }
 }

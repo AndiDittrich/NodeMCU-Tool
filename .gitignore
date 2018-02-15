@@ -13,4 +13,4 @@ dev*
 test/*
 esptool
 .firmware/*
-yarn.lock
+kit/*
