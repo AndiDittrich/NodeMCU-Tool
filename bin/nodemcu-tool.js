@@ -8,7 +8,7 @@ const _cli = require('commander');
 const _progressbar = require('cli-progress');
 const _colors = require('colors');
 const _prompt = require('../lib/cli/prompt');
-const _nodemcutool = require('../lib/nodemcu-tool');
+const _nodemcutool = require('../lib/cli/nodemcu-tool');
 const _luaCommandBuilder = require('../lib/lua/command-builder');
 const _optionsManager = require('../lib/cli/options-manager');
 const _loggingFacility = require('logging-facility');
@@ -32,6 +32,12 @@ function asyncWrapper(promise){
                 return promise(...args, options)
             })
 
+            // trigger disconnect
+            .then(() => {
+                _logger.log('disconnecting device');
+                return _nodemcutool.disconnect();
+            })
+
             // gracefull exit
             .then(() => {
                 process.exit(0)
@@ -44,6 +50,12 @@ function asyncWrapper(promise){
             });
     }
 }
+
+// low level com errors
+_nodemcutool.onError(err => {
+    _logger.error(err.message, err.stack);
+    process.exit(127);
+});
 
 // CLI setup
 _cli
@@ -182,7 +194,7 @@ _cli
             properties: {
                 confirm: {
                     pattern: /^(yes|no|y|n)$/gi,
-                    description: _colors.cyan('[NodeMCU-Tool]') + ' Do you really want to format the filesystem and delete all file ?',
+                    description: _colors.cyan('[NodeMCU-Tool]') + '~ Do you really want to format the filesystem and delete all file ?',
                     message: 'Type yes/no',
                     required: true,
                     default: 'no'
@@ -231,14 +243,14 @@ _cli
             properties: {
                 baudrate: {
                     pattern: /^\d+$/,
-                    description: _colors.cyan('[NodeMCU-Tool]') + ' Baudrate in Bit per Seconds, e.g. 9600 (default)',
+                    description: _colors.cyan('[NodeMCU-Tool]') + '~ Baudrate in Bit per Seconds, e.g. 115200 (default)',
                     required: false,
                     message: 'Only Integers allowed!',
-                    default: 9600
+                    default: 115200
                 },
                 port: {
                     pattern: /^.+$/,
-                    description: _colors.cyan('[NodeMCU-Tool]') + ' Serial connection to use, e.g. COM1 or /dev/ttyUSB2',
+                    description: _colors.cyan('[NodeMCU-Tool]') + '~ Serial connection to use, e.g. COM1 or /dev/ttyUSB2',
                     required: false,
                     default: '/dev/ttyUSB0'
                 }

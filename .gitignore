@@ -11,6 +11,5 @@ dev.js
 dev*
 .nodemcutool
 test/*
-esptool
 .firmware/*
 kit/*

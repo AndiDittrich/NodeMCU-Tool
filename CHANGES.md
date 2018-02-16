@@ -1,3 +1,17 @@
+## --- Branch 3.x --- ##
+
+### 3.0.0 ###
+Refactored the codebase - make extensive use of ES6 feature like async/await
+
+* Added: return codes
+* Added: experimental esp32 support - thanks to [Spiritdude on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/47) #47
+* Changed: the connector API has been splitted into multiple files
+* Changed: added new cli logger
+* Changed: requires **Node.js >= 7.6**
+* Removed: lua optimizer (replaced by luamin)
+
+## --- Branch 2.x --- ##
+
 ### 2.2.1 ###
 * Bugfix: File transfer chunk splitting used a weak regex which does not match linebreaks (slow transfer speed because of short chunks) - thanks to [T-vK on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/42) #42
 
@@ -39,6 +53,8 @@
 * Bugfix: Silent mode was not completely silent - thanks to [remcoder on GitHub](https://github.com/remcoder) #12
 * Deprecated: `NodeMcuConnector.onError` callback will be removed in the future (replaced by logging-facility)
 * Deprecated: `ScriptableSerialTerminal.onError` callback will be removed in the future (replaced by logging-facility)
+
+## --- Branch 1.x --- ##
 
 ### 1.6.0 ###
 * Added: `--run` option to the terminal command to execute a file on the nodemcu when opening a new terminal session - feature requested by [blezek on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/11)
