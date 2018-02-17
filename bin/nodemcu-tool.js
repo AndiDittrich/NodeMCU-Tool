@@ -15,9 +15,9 @@ const _loggingFacility = require('logging-facility');
 const _logger = _loggingFacility.getLogger('NodeMCU-Tool');
 _loggingFacility.addBackend('fancy-cli');
 
-// general content
+// general content passhrough to stdin
 _nodemcutool.onOutput(function(message){
-    console.log(message);
+    process.stdout.write(message);
 });
 
 // wrap async tasks
@@ -34,8 +34,10 @@ function asyncWrapper(promise){
 
             // trigger disconnect
             .then(() => {
-                _logger.log('disconnecting device');
-                return _nodemcutool.disconnect();
+                if (_nodemcutool.Connector.isConnected()){
+                    _logger.log('disconnecting');
+                    return _nodemcutool.disconnect();
+                }
             })
 
             // gracefull exit
@@ -45,7 +47,8 @@ function asyncWrapper(promise){
 
             // handle low-level errors
             .catch(err => {
-                _logger.error(err.message, err.stack);
+                _logger.error(err.message);
+                _logger.debug(err.stack);
                 process.exit(1);
             });
     }
@@ -53,7 +56,8 @@ function asyncWrapper(promise){
 
 // low level com errors
 _nodemcutool.onError(err => {
-    _logger.error(err.message, err.stack);
+    _logger.error(err.message);
+    _logger.debug(err.stack);
     process.exit(127);
 });
 
@@ -72,7 +76,10 @@ _cli
     .option('--silent', 'Enable silent mode - no status messages are shown', null)
 
     // connection delay between opening the serial device and starting the communication
-    .option('--connection-delay <delay>', 'Connection delay between opening the serial device and starting the communication', null);
+    .option('--connection-delay <delay>', 'Connection delay between opening the serial device and starting the communication', null)
+
+    // debug mode - display detailed error messages
+    .option('--debug', 'Enable debug mode - all status messages + stacktraces are shown', null);
 
 _cli
     .command('fsinfo')
@@ -259,7 +266,6 @@ _cli
 
         // set defaults
         data.minify = false;
-        data.optimize = false;
         data.compile = false;
         data.keeppath = false;
 

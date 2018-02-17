@@ -1,6 +1,6 @@
 NodeMCU-Tool
 ============
-Upload/Download Lua files to your ESP8266 module with NodeMCU firmware.
+Upload/Download Lua files to your ESP8266/ESP32 module with NodeMCU firmware.
 
 **Simple. Command Line. Cross-Platform. File Management. [NodeMCU](http://nodemcu.com/index_en.html).**
 
@@ -14,7 +14,7 @@ Tool Summary
 -------------
 NodeMCU Tool allows you to
 
-* Upload Lua files to your ESP8266/NodeMCU module
+* Upload Lua files to your ESP8266/ESP32/NodeMCU module
 * Upload any file-types (binary save)
 * Bulk/Multi file uploads
 * Download any file-type (binary save)
@@ -31,15 +31,19 @@ NodeMCU Tool allows you to
 
 directly from the command line.
 
-*Successful tested on Windows10, Debian 8.2 and Ubuntu 14 LTS - works out of the box without any tweaks*
+*Successful tested on Windows10, Debian 8,9 and Ubuntu 14,15,16,17 - works out of the box without any tweaks*
 
 Compatibility
 -------------
 The following NodeMCU firmware versions are verified
 
+**ESP8266**
 * NodeMCU LUA 1.4
 * NodeMCU LUA 1.5.1
 * NodeMCU LUA 1.5.4
+
+**ESP32**
+* preliminary support (esp32-dev.latest)
 
 Related Documents
 -----------------
@@ -236,6 +240,7 @@ In this Example, the baudrate is changed to 19.2k and COM3 is selected as defaul
 {
     "baudrate": "19200",
     "port": "COM3",
+    "connectionDelay": 100,
     "compile": true,
     "minify": true,
     "keeppath": true
@@ -248,9 +253,9 @@ All configuration options are **optional**
 
 * **baudrate** (int) - the default baudrate in bits per second
 * **port** (string) - the comport to use
+* **connectionDelay** (int) - connection-delay in ms
 * **compile** (boolean) - compile lua files after upload
 * **minify** (boolean) - minifies files before uploading
-* **optimize** (boolean) - optimize files before uploading (Deprecated! Use minify instead.)
 * **keeppath** (boolean) - keep the relative file path in the destination filename (i.e: static/test.html will be named static/test.html)
  
  
@@ -274,11 +279,12 @@ The required encoding (file downloads) / decoding (file uploads) functions are a
 The Tool is separated into the following components (ordered by its invocation)
 
   1. `bin/nodemcu-tool.js` - the command line user interface handler based on [commander](https://www.npmjs.com/package/commander)
-  2. `lib/NodeMCU-Tool.js` - Highlevel Access to the main functions. Error and Status messages are handled there
-  3. `lib/NodeMcuConnector.js` - the Core which handles the Lua command based communication to the NodeMCU Module
-  4. `lib/ScriptableSerialTerminal.js` - the lowlevel part - a terminal session to the NodeMCU Module to run the Lua commands
-  
-  
+  2. `cli/nodemcu-tool.js` - Highlevel Access to the main functions. Error and Status messages are handled there
+  3. `lib/nodemcu-connector.js` - the Core which handles the Lua command based communication to the NodeMCU Module
+  4. `lib/connector/*.js` - low-level command handlers
+  5. `lib/transport/scriptable-serial-terminal.js` - the lowlevel part - a terminal session to the NodeMCU Module to run the Lua commands
+  6. `lib/transport/serialport.js` - a wrapper to handle the serial transport
+
 ### Application Stack ###
 
 ```

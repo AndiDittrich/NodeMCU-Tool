@@ -3,8 +3,10 @@
 ### 3.0.0 ###
 Refactored the codebase - make extensive use of ES6 feature like async/await
 
-* Added: return codes
-* Added: experimental esp32 support - thanks to [Spiritdude on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/47) #47
+* Added: return codes (0-success; 1-general_error; 127-lowlevel_error) - feature [requested on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/48) #48
+* Added: **debug mode** to show low-level error messages `--debug` flag
+* Added: experimental **esp32** support - thanks to [Spiritdude on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/47) #47
+* Changed: cli arguments take presendence over config file - feature [requested on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/21) #21
 * Changed: the connector API has been splitted into multiple files
 * Changed: added new cli logger
 * Changed: requires **Node.js >= 7.6**
