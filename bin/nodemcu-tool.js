@@ -131,6 +131,9 @@ _cli
     // sets the remote filename
     .option('-n, --remotename <remotename>', 'Set destination file name. Default is same as original. Only available when uploading a single file!', null)
 
+    // run file after upload
+    .option('--run', 'Running a file on NodeMCU after uploading. Only available when uploading a single file!', null)
+
     .action(asyncWrapper(async (localFiles, options) => {
         // initialize a new progress bar
         const bar = new _progressbar.Bar({

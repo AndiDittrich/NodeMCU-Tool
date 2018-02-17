@@ -3,6 +3,7 @@
 ### 3.0.0 ###
 Refactored the codebase - make extensive use of ES6 feature like async/await
 
+* Added: flag `--run` to **upload** command to run a file on NodeMCU diretly after uploading - feature [requested on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/19) #19
 * Added: return codes (0-success; 1-general_error; 127-lowlevel_error) - feature [requested on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/48) #48
 * Added: **debug mode** to show low-level error messages `--debug` flag
 * Added: experimental **esp32** support - thanks to [Spiritdude on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/pull/47) #47
