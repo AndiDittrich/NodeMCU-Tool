@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/AndiDittrich/NodeMCU-Tool.svg?branch=master)](https://travis-ci.org/AndiDittrich/NodeMCU-Tool)
+
 NodeMCU-Tool
 ============
 Upload/Download Lua files to your ESP8266/ESP32 module with NodeMCU firmware.
