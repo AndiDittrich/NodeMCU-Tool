@@ -29,6 +29,9 @@
     "bin": {
         "nodemcu-tool": "bin/nodemcu-tool.js"
     },
+    "scripts": {
+        "test": "eslint lib/ bin/;"
+    },
     "engines": {
         "node": ">=7.6"
     },
@@ -45,5 +48,9 @@
         "luamin": "^1.0.4",
         "prompt": "^0.2.14",
         "serialport": "^6.0.0"
+    },
+    "devDependencies": {
+        "eslint": "^4.18.0",
+        "eslint-config-aenondynamics": "^0.2.0"
     }
 }

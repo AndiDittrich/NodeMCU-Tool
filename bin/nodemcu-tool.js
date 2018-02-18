@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/*eslint no-process-exit: 0*/
 
 // Manages User CLI interactions
 
@@ -41,6 +42,7 @@ function asyncWrapper(promise){
             })
 
             // gracefull exit
+            
             .then(() => {
                 process.exit(0)
             })
