@@ -1,15 +1,9 @@
-.settings*
-.idea/*
-.project
 .credentials*
-gfx/*
-PublicHtml/*
 node_modules*
+gfx/*
 .tmp*
-intern_*
 dev.js
-dev*
-.nodemcutool
+dev/*
 test/*
 .firmware/*
 kit/*

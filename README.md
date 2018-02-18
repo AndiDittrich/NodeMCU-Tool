@@ -8,7 +8,7 @@ Upload/Download Lua files to your ESP8266/ESP32 module with NodeMCU firmware.
 $ npm install nodemcu-tool -g
 ```
 
-![Demo](https://github.com/AndiDittrich/NodeMCU-Tool/raw/master/video.gif)
+![Demo](assets/video.gif)
 
 Tool Summary
 -------------
@@ -48,9 +48,11 @@ The following NodeMCU firmware versions are verified
 Related Documents
 -----------------
 
+* [FAQ](FAQ.md)
 * [Command Reference](docs/CommandReference.md)
 * [Common Use-Cases and Examples](docs/Examples.md)
 * [Programmatic Usage](docs/ProgrammaticUsage.md)
+* [Behind The Scene](docs/BehindTheScene.md)
 * [Fixing Reset-on-Connect Issue](docs/Reset_on_Connect.md)
 * [File Transfer Encoding](docs/TransferEncoding.md)
 * [Webstorm Integration](docs/WebstormIntegration.md)
@@ -65,7 +67,6 @@ Terminology
 * **Upload** Transfer files from your PC to NodeMCU/ESP8266 module
 * **Download** Transfer files/obtaining information from the module
 
-
 Requirements
 ------------
 
@@ -77,10 +78,9 @@ Depending on your Module-Type you have to install the platform-specific driver f
 The original NodeMCU v0.9 comes with a CH341 chip with may requires manual driver installation. Modern versions like 1.0 use a CP210x chip with work out of the box on most common systems.
 Other ESP8266 platforms may user other interfaces - please refer to their user manuals!
 
-
 ### Node.js ###
 
-The NodeMCU-Tool is written in javascript and requires [Node.js](https://nodejs.org) as runtime environment. And please don't worry about the wording - NodeMCU and Node.js are two **complete different** things!
+The NodeMCU-Tool is written in javascript and requires [Node.js >= 7.6](https://nodejs.org) as runtime environment. And please don't worry about the wording - NodeMCU and Node.js are two **complete different** things!
 
 In case you're not familiar with [Node.js](https://nodejs.org) and [NPM](https://www.npmjs.com) it's recommended to read some [basic introductions](https://docs.npmjs.com/getting-started/what-is-npm) first!
 Please [download the Node.js installer](https://nodejs.org/en/download/) and install on your system in case it's not already there.
@@ -122,6 +122,8 @@ In this case, the binary file is located in `node_modules/nodemcu-tool/bin/nodem
 ### As Archive from GitHub ###
 
 You can also download the [latest release](https://github.com/AndiDittrich/NodeMCU-Tool/releases/latest) directly from [GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/releases) and extract the sources to your project directory.
+After downloading you have to **install the dependencies** by running `npm install` in the nodemcu-tool directory.
+
 When using this method, the `nodemcu-tool` command is **not registered** within your path. You have to register it manually using a symlink - or the recommended way: call the binary file `./bin/nodemcu-tool.js` directly.
 
 First Steps
@@ -257,84 +259,17 @@ All configuration options are **optional**
 * **compile** (boolean) - compile lua files after upload
 * **minify** (boolean) - minifies files before uploading
 * **keeppath** (boolean) - keep the relative file path in the destination filename (i.e: static/test.html will be named static/test.html)
- 
- 
+  
 ### Notes ###
   
 * NodeMCU-Tool will only search in the **current directory** for the `.nodemcutool` file!
 * All default options can be overwritten by using the command line options
 * The `.nodemcutool` file is only recognized in `CLI Mode` **NOT** in `API Mode`
 
-Behind the Scene
-----------------
-Many beginners may ask how the tool is working because there is no binary interface documented like FTP to access files.
-
-The answer is quite simple: **NodeMCU-Tool** implements a serial terminal connection to the Module and runs some command line based lua commands like file.open(), file.write() to access the filesystem. That's it!
-
-Since Version 1.2 it's also possible to transfer **binary** files to your device. NodeMCU-Tool uses a hexadecimal encode/decoding to transfer the files binary save!
-The required encoding (file downloads) / decoding (file uploads) functions are automatically uploaded on each operation.
-
-### Systems Architecture ###
-
-The Tool is separated into the following components (ordered by its invocation)
-
-  1. `bin/nodemcu-tool.js` - the command line user interface handler based on [commander](https://www.npmjs.com/package/commander)
-  2. `cli/nodemcu-tool.js` - Highlevel Access to the main functions. Error and Status messages are handled there
-  3. `lib/nodemcu-connector.js` - the Core which handles the Lua command based communication to the NodeMCU Module
-  4. `lib/connector/*.js` - low-level command handlers
-  5. `lib/transport/scriptable-serial-terminal.js` - the lowlevel part - a terminal session to the NodeMCU Module to run the Lua commands
-  6. `lib/transport/serialport.js` - a wrapper to handle the serial transport
-
-### Application Stack ###
-
-```
-CLI User Frontend
-+----------------------+
-|                      |
-|    nodemcu-tool      |
-|                      |
-++---------------------+
-|| Message and Error Handling
-++---------------------+
-|                      |
-|  lib/NodeMCU-Tool.js |
-|                      |
-++---------------------+
-|| Core Functions
-++---------------------+
-|                      |
-| lib/NodeMcuConnector |
-|                      |
-++---------------------+
-|| Low|Level Command Transport
-++---------------------+
-|                      |
-|lib/ScriptableSerial- |
-|Terminal              |
-++---------------------+
-|| Serial Communication
-++---------------------+
-|  node|serialport     |
-+----------------------+
-```
-
 Programmatic Usage and Low Level API
 ------------------------------------
 It's possible to use the underlying "NodeMcuConnector" in your own projects to communicate with a NodeMCU based device.
 Or you can call the `bin` file with an external tool. For more details, take a look into the [Programmatic Usage Guide](docs/ProgrammaticUsage.md)
-
-FAQ
----
-
-#### Do you provide more Examples/Use Cases ? ####
-Of course, check the [Examples](docs/Examples.md) file (tool usage) as well as the `examples/` directory for third party examples
-
-#### The serial file transfer is pretty slow ####
-By default, the serial connection uses a 9600 baud with 8N1 - this means maximal 960 bytes/s raw data rate.
-Due to the limitations of a line-wise file upload, these maximal transfer rate cannot be reached, because every line has to be processed by the lua interpreter and NodeMCU-Tool is waiting for it's response.
-It's recommended to use the `--minify` flag to minify the code before uploading. Additionally, newer firmware versions `1.x.x` using an auto-baudrate detection algorithm - this means you can increase the baudrate to e.g. 115200 `--baud 115200` to speed up the transfer 
-
-Additionally include the native [encoder Module](http://nodemcu.readthedocs.io/en/master/en/modules/encoder/) into your firmware to speed-up the uploading by factor 4..10!
 
 Any Questions ? Report a Bug ? Enhancements ?
 ---------------------------------------------

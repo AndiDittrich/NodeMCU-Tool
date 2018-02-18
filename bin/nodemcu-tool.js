@@ -111,7 +111,7 @@ _cli
 _cli
     .command('run <file>')
     .description('Executes an existing .lua or .lc file on NodeMCU')
-    .action(asyncWrapper(async (filename, opt) => {
+    .action(asyncWrapper(async (filename) => {
         await _nodemcutool.run(filename);
     }));
 
@@ -173,14 +173,14 @@ _cli
     .command('download <file>')
     .description('Download files from NodeMCU (ESP8266) target')
 
-    .action(asyncWrapper(async (remoteFilename, opt) => {
+    .action(asyncWrapper(async (remoteFilename) => {
         await _nodemcutool.download(remoteFilename);
     }));
 
 _cli
     .command('remove <file>')
     .description('Removes a file from NodeMCU filesystem')
-    .action(asyncWrapper(async (filename, opt) => {
+    .action(asyncWrapper(async (filename) => {
         await _nodemcutool.remove(filename);
     }));
 
@@ -245,7 +245,7 @@ _cli
 _cli
     .command('init')
     .description('Initialize a project-based Configuration (file) within current directory')
-    .action(asyncWrapper(async (options) => {
+    .action(asyncWrapper(async () => {
         _logger.log('Creating project based configuration file..');
 
         // get user input
@@ -314,6 +314,7 @@ _cli
     .action((cmd) => {
         _logger.error('Unknown command "' + cmd + '"');
         _cli.outputHelp();
+        process.exit(1);
     });
 
 // run the commander dispatcher
