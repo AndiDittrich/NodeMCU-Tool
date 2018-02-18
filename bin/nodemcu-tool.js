@@ -81,7 +81,10 @@ _cli
     .option('--connection-delay <delay>', 'Connection delay between opening the serial device and starting the communication', null)
 
     // debug mode - display detailed error messages
-    .option('--debug', 'Enable debug mode - all status messages + stacktraces are shown', null);
+    .option('--debug', 'Enable debug mode - all status messages + stacktraces are shown', null)
+
+    // io-debug mode
+    .option('--io-debug', 'Enable io-debug mode - logs all serial rx+txt messages (requires enabled debug mode).', null);
 
 _cli
     .command('fsinfo')
