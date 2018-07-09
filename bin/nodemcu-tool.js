@@ -84,7 +84,7 @@ _cli
     .option('--debug', 'Enable debug mode - all status messages + stacktraces are shown', null)
 
     // io-debug mode
-    .option('--io-debug', 'Enable io-debug mode - logs all serial rx+txt messages (requires enabled debug mode).', null);
+    .option('--io-debug', 'Enable io-debug mode - logs all serial rx/tx messages (requires enabled debug mode)', null);
 
 _cli
     .command('fsinfo')
