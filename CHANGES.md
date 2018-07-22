@@ -1,7 +1,13 @@
 ## --- Branch 3.x --- ##
 
-### 3.0.0 ###
 Refactored the codebase - make extensive use of ES6 feature like async/await
+
+
+### 3.0.1 ###
+
+* Bugfix: command `devices` failed in case a nonexisting serial port was used (e.g. default port; command did not require a valid port) - thanks to [arrowcircle on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/53) #53
+
+### 3.0.0 ###
 
 * Added: flag `--run` to **upload** command to run a file on NodeMCU diretly after uploading - feature [requested on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/19) #19
 * Added: return codes (0-success; 1-general_error; 127-lowlevel_error) - feature [requested on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/48) #48
