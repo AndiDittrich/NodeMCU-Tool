@@ -25,7 +25,7 @@
         "LICENSE.md",
         "README.md"
     ],
-    "main": "./lib/nodemcu-tool.js",
+    "main": "./lib/nodemcu-connector.js",
     "bin": {
         "nodemcu-tool": "bin/nodemcu-tool.js"
     },
