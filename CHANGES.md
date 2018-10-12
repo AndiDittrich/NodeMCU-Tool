@@ -2,6 +2,9 @@
 
 Refactored the codebase - make extensive use of ES6 feature like async/await
 
+### 3.0.2 ###
+
+* Bugfix: Invalid module entry file - nodemcu-connector was not exported  - thanks to [LanFly on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/55) #55
 
 ### 3.0.1 ###
 
