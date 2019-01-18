@@ -47,6 +47,8 @@ The following NodeMCU firmware versions are verified
 **ESP32**
 * preliminary support (esp32-dev.latest)
 
+---------------------------------------
+
 Related Documents
 -----------------
 
@@ -69,6 +71,8 @@ Terminology
 * **Upload** Transfer files from your PC to NodeMCU/ESP8266 module
 * **Download** Transfer files/obtaining information from the module
 
+---------------------------------------
+
 Requirements
 ------------
 
@@ -84,8 +88,12 @@ Other ESP8266 platforms may user other interfaces - please refer to their user m
 
 The NodeMCU-Tool is written in javascript and requires [Node.js >= 7.6](https://nodejs.org) as runtime environment. And please don't worry about the wording - NodeMCU and Node.js are two **complete different** things!
 
+**!! There is currently an issue with Node.js 11 on Windows 10 platforms. Please use Node.js 10 LTS !!**
+
 In case you're not familiar with [Node.js](https://nodejs.org) and [NPM](https://www.npmjs.com) it's recommended to read some [basic introductions](https://docs.npmjs.com/getting-started/what-is-npm) first!
 Please [download the Node.js installer](https://nodejs.org/en/download/) and install on your system in case it's not already there.
+
+---------------------------------------
 
 Installation
 ------------
@@ -94,21 +102,24 @@ Thanks to Node.js, the NodeMCU-Tool is platform independent and will run on Wind
 
 ### via NPM (Node.js Package Manager) ###
 
-#### Global Installation ####
-
 It's recommended to install nodemcu-tool as [global package](https://docs.npmjs.com/getting-started/installing-npm-packages-globally).
 NPM will register the binary automatically in your path - it will be directly available on the command line.
 
-```shell
-$ npm install nodemcu-tool -g
-```
+#### Global Installation as root (Linux/Mac OS Platforms) ####
 
-#### Global Installation as root ####
+The global installation may require administrator(root) privileges because the package is added to the systems library path. If you get any permission errors on Linux/Mac OS run the command as root or via `sudo`.
 
-The global installation may require administrator(root) privileges because the package is added to the systems library path. If you get any permission errors on Linux/Mac OS run the command as root or via `sudo`
+> **Note:** In some special cases the installation may fail with some errors related to `node-serialport` or `node-gyp`. This errors are caused by missing pre-build binaries (native code/drivers for your platform matching your OS/nodejs version) - therefore they have to compiled on your machine!
+> To resolve such issues, add the `--unsafe-perm` flag to the following command - it allows the build scripts to be executed as root.
 
 ```shell
 $ sudo npm install nodemcu-tool -g
+```
+
+#### Global Installation (Windows Platforms) ####
+
+```shell
+$ npm install nodemcu-tool -g
 ```
 
 #### Local/Project related Installation ####
@@ -119,7 +130,7 @@ You can also install it in your local project directory. When using this method,
 $ npm install nodemcu-tool
 ```
 
-In this case, the binary file is located in `node_modules/nodemcu-tool/bin/nodemcu-tool.js`
+In this case, a link to the binary file is located in `node_modules/.bin/nodemcu-tool`
 
 ### As Archive from GitHub ###
 
@@ -127,6 +138,8 @@ You can also download the [latest release](https://github.com/AndiDittrich/NodeM
 After downloading you have to **install the dependencies** by running `npm install` in the nodemcu-tool directory.
 
 When using this method, the `nodemcu-tool` command is **not registered** within your path. You have to register it manually using a symlink - or the recommended way: call the binary file `./bin/nodemcu-tool.js` directly.
+
+---------------------------------------
 
 First Steps
 -----------
