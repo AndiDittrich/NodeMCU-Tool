@@ -33,7 +33,7 @@ NodeMCU Tool allows you to
 
 directly from the command line.
 
-*Successful tested on Windows10, Debian 8,9 and Ubuntu 14,15,16,17 - works out of the box without any tweaks*
+*Successful tested on Windows10, Debian 8,9,10 and Ubuntu 14,15,16,17,18 - works out of the box without any tweaks*
 
 Compatibility
 -------------
@@ -43,6 +43,7 @@ The following NodeMCU firmware versions are verified
 * NodeMCU LUA 1.4
 * NodeMCU LUA 1.5.1
 * NodeMCU LUA 1.5.4
+* NodeMCU LUA 3.0.0
 
 **ESP32**
 * preliminary support (esp32-dev.latest)
