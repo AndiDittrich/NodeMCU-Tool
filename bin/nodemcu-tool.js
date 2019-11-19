@@ -13,6 +13,7 @@ const _nodemcutool = require('../lib/cli/nodemcu-tool');
 const _luaCommandBuilder = require('../lib/lua/command-builder');
 const _optionsManager = require('../lib/cli/options-manager');
 const _loggingFacility = require('logging-facility');
+const _globExpression = require('../lib/cli/glob-expression');
 const _logger = _loggingFacility.getLogger('NodeMCU-Tool');
 _loggingFacility.addBackend('fancy-cli');
 
@@ -139,15 +140,18 @@ _cli
     // run file after upload
     .option('--run', 'Running a file on NodeMCU after uploading. Only available when uploading a single file!', null)
 
-    .action(asyncWrapper(async (localFiles, options) => {
+    .action(asyncWrapper(async (filelist, options) => {
         // initialize a new progress bar
         const bar = new _progressbar.Bar({
             clearOnComplete: true,
             hideCursor: true
         }, _progressbar.Presets.shades_classic);
 
+        // expand glob expressions
+        const files = await _globExpression.expand(filelist);
+
         // files provided ?
-        if (localFiles.length == 0){
+        if (files.length == 0){
             _logger.error('No files provided for upload (empty file-list)');
             return;
         }
@@ -155,7 +159,7 @@ _cli
         // handle multiple uploads
         let currentFileNumber = 0;
 
-        await _nodemcutool.upload(localFiles, options, function(current, total, fileNumber){
+        await _nodemcutool.upload(files, options, function(current, total, fileNumber){
 
             // new file ?
             if (currentFileNumber != fileNumber){

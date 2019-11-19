@@ -2,6 +2,10 @@
 
 Refactored the codebase - make extensive use of ES6 feature like async/await
 
+### 3.2.0 ###
+
+* Added: generic support for glob expressions
+
 ### 3.1.0 ###
 
 * Added: support for NodeMCU-Firmware `3.X.X`
