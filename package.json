@@ -47,7 +47,7 @@
         "logging-facility": "^2.0.1",
         "luamin": "^1.0.4",
         "prompt": "^0.2.14",
-        "serialport": "^7.1.5"
+        "serialport": "^8.0.5"
     },
     "devDependencies": {
         "eslint": "^4.18.0",
