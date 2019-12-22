@@ -33,7 +33,7 @@
         "test": "eslint lib/ bin/;"
     },
     "engines": {
-        "node": ">=7.6"
+        "node": ">=8.0"
     },
     "preferGlobal": true,
     "author": "Andi Dittrich (https://andidittrich.de)",
@@ -44,6 +44,8 @@
         "colors": "^1.1.2",
         "commander": "^2.14.0",
         "fs-magic": "^2.1.1",
+        "glob": "^7.1.6",
+        "is-glob": "^4.0.1",
         "logging-facility": "^2.0.1",
         "luamin": "^1.0.4",
         "prompt": "^0.2.14",

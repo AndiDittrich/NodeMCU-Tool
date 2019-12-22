@@ -4,7 +4,9 @@ Refactored the codebase - make extensive use of ES6 feature like async/await
 
 ### 3.2.0 ###
 
-* Added: generic support for glob expressions
+* Added: generic support for glob expressions - feature requested [on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/66) #66
+* Changed: Updated the [serialport package](https://github.com/serialport/node-serialport) to v8.0.4
+* Changed: nodejs min version to `v8`
 
 ### 3.1.0 ###
 
