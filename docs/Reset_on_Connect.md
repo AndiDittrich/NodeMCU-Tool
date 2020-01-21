@@ -17,7 +17,7 @@ The Issue
 ---------------------
 It's a very useful feature, but on some modules these circuits cause a **reset on connect** which make the module inaccessible with NodeMCU-Tool: 
 on opening the serial connection software side, the module will be reset immediately and it reboots. Directly after reboot, the **auto-baudrate** detection of NodeMCU is capturing the serial input to determinate the used baudrate.
-And this is the issue: NodeMCU-Tool sends a few hearbeat messages to the module to check its state, but these messages are list because of the auto-baudrate detection. Therefore the module is threatened as unavailable and a error message is raised. 
+And this is the issue: NodeMCU-Tool sends a few hearbeat messages to the module to check its state, but these messages are lost because of the auto-baudrate detection. Therefore the module is threatened as unavailable and a error message is raised. 
 
 This behaviour can be caused by a hardware issue: wrong transistors, wrong series-resistors **or** a usb driver failure, which invokes the DTR/RTS lines asynchronous
 
