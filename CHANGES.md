@@ -2,6 +2,10 @@
 
 Refactored the codebase - make extensive use of ES6 feature like async/await
 
+### 3.2.1 ###
+
+* Bugfix: command `mkfs` did not respect `--noninteractive` flag - thanks to [bradshjg on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/72) #72
+
 ### 3.2.0 ###
 
 * Added: generic support for glob expressions - feature requested [on GitHub](https://github.com/AndiDittrich/NodeMCU-Tool/issues/66) #66
