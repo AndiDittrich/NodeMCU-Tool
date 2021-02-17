@@ -119,6 +119,10 @@ Node.js based Application
 It's possible to use the underlying "NodeMcuConnector" in your own Node.js projects to communicate with a NodeMCU based device.
 For more details, take a look into the [sources](https://github.com/AndiDittrich/NodeMCU-Tool/tree/master/lib)!
 
+> But please keep in mind that the low-level library was designed for cli-applications (single run) - internal state management of the transfer helpers is kept globally in the module - therefore it's only possible to communicate with a module as one-off action.
+> Disconnect/reconnect won't work as expected!
+> At the moment it's not projected to change this behaviour
+
 ### Low Level Connector Example ###
 
 **Description** Run `node.compile()` on NodeMCU and display the output
