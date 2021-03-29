@@ -40,10 +40,10 @@ Compatibility
 The following NodeMCU firmware versions are verified
 
 **ESP8266**
-* NodeMCU LUA 1.4
-* NodeMCU LUA 1.5.1
-* NodeMCU LUA 1.5.4
-* NodeMCU LUA 3.0.0
+* NodeMCU Lua 1.4
+* NodeMCU Lua 1.5.1
+* NodeMCU Lua 1.5.4
+* NodeMCU Lua 3.0.0
 
 **ESP32**
 * preliminary support (esp32-dev.latest)
@@ -207,7 +207,7 @@ $ nodemcu-tool mkfs --port=/dev/ttyUSB0
 
 ### 4. Upload a new File ###
 
-**Hint** include the native [encoder Module](http://nodemcu.readthedocs.io/en/master/en/modules/encoder/) into your firmware to speed-up the uploading by factor 4..10!
+**Hint** include the native [encoder Module](https://nodemcu.readthedocs.io/en/release/modules/encoder/) into your firmware to speed-up the uploading by factor 4..10!
 
 ```shell
 $ nodemcu-tool upload --port=/dev/ttyUSB0 helloworld.lua
