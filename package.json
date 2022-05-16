@@ -33,7 +33,7 @@
         "test": "eslint lib/ bin/;"
     },
     "engines": {
-        "node": ">=8.0"
+        "node": ">=12.0"
     },
     "preferGlobal": true,
     "author": "Andi Dittrich (https://andidittrich.de)",
@@ -49,7 +49,7 @@
         "logging-facility": "^2.0.1",
         "luamin": "^1.0.4",
         "prompt": "^0.2.14",
-        "serialport": "^8.0.5"
+        "serialport": "^10.4.0"
     },
     "devDependencies": {
         "eslint": "^4.18.0",
