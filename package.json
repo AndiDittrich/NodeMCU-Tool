@@ -48,7 +48,7 @@
         "is-glob": "^4.0.1",
         "logging-facility": "^2.0.1",
         "luamin": "^1.0.4",
-        "prompt": "^0.2.14",
+        "prompt": "^1.3.0",
         "serialport": "^8.0.5"
     },
     "devDependencies": {
