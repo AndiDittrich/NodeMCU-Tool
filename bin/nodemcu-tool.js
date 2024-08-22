@@ -5,7 +5,8 @@
 
 // load utils
 const _pkg = require('../package.json');
-const _cli = require('commander');
+const { Command } = require('commander');
+const _cli = new Command();
 const _progressbar = require('cli-progress');
 const _colors = require('colors');
 const _prompt = require('../lib/cli/prompt');
@@ -26,7 +27,7 @@ _nodemcutool.onOutput(function(message){
 function asyncWrapper(promise){
     return function(...args){
         // extract options (last argument)
-        _optionsManager.parse(args.pop())
+        _optionsManager.parse(args.pop(), _cli.opts())
 
             // trigger command
             .then(options => {
@@ -317,14 +318,6 @@ _cli
         }
 
     }));
-
-_cli
-    .command('*')
-    .action((cmd) => {
-        _logger.error('Unknown command "' + cmd + '"');
-        _cli.outputHelp();
-        process.exit(1);
-    });
 
 // run the commander dispatcher
 _cli.parse(process.argv);
