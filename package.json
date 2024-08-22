@@ -42,7 +42,7 @@
         "async-magic": "1.5.0",
         "cli-progress": "3.12.0",
         "colors": "^1.1.2",
-        "commander": "^2.14.0",
+        "commander": "12.1.0",
         "fs-magic": "2.1.3",
         "glob": "^7.1.6",
         "is-glob": "4.0.3",
